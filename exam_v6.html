@@ -245,7 +245,7 @@
                     <!-- Kenri -->
                     <div onclick="switchView('view-kenri-detail')" class="nav-card bg-white p-8 rounded-3xl border border-orange-100 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
-                            <span class="bg-orange-100 text-orange-700 text-sm font-bold px-4 py-1 rounded-full">14問 / 目標8点</span>
+                            <span class="bg-orange-100 text-orange-700 text-sm font-bold px-4 py-1 rounded-full">14問 / 目標10〜11点</span>
                             <span class="text-orange-600 font-bold">詳しく見る →</span>
                         </div>
                         <h2 class="text-3xl font-bold text-slate-900 mb-3">2. 権利関係</h2>
@@ -265,11 +265,23 @@
                     <!-- Zei -->
                     <div onclick="switchView('view-zei-detail')" class="nav-card bg-white p-8 rounded-3xl border border-purple-100 shadow-sm">
                         <div class="flex justify-between items-center mb-6">
-                            <span class="bg-purple-100 text-purple-700 text-sm font-bold px-4 py-1 rounded-full">8問 / 目標6点</span>
+                            <span class="bg-purple-100 text-purple-700 text-sm font-bold px-4 py-1 rounded-full">8問 / 目標7点</span>
                             <span class="text-purple-600 font-bold">詳しく見る →</span>
                         </div>
                         <h2 class="text-3xl font-bold text-slate-900 mb-3">4. 税・価格・その他</h2>
                         <p class="text-slate-500">地方税・国税、公示価格、統計、土地建物。暗記要素が強く、確実に得点を上積みしたい分野。</p>
+                    </div>
+                </div>
+
+                <!-- チートシートへのリンク -->
+                <div onclick="switchView('view-cheatsheet')" class="nav-card bg-white p-8 rounded-3xl border border-rose-100 shadow-sm mb-8">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="bg-rose-100 text-rose-700 text-sm font-bold px-4 py-1 rounded-full">暗記用</span>
+                            <h2 class="text-2xl font-bold text-slate-900 mt-3 mb-1">重要数字チートシート</h2>
+                            <p class="text-slate-500 text-sm">免許・媒介・手付・保全・報酬…試験に出る数字を一覧化。直前確認にも。</p>
+                        </div>
+                        <span class="text-rose-600 font-bold text-lg ml-8">見る →</span>
                     </div>
                 </div>
             </main>
@@ -877,12 +889,12 @@
                 <!-- ─── Section gy-6：クイズ ─── -->
                 <section id="gy-6" class="scroll-target">
                     <h2 class="text-3xl font-bold mb-2 text-blue-900 border-l-8 border-blue-600 pl-4">🎯 宅建業法：一問一答クイズ</h2>
-                    <p class="text-slate-500 mb-8 pl-5 text-sm">全12問。免許・35条・37条・8種制限・媒介・報酬・クーリングオフを網羅。</p>
+                    <p class="text-slate-500 mb-8 pl-5 text-sm">全30問。免許・取引士・媒介契約・35条・37条・8種制限・報酬・クーリングオフ・保証協会・広告規制を網羅。</p>
 
                     <!-- スコア表示エリア（最初は非表示） -->
                     <div id="quiz-score-area" class="hidden mb-6 bg-blue-900 text-white p-6 rounded-2xl text-center">
                         <p class="text-sm font-bold text-blue-200 mb-1">スコア</p>
-                        <p class="text-6xl font-extrabold mb-1" id="quiz-score-text">0 / 12</p>
+                        <p class="text-6xl font-extrabold mb-1" id="quiz-score-text">0 / 30</p>
                         <div class="h-3 bg-blue-700 rounded-full mt-4 mb-2 overflow-hidden">
                             <div id="quiz-score-bar" class="score-bar-fill h-full" style="width:0%"></div>
                         </div>
@@ -899,7 +911,7 @@
                         </div>
                         <div class="p-8">
                             <div class="flex justify-between items-center mb-6">
-                                <span id="quiz-counter" class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">問題 1 / 12</span>
+                                <span id="quiz-counter" class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">問題 1 / 30</span>
                                 <span id="quiz-current-score" class="text-xs font-bold text-slate-500">正解 0問</span>
                             </div>
                             <p id="quiz-question" class="text-lg font-bold text-slate-800 mb-8 leading-relaxed"></p>
@@ -2709,6 +2721,121 @@
             </main>
         </section>
 
+        <!-- ==========================================
+             VIEW 6: 重要数字チートシート
+             ========================================== -->
+        <section id="view-cheatsheet" class="view-section">
+            <header class="bg-rose-900 text-white py-12 px-6 text-center relative">
+                <button onclick="switchView('view-top')" class="absolute top-8 left-8 bg-rose-800 hover:bg-rose-700 px-6 py-2 rounded-full transition font-bold">← TOP</button>
+                <h1 class="text-4xl font-extrabold mb-2">重要数字チートシート</h1>
+                <p class="text-rose-200">試験に出る数字・期間を科目横断で一覧化</p>
+            </header>
+
+            <main class="max-w-5xl mx-auto p-6 space-y-8 mt-6">
+
+                <!-- 1. 免許・届出 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">📋 免許・届出</h2>
+                    <table>
+                        <thead><tr><th>項目</th><th>数字・期間</th><th>ポイント</th></tr></thead>
+                        <tbody>
+                            <tr><td>免許の有効期間</td><td><strong>5年</strong></td><td>更新を繰り返せば永続</td></tr>
+                            <tr><td>免許更新の申請期限</td><td><strong>満了の90日前〜30日前</strong></td><td>取引士証の更新とは異なる</td></tr>
+                            <tr><td>廃業・変更の届出</td><td><strong>30日以内</strong></td><td>死亡の場合：相続人が知った日から30日以内</td></tr>
+                            <tr><td>免許証の書換え交付申請</td><td><strong>変更の日から30日以内</strong></td><td>商号・氏名変更時</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 2. 取引士証 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">🪪 取引士証</h2>
+                    <table>
+                        <thead><tr><th>項目</th><th>数字・期間</th><th>ポイント</th></tr></thead>
+                        <tbody>
+                            <tr><td>取引士証の有効期間</td><td><strong>5年</strong></td><td>免許と同じ5年（混同しやすい）</td></tr>
+                            <tr><td>更新時の法定講習</td><td><strong>申請前6ヶ月以内</strong></td><td>免許更新の「90日前〜30日前」とは異なる</td></tr>
+                            <tr><td>専任取引士の設置基準</td><td><strong>5人に1人以上</strong></td><td>事務所・案内所（契約等を行う場合）</td></tr>
+                            <tr><td>登録の移転申請先</td><td>勤務先の都道府県知事</td><td>任意（義務ではない）</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 3. 営業保証金・保証協会 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">🏦 営業保証金 vs 保証協会分担金</h2>
+                    <table>
+                        <thead><tr><th>項目</th><th>営業保証金（供託）</th><th>弁済業務保証金分担金</th></tr></thead>
+                        <tbody>
+                            <tr><td>本店</td><td><strong>1,000万円</strong></td><td><strong>60万円</strong></td></tr>
+                            <tr><td>支店（1か所ごと）</td><td><strong>500万円</strong></td><td><strong>30万円</strong></td></tr>
+                            <tr><td>供託先</td><td>法務局（主たる事務所の最寄り）</td><td>保証協会へ納付</td></tr>
+                            <tr><td>保証協会加入のメリット</td><td colspan="2">営業保証金の供託が免除される</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 4. 媒介契約 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">📝 媒介契約の数字比較</h2>
+                    <table>
+                        <thead><tr><th>種別</th><th>レインズ登録</th><th>依頼者への報告</th><th>有効期間上限</th><th>自己発見取引</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>専属専任</strong></td><td><strong>5日以内</strong></td><td><strong>1週間に1回以上</strong></td><td>3ヶ月</td><td>❌ 不可</td></tr>
+                            <tr><td><strong>専任</strong></td><td><strong>7日以内</strong></td><td><strong>2週間に1回以上</strong></td><td>3ヶ月</td><td>✅ 可</td></tr>
+                            <tr><td><strong>一般</strong></td><td>任意</td><td>義務なし</td><td>制限なし</td><td>✅ 可</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-xs text-slate-500 mt-2">※ 登録日数は「契約締結日から○営業日以内（休業日除く）」</p>
+                </div>
+
+                <!-- 5. 手付・保全措置・8種制限 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">🔒 手付・保全措置・8種制限の数字</h2>
+                    <table>
+                        <thead><tr><th>項目</th><th>数字</th><th>注意点</th></tr></thead>
+                        <tbody>
+                            <tr><td>手付金の上限</td><td><strong>代金の20%以下</strong></td><td>損害賠償予定・違約金の合計も20%以下</td></tr>
+                            <tr><td>手付解除（売主業者）</td><td><strong>受領額の倍額を現実提供</strong></td><td>相手方が履行着手後は不可</td></tr>
+                            <tr><td>保全措置が必要な額（未完成物件）</td><td><strong>代金の5%超 または 1,000万円超</strong></td><td>未完成は厳しい（5%）</td></tr>
+                            <tr><td>保全措置が必要な額（完成物件）</td><td><strong>代金の10%超 または 1,000万円超</strong></td><td>完成は緩い（10%）</td></tr>
+                            <tr><td>クーリングオフの行使期間</td><td><strong>書面告知から8日間</strong></td><td>告知なければ期限なし。物件引渡＋決済後は不可</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 6. 報酬計算 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">💰 報酬計算（売買媒介・税抜）</h2>
+                    <table>
+                        <thead><tr><th>代金の区分</th><th>速算式（税抜）</th><th>例（税抜）</th></tr></thead>
+                        <tbody>
+                            <tr><td>200万円以下</td><td><strong>代金 × 5%</strong></td><td>200万 → 10万円</td></tr>
+                            <tr><td>200万円超〜400万円以下</td><td><strong>代金 × 4% + 2万円</strong></td><td>300万 → 14万円</td></tr>
+                            <tr><td>400万円超</td><td><strong>代金 × 3% + 6万円</strong></td><td>3,000万 → 96万円</td></tr>
+                            <tr><td>低廉な空き家（800万円以下）</td><td><strong>一方から最大33万円</strong></td><td>売主・買主から合計66万円まで</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="text-xs text-slate-500 mt-2">※ 消費税：上記に×1.1。双方媒介の場合は各々から受領可（合計2倍まで）。賃貸居住用は双方合計1ヶ月分が上限。</p>
+                </div>
+
+                <!-- 7. 案内所・広告 -->
+                <div class="deep-dive-card" style="border-color:#f43f5e;">
+                    <h2 class="text-xl font-bold text-slate-800 mb-4">📢 案内所・広告・契約不適合責任</h2>
+                    <table>
+                        <thead><tr><th>項目</th><th>数字・ルール</th><th>注意点</th></tr></thead>
+                        <tbody>
+                            <tr><td>案内所の届出期限</td><td><strong>業務開始10日前まで</strong></td><td>免許権者＋案内所所在地の知事の2か所へ</td></tr>
+                            <tr><td>広告・契約の開始時期</td><td><strong>開発許可・建築確認後</strong></td><td>「見込み」では不可。予約も契約に含む</td></tr>
+                            <tr><td>取引態様の明示</td><td><strong>広告時＋注文を受けたとき</strong></td><td>売主・代理・媒介の別を明示</td></tr>
+                            <tr><td>契約不適合責任の特約（自ら売主）</td><td><strong>2年以上ならOK</strong></td><td>2年未満・免責特約は無効</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </main>
+        </section>
+
     </div>
 
     <script>
@@ -2889,6 +3016,193 @@
                 ],
                 answer: 1,
                 explanation: "✅ 正解：B。営業保証金の本店分は1,000万円（支店は500万円ずつ）。保証協会の弁済業務保証金分担金は本店60万円（支店30万円ずつ）。保証協会に加入する方が大幅に少額で済むため、ほとんどの業者が加入している。"
+            },
+            {
+                q: "宅地建物取引業の免許が不要な場合として、正しいものはどれか。",
+                options: [
+                    "A. 農家が自己所有の農地を宅地に転用し、複数区画に分けて反復継続して売却する行為",
+                    "B. 信託業法の免許を受けた信託会社が受託した不動産の売却を行う場合",
+                    "C. 建設会社が自ら建築した建物を不特定多数に反復継続して売却する行為",
+                    "D. 資産管理会社が投資目的で購入した土地を継続的に分譲する行為"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。信託業法の免許を受けた信託会社は宅建業法の適用が除外される（宅建業法77条）。A・C・Dはいずれも「不特定多数を相手に反復継続して取引を行う」ため宅建業の免許が必要。自己物件であっても反復継続性があれば免許が必要な点に注意。"
+            },
+            {
+                q: "国土交通大臣の免許と都道府県知事の免許の区別について、正しいものはどれか。",
+                options: [
+                    "A. 同一都道府県内に本店と支店を2か所設けている業者も、国土交通大臣の免許が必要である",
+                    "B. A県に本店、B県に支店を設ける場合は国土交通大臣の免許が必要である",
+                    "C. 国土交通大臣の免許を受けた業者は、各都道府県知事の監督を受けない",
+                    "D. 都道府県知事の免許を受けた業者は、免許を受けた都道府県内でしか業務を行えない"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。2以上の都道府県に事務所を設ける場合は国土交通大臣免許が必要（宅建業法3条1項）。A：同一都道府県内なら複数事務所でも知事免許でよい。C：大臣免許業者も事務所所在地の知事の監督を受ける。D：知事免許でも全国で業務は可能（事務所の設置は当該都道府県のみ）。"
+            },
+            {
+                q: "宅地建物取引士の登録（宅建業法18条）に関する記述として、正しいものはどれか。",
+                options: [
+                    "A. 宅建士試験に合格すれば、自動的に宅建士として業務を行える",
+                    "B. 登録申請は、申請者が住所を有する都道府県知事に対して行う",
+                    "C. 登録申請は、宅建士試験を行った都道府県の知事に対して行う",
+                    "D. 登録を受けると自動的に取引士証が交付される"
+                ],
+                answer: 2,
+                explanation: "✅ 正解：C。登録申請は「試験を行った都道府県の知事」に対して行う（宅建業法18条1項）。住所地ではない点がひっかけポイント。A：試験合格だけでは業務不可、登録が必要。B：住所地ではなく合格地の知事。D：取引士証は登録後に別途申請・交付手続きが必要。"
+            },
+            {
+                q: "宅地建物取引業者の事務所における専任の取引士の設置基準として、正しいものはどれか。",
+                options: [
+                    "A. 事務所ごとに最低1名置けばよく、従業者数は関係ない",
+                    "B. 業務に従事する者10人に1人以上の割合で専任取引士が必要",
+                    "C. 業務に従事する者5人に1人以上の割合で専任取引士が必要",
+                    "D. 専任の取引士はパートタイム勤務でも認められる"
+                ],
+                answer: 2,
+                explanation: "✅ 正解：C。事務所ごとに業務に従事する者5人に1人以上の割合で専任の取引士が必要（宅建業法31条の3）。A：人数に関係なく5人ルールが適用される（従業者6名なら2名必要）。B：10人は誤り（5人が正しい）。D：専任取引士は当該事務所に常勤・専従が必要であり、非常勤・兼務は不可。"
+            },
+            {
+                q: "専属専任媒介契約に関する記述として、正しいものはどれか。",
+                options: [
+                    "A. 有効期間の上限は6ヶ月であり、依頼者の申出により更新できる",
+                    "B. 指定流通機構（レインズ）への登録は契約締結日から7営業日以内に行う",
+                    "C. 依頼者への業務処理状況の報告は1週間に1回以上行わなければならない",
+                    "D. 依頼者が自分で発見した相手との直接取引は認められる"
+                ],
+                answer: 2,
+                explanation: "✅ 正解：C。専属専任媒介の報告義務は1週間に1回以上（宅建業法34条の2第9項）。専任媒介は2週間に1回以上との違いを押さえること。A：有効期間上限は3ヶ月（6ヶ月は誤り）。B：レインズ登録は5営業日以内（7日は専任媒介の数字）。D：専属専任は自己発見取引も禁止。"
+            },
+            {
+                q: "媒介契約書面（34条の2書面）への記名義務について、正しいものはどれか。",
+                options: [
+                    "A. 専任の取引士が記名しなければならない",
+                    "B. 宅地建物取引業者（会社・個人）が記名すれば足りる",
+                    "C. 宅建士と宅建業者の両方が記名しなければならない",
+                    "D. 取引士証を提示した取引士が記名しなければならない"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。媒介契約書面（34条の2書面）に記名するのは「宅建業者」であり、宅建士の記名は不要（宅建業法34条の2第1項）。重要事項説明書（35条書面）や契約書面（37条書面）には宅建士の記名が必要な点と混同しないこと。「34条の2＝業者記名のみ」と覚える。"
+            },
+            {
+                q: "重要事項の説明（宅建業法35条）に関して、正しいものはどれか。",
+                options: [
+                    "A. 重要事項の説明は、契約締結後に行えばよい",
+                    "B. 賃貸借（貸借）の場合は重要事項説明義務がない",
+                    "C. 相手方が宅建業者であっても、35条書面の交付は必要である",
+                    "D. 代金の支払方法は35条書面の必要的記載事項である"
+                ],
+                answer: 2,
+                explanation: "✅ 正解：C。相手方（買主・借主）が宅建業者の場合でも35条書面の交付は必要（口頭説明は省略可）（宅建業法35条6項）。A：説明は契約締結前に行う。B：売買・交換・賃貸借すべての取引で説明義務あり。D：代金の支払方法は37条書面（契約書面）の記載事項であり、35条では不要。35条と37条の違いが頻出。"
+            },
+            {
+                q: "宅建業者が自ら売主となる場合の手付に関する記述として、正しいものはどれか。",
+                options: [
+                    "A. 手付の額は代金の30%以下でなければならない",
+                    "B. 手付の額は代金の20%以下でなければならない",
+                    "C. 売主業者が手付解除するには、受領した手付と同額を返還すれば足りる",
+                    "D. 相手方が履行に着手した後でも、手付による解除はいつでも可能である"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。宅建業者が自ら売主の場合、手付金の額は代金の20%以下でなければならない（宅建業法39条1項）。A：30%は誤り（20%が正しい）。C：売主業者が手付解除するには「受領した手付の倍額を現実に提供」する必要がある（同額返還では不足）。D：相手方が「履行に着手した後」は手付解除不可（民法557条）。"
+            },
+            {
+                q: "宅建業者が自ら売主として宅建業者でない買主に売却する場合の契約不適合責任の特約として、有効なものはどれか。",
+                options: [
+                    "A. 引き渡しから1年以内に限り責任を負うとする特約",
+                    "B. 引き渡しから2年以上責任を負うとする特約",
+                    "C. 契約不適合についていかなる責任も負わないとする免責特約",
+                    "D. 引き渡しから6ヶ月以内に限り責任を負うとする特約"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。契約不適合責任の通知期間を「引き渡しから2年以上」とする特約は有効（宅建業法40条）。民法の原則（1年）より買主に有利な特約はOK。A・D：2年未満の制限は買主に不利→無効。C：免責特約は民法より不利→無効。「2年以上ならOK、2年未満はNG」と覚えること。"
+            },
+            {
+                q: "宅建業者が未完成物件（建築確認申請中）の広告・売買契約を行う場合の規制として、正しいものはどれか。",
+                options: [
+                    "A. 建築確認を受ける見込みがあれば、確認前でも広告できる",
+                    "B. 広告は建築確認前でも可能だが、契約締結は建築確認後でなければならない",
+                    "C. 建築確認を受けた後でなければ、広告も契約締結もできない",
+                    "D. 建築確認前でも売買の予約であれば締結できる"
+                ],
+                answer: 2,
+                explanation: "✅ 正解：C。未完成物件は開発許可・建築確認等を受けた後でなければ広告も売買契約（予約を含む）も締結できない（宅建業法33条・36条）。A：「見込み」では不十分。B：広告・契約どちらも確認後が必要。D：予約も「契約」に含まれるため確認後が必要。"
+            },
+            {
+                q: "宅地建物取引業法第32条の誇大広告の禁止に関して、正しいものはどれか。",
+                options: [
+                    "A. 誇大広告は、実際に購入者が現れた場合にのみ規制される",
+                    "B. インターネット上の広告は第32条の規制対象外である",
+                    "C. 広告の内容が事実と異なっていても、消費者に実害が生じなければ違反にならない",
+                    "D. 誇大広告は広告行為自体が禁止されており、実害の発生は要件ではない"
+                ],
+                answer: 3,
+                explanation: "✅ 正解：D。誇大広告の禁止は広告行為自体を規制するものであり、実際の損害発生は要件ではない（宅建業法32条）。A・C：実害不要が正しい。B：インターネット広告も当然規制対象。違反した場合は業務停止処分や刑事罰（1年以下の懲役または100万円以下の罰金）の対象となる。"
+            },
+            {
+                q: "宅地建物取引業保証協会に関して、正しいものはどれか。",
+                options: [
+                    "A. 保証協会の社員になっても、営業保証金の供託義務はなくならない",
+                    "B. 保証協会の社員になると、営業保証金の供託をしなくてよくなる",
+                    "C. 宅建業者は複数の保証協会に同時に加入できる",
+                    "D. 還付を受けた顧客は、還付額を保証協会に返金しなければならない"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。保証協会の社員になり弁済業務保証金分担金（本店60万円・支店30万円）を納付すれば、高額な営業保証金（本店1,000万円・支店500万円）の供託が免除される（宅建業法64条の9）。A：誤り。C：複数加入は不可。D：返金義務は業者（社員）が協会に補充する義務であり、顧客には返金義務なし。"
+            },
+            {
+                q: "37条書面（契約書面）の記載事項として、記載が必要なものはどれか。",
+                options: [
+                    "A. 物件周辺の環境・日照・眺望に関する事項",
+                    "B. 移転登記の申請時期",
+                    "C. ハザードマップにおける物件の所在地",
+                    "D. 法令上の制限の概要"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。移転登記の申請時期は37条書面の必要的記載事項（宅建業法37条1項5号）。A：周辺環境・日照・眺望は37条書面の記載事項ではない。C：ハザードマップは35条書面（重要事項説明）の事項。D：法令上の制限の概要も35条書面の事項。「37条＝契約内容の確認書面」と位置づけると区別しやすい。"
+            },
+            {
+                q: "宅地建物取引士証に関する記述として、正しいものはどれか。",
+                options: [
+                    "A. 取引士証の有効期間は3年であり、更新には法定講習の受講が必要",
+                    "B. 取引士証の有効期間は5年であり、更新には交付申請前6ヶ月以内の法定講習受講が必要",
+                    "C. 取引士証の更新申請は有効期間満了の90日前から30日前までに行う",
+                    "D. 法定講習を受ければ手続きなしで自動的に取引士証が更新される"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。取引士証の有効期間は5年（宅建業法22条の2第1項）。更新には交付申請前6ヶ月以内に受けた法定講習の受講が必要。A：3年は誤り（5年が正しい）。C：90日前〜30日前は宅建業者の免許更新申請の話（免許と取引士証を混同しないこと）。D：自動更新はされない。"
+            },
+            {
+                q: "宅建業者が売主・買主双方の媒介をした土地売買（代金2,000万円）の場合、業者が受領できる報酬の合計上限（税抜）はいくらか。",
+                options: [
+                    "A. 66万円",
+                    "B. 96万円",
+                    "C. 132万円",
+                    "D. 198万円"
+                ],
+                answer: 2,
+                explanation: "✅ 正解：C。400万円超の速算式：代金×3%+6万円 = 2,000万円×3%+6万円 = 66万円（税抜・一方あたり）。売主・買主の双方から媒介した場合、それぞれから最大66万円を受領できるので合計132万円（税抜）が上限（宅建業法46条）。A：一方のみの場合の上限。B：3,000万円の場合の計算値。"
+            },
+            {
+                q: "宅建業者が案内所を設置して売買契約の締結または申込みの受付を行う場合の規定として、正しいものはどれか。",
+                options: [
+                    "A. 案内所には専任の取引士を置く必要はない",
+                    "B. 業務開始の10日前までに、免許権者と案内所所在地の知事の双方に届け出る",
+                    "C. 届出先は免許権者のみでよい",
+                    "D. 案内所で契約締結のみ行う場合は届出不要"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。案内所（土地に定着したもの）で契約締結・申込受付を行う場合、①免許権者（大臣または知事）と②案内所所在地の都道府県知事の両方に業務開始10日前までに届け出が必要（宅建業法50条2項）。A：案内所で契約・申込を行う場合は専任の取引士1名以上が必要。C：届出先は2か所。D：締結・申込どちらを行う場合も届出必要。"
+            },
+            {
+                q: "宅建業者が宅建業者でない相手方に対して行う取引において禁止される行為として、正しいものはどれか。",
+                options: [
+                    "A. 相手方が十分な知識を持っている場合は、重要な事実を告げなくてよい",
+                    "B. 将来の地価上昇が確実であると断言して購入を勧める行為は禁止される",
+                    "C. 相手方の承諾があれば、不利益な事実を意図的に告げなくてよい",
+                    "D. 深夜に勧誘の電話をすることは、相手が承諾すれば認められる"
+                ],
+                answer: 1,
+                explanation: "✅ 正解：B。「断定的判断の提供」（将来の価格・利回りが確実と断言して契約を勧めること）は宅建業法47条の2で禁止。A：相手の知識に関係なく重要事実の告知義務あり。C：承諾があっても不利益事実の不告知は違反。D：深夜・早朝の迷惑な時間帯への電話は相手の承諾の有無にかかわらず禁止行為（宅建業法施行規則16条の12）。"
             }
         ];
 
