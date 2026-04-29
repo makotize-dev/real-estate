@@ -230,6 +230,252 @@ function loadIndex() {
 
 // 初期ロード
 loadFile('index.md');
+
+// =====================================================
+//  スマホメモ機能
+// =====================================================
+const MEMO_KEY = 'takken_mobile_memo';
+
+function openMemo() {
+    // 保存済みの下書きを復元
+    const draft = JSON.parse(localStorage.getItem(MEMO_KEY) || '{}');
+    document.getElementById('m-date').value    = draft.date    || today();
+    document.getElementById('m-subject').value = draft.subject || '';
+    document.getElementById('m-topic').value   = draft.topic   || '';
+    document.getElementById('m-points').value  = draft.points  || '';
+    document.getElementById('m-taxnote').value = draft.taxnote || '';
+    document.getElementById('m-next').value    = draft.next    || '';
+    setMemoLevel(draft.level || 3);
+    document.getElementById('memo-result').classList.add('hidden');
+    document.getElementById('memo-panel').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMemo() {
+    saveDraft();
+    document.getElementById('memo-panel').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+function today() {
+    return new Date().toLocaleDateString('ja-JP',
+        { year:'numeric', month:'2-digit', day:'2-digit' }).replace(/\//g,'-');
+}
+
+let memoLevel = 3;
+function setMemoLevel(v) {
+    memoLevel = v;
+    document.querySelectorAll('.memo-star').forEach((s, i) => {
+        s.textContent = i < v ? '★' : '☆';
+        s.style.color  = i < v ? '#f59e0b' : '#cbd5e1';
+    });
+}
+
+function saveDraft() {
+    localStorage.setItem(MEMO_KEY, JSON.stringify({
+        date:    document.getElementById('m-date').value,
+        subject: document.getElementById('m-subject').value,
+        topic:   document.getElementById('m-topic').value,
+        points:  document.getElementById('m-points').value,
+        taxnote: document.getElementById('m-taxnote').value,
+        next:    document.getElementById('m-next').value,
+        level:   memoLevel,
+    }));
+}
+
+function generateMemo() {
+    saveDraft();
+    const date    = document.getElementById('m-date').value || today();
+    const subject = document.getElementById('m-subject').value || '（未入力）';
+    const topic   = document.getElementById('m-topic').value   || '（未入力）';
+    const points  = document.getElementById('m-points').value  || '（未入力）';
+    const taxnote = document.getElementById('m-taxnote').value;
+    const next    = document.getElementById('m-next').value;
+    const stars   = '★'.repeat(memoLevel) + '☆'.repeat(5 - memoLevel);
+
+    const lines = [
+        `# ${date} スマホメモ`,
+        ``,
+        `**科目**：${subject}　**トピック**：${topic}　**理解度**：${stars}`,
+        ``,
+        `## 今日学んだポイント`,
+        ``,
+        points.split('\n').map(l => l.trim() ? `- ${l}` : '').join('\n'),
+    ];
+
+    if (taxnote.trim()) {
+        lines.push(``, `## 税理士知識との比較・つながり`, ``);
+        lines.push(taxnote.split('\n').map(l => l.trim() ? `- ${l}` : '').join('\n'));
+    }
+
+    if (next.trim()) {
+        lines.push(``, `## 次回の予定`, ``);
+        lines.push(next.split('\n').map(l => l.trim() ? `- ${l}` : '').join('\n'));
+    }
+
+    const md = lines.join('\n').replace(/\n{3,}/g, '\n\n');
+    document.getElementById('memo-output').textContent = md;
+    document.getElementById('memo-result').classList.remove('hidden');
+    document.getElementById('memo-output').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function copyMemo() {
+    const text = document.getElementById('memo-output').textContent;
+    try {
+        await navigator.clipboard.writeText(text);
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✅ コピーしました';
+        btn.classList.replace('bg-blue-600','bg-green-600');
+        setTimeout(() => {
+            btn.textContent = '📋 クリップボードにコピー';
+            btn.classList.replace('bg-green-600','bg-blue-600');
+        }, 2500);
+    } catch {
+        // フォールバック（古いブラウザ）
+        const ta = document.getElementById('memo-output');
+        ta.select && ta.select();
+        document.execCommand('copy');
+    }
+}
+
+function clearMemo() {
+    if (!confirm('メモをクリアしますか？')) return;
+    localStorage.removeItem(MEMO_KEY);
+    document.getElementById('m-date').value    = today();
+    document.getElementById('m-subject').value = '';
+    document.getElementById('m-topic').value   = '';
+    document.getElementById('m-points').value  = '';
+    document.getElementById('m-taxnote').value = '';
+    document.getElementById('m-next').value    = '';
+    setMemoLevel(3);
+    document.getElementById('memo-result').classList.add('hidden');
+}
 </script>
+
+<!-- =====================================================
+     スマホメモ：フローティングボタン
+     ===================================================== -->
+<button onclick="openMemo()"
+    class="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 bg-amber-500 text-white
+           rounded-full w-14 h-14 text-2xl shadow-lg hover:bg-amber-600
+           active:scale-95 transition-all z-40 flex items-center justify-center"
+    title="スマホメモ">
+    ✏️
+</button>
+
+<!-- =====================================================
+     スマホメモ：パネル
+     ===================================================== -->
+<div id="memo-panel" class="hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+     style="background:rgba(0,0,0,0.55)">
+    <div class="bg-white w-full sm:max-w-lg sm:rounded-2xl rounded-t-2xl max-h-[92dvh] overflow-y-auto shadow-2xl"
+         onclick.stop="">
+
+        <!-- パネルヘッダー -->
+        <div class="bg-amber-500 text-white px-5 py-4 rounded-t-2xl sm:rounded-t-2xl flex justify-between items-center sticky top-0">
+            <div>
+                <h2 class="font-extrabold">✏️ スマホメモ</h2>
+                <p class="text-amber-100 text-xs mt-0.5">PCに戻ったらClaudeに貼り付けてログ化</p>
+            </div>
+            <button onclick="closeMemo()" class="text-amber-100 hover:text-white text-xl">✕</button>
+        </div>
+
+        <div class="p-5 space-y-4">
+
+            <!-- 日付・科目 -->
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="text-xs font-bold text-slate-600 mb-1 block">日付</label>
+                    <input id="m-date" type="date"
+                        class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-slate-600 mb-1 block">科目</label>
+                    <select id="m-subject"
+                        class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+                        <option value="">選択</option>
+                        <option value="🏠 宅建業法">🏠 宅建業法</option>
+                        <option value="⚖️ 権利関係">⚖️ 権利関係</option>
+                        <option value="🏙️ 法令制限">🏙️ 法令制限</option>
+                        <option value="💴 税・その他">💴 税・その他</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- トピック -->
+            <div>
+                <label class="text-xs font-bold text-slate-600 mb-1 block">トピック・条文</label>
+                <input id="m-topic" type="text" placeholder="例：宅建業法35条（重要事項説明）"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400">
+            </div>
+
+            <!-- 学んだポイント -->
+            <div>
+                <label class="text-xs font-bold text-slate-600 mb-1 block">
+                    学んだポイント <span class="text-slate-400 font-normal">（1行1項目）</span>
+                </label>
+                <textarea id="m-points" rows="5" placeholder="35条書面の記載事項は○○と△△&#10;37条と混同しやすいのは…&#10;試験での引っかけパターンは…"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400 leading-relaxed resize-y"></textarea>
+            </div>
+
+            <!-- 税理士メモ -->
+            <div>
+                <label class="text-xs font-bold text-slate-600 mb-1 block">
+                    税理士知識との比較 <span class="text-slate-400 font-normal">（任意）</span>
+                </label>
+                <textarea id="m-taxnote" rows="2" placeholder="税務上の○○と似ているが、宅建では…"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400 leading-relaxed resize-y"></textarea>
+            </div>
+
+            <!-- 次回の予定 -->
+            <div>
+                <label class="text-xs font-bold text-slate-600 mb-1 block">次回やること</label>
+                <textarea id="m-next" rows="2" placeholder="次は○○条を読む"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-amber-400 leading-relaxed resize-y"></textarea>
+            </div>
+
+            <!-- 理解度 -->
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-slate-600">理解度：</span>
+                <div class="flex gap-1">
+                    <button class="memo-star text-2xl" onclick="setMemoLevel(1)">★</button>
+                    <button class="memo-star text-2xl" onclick="setMemoLevel(2)">★</button>
+                    <button class="memo-star text-2xl" onclick="setMemoLevel(3)">★</button>
+                    <button class="memo-star text-2xl" onclick="setMemoLevel(4)">☆</button>
+                    <button class="memo-star text-2xl" onclick="setMemoLevel(5)">☆</button>
+                </div>
+            </div>
+
+            <!-- 生成ボタン -->
+            <div class="flex gap-2">
+                <button onclick="generateMemo()"
+                    class="flex-1 bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600 active:scale-95 transition-all text-sm">
+                    Markdownを生成
+                </button>
+                <button onclick="clearMemo()"
+                    class="px-4 py-3 rounded-xl border border-slate-200 text-slate-500 text-sm hover:bg-slate-50">
+                    クリア
+                </button>
+            </div>
+
+            <!-- 生成結果 -->
+            <div id="memo-result" class="hidden">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <p class="text-xs font-bold text-slate-500 mb-2">↓ これをコピーしてPCのClaudeに貼り付ける</p>
+                    <pre id="memo-output"
+                        class="text-xs text-slate-700 whitespace-pre-wrap font-mono leading-relaxed overflow-x-auto max-h-48 overflow-y-auto"></pre>
+                </div>
+                <button id="copy-btn" onclick="copyMemo()"
+                    class="w-full mt-3 bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 active:scale-95 transition-all text-sm">
+                    📋 クリップボードにコピー
+                </button>
+                <p class="text-xs text-slate-400 mt-2 text-center">
+                    PCのClaude Codeに貼り付けて「このメモから学習ログを作ってプッシュして」と伝えるだけ
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
 </body>
 </html>
