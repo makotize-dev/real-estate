@@ -69,6 +69,44 @@ real-estate/
 
 ---
 
+## 学習ログの運用（毎セッション必須）
+
+Claudeとの学習セッションが終わったら、以下を必ず実行する。
+
+### セッション終了時の手順
+
+**1. セッションログを作成**
+`study_log/YYYY-MM-DD.md` を新規作成（テンプレート：`study_log/_template.md`）
+その日のうちに複数回話した場合は同じファイルに追記。
+
+**2. サマリーを更新**
+`study_log/index.md` の以下を更新する：
+- 「科目別進捗」テーブル
+- 「セッション一覧」テーブル（新しいセッションを**先頭**に追加）
+- 「次回の学習予定」
+
+**3. コミット＆プッシュ**
+```bash
+git add study_log/
+git commit -m "学習ログ：YYYY-MM-DD（学習内容の一言メモ）"
+git push origin main
+```
+
+プッシュ後、スマホから以下のURLでログを確認できる：
+`https://makotize-dev.github.io/real-estate/study_log.html`
+
+### ログファイルの場所
+
+```
+study_log/
+├── index.md          # 進捗サマリー（毎回更新）
+├── _template.md      # 日次ログのテンプレート（参照用）
+├── 2026-04-29.md     # セッションログ（日付ごと）
+└── YYYY-MM-DD.md     # ← 毎回ここを追加
+```
+
+---
+
 ## 開発ガイドライン
 
 ### ブランチ運用

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>宅建士 学習ログ</title>
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="学習ログ">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+    <style>
+        body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; }
+
+        /* ── Markdownレンダリング ── */
+        #md-body h1 {
+            font-size: 1.4rem; font-weight: 800; color: #0f172a;
+            margin-bottom: 0.75rem; padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        #md-body h2 {
+            font-size: 1.05rem; font-weight: 700; color: #1e293b;
+            margin-top: 1.75rem; margin-bottom: 0.6rem;
+            padding-left: 0.6rem; border-left: 3px solid #3b82f6;
+        }
+        #md-body h3 {
+            font-size: 0.95rem; font-weight: 700; color: #334155;
+            margin-top: 1.25rem; margin-bottom: 0.4rem;
+        }
+        #md-body p {
+            margin-bottom: 0.7rem; line-height: 1.75; color: #475569; font-size: 0.9rem;
+        }
+        #md-body ul, #md-body ol {
+            padding-left: 1.4rem; margin-bottom: 0.7rem; color: #475569; font-size: 0.9rem;
+        }
+        #md-body ul { list-style: disc; }
+        #md-body ol { list-style: decimal; }
+        #md-body li { margin-bottom: 0.3rem; line-height: 1.65; }
+        #md-body li input[type="checkbox"] { margin-right: 0.4rem; }
+        #md-body table {
+            width: 100%; border-collapse: collapse;
+            margin-bottom: 1rem; font-size: 0.85rem; overflow-x: auto; display: block;
+        }
+        #md-body th {
+            background: #f1f5f9; font-weight: 700; color: #334155;
+            padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0; text-align: left;
+            white-space: nowrap;
+        }
+        #md-body td {
+            padding: 0.5rem 0.75rem; border: 1px solid #e2e8f0;
+            color: #475569; vertical-align: top;
+        }
+        #md-body tr:nth-child(even) td { background: #f8fafc; }
+        #md-body a { color: #2563eb; }
+        #md-body a:hover { text-decoration: underline; }
+        #md-body a.session-link {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            font-weight: 700; color: #2563eb;
+        }
+        #md-body code {
+            background: #f1f5f9; padding: 0.15rem 0.35rem;
+            border-radius: 4px; font-size: 0.82em; color: #0f172a;
+        }
+        #md-body pre {
+            background: #f1f5f9; padding: 1rem; border-radius: 0.5rem;
+            overflow-x: auto; margin-bottom: 1rem;
+        }
+        #md-body pre code { background: none; padding: 0; }
+        #md-body hr { border: none; border-top: 1px solid #e2e8f0; margin: 1.25rem 0; }
+        #md-body strong { font-weight: 700; color: #1e293b; }
+        #md-body blockquote {
+            border-left: 3px solid #93c5fd; padding-left: 1rem;
+            color: #64748b; margin: 0.75rem 0; font-style: italic;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up { animation: fadeUp 0.25s ease forwards; }
+
+        /* モバイル下ナビ安全領域 */
+        .safe-pb { padding-bottom: max(env(safe-area-inset-bottom, 0px), 6px); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- ヘッダー -->
+<header class="bg-slate-900 text-white px-6 py-6 text-center">
+    <p class="text-slate-400 text-xs font-bold tracking-widest mb-1">宅地建物取引士 試験対策</p>
+    <h1 class="text-2xl font-extrabold mb-1">📓 学習ログ</h1>
+    <p class="text-slate-400 text-sm">Claudeとのセッション記録・進捗サマリー</p>
+</header>
+
+<!-- クイックリンク -->
+<div class="bg-slate-800 text-white px-6 py-2 flex gap-4 justify-center text-sm flex-wrap">
+    <a href="exam_v6.html"     class="text-slate-300 hover:text-white transition-colors">📚 知識ポータル</a>
+    <span class="text-slate-600">|</span>
+    <a href="roadmap.html"     class="text-slate-300 hover:text-white transition-colors">🗺️ ロードマップ</a>
+    <span class="text-slate-600">|</span>
+    <a href="study_notes.html" class="text-slate-300 hover:text-white transition-colors">📝 学習ノート</a>
+</div>
+
+<!-- 戻るバー（サマリー以外を表示中に表示） -->
+<div id="back-bar" class="hidden max-w-3xl mx-auto px-4 pt-5">
+    <button onclick="loadIndex()"
+        class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1">
+        ← 進捗サマリーに戻る
+    </button>
+</div>
+
+<!-- メインコンテンツ -->
+<main class="max-w-3xl mx-auto px-4 py-5 pb-24">
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 min-h-48">
+        <!-- ローディング -->
+        <div id="loading" class="text-center py-16 text-slate-400">
+            <div class="text-3xl mb-3">⏳</div>
+            <p class="text-sm">読み込み中…</p>
+        </div>
+        <!-- エラー -->
+        <div id="error" class="hidden text-center py-16 text-slate-400">
+            <div class="text-3xl mb-3">⚠️</div>
+            <p class="text-sm">ファイルを読み込めませんでした。<br>少し待ってから再読み込みしてください。</p>
+            <button onclick="loadIndex()"
+                class="mt-4 text-sm text-blue-600 hover:underline">サマリーを開く</button>
+        </div>
+        <!-- 本文 -->
+        <div id="md-body" class="hidden fade-up"></div>
+    </div>
+
+    <!-- 最終更新表示 -->
+    <p id="last-updated" class="text-xs text-slate-400 text-right mt-3 hidden"></p>
+</main>
+
+<!-- モバイル下部ナビ -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 sm:hidden z-30 safe-pb">
+    <div class="flex">
+        <button onclick="loadIndex()"
+            class="flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl">📋</span><span>サマリー</span>
+        </button>
+        <a href="exam_v6.html"
+            class="flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl">📚</span><span>知識</span>
+        </a>
+        <a href="roadmap.html"
+            class="flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl">🗺️</span><span>計画</span>
+        </a>
+        <a href="study_notes.html"
+            class="flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl">📝</span><span>ノート</span>
+        </a>
+    </div>
+</nav>
+
+<script>
+const LOG_DIR = './study_log/';
+
+// marked の設定（チェックボックス対応）
+marked.use({
+    gfm: true,
+    breaks: true,
+});
+
+// ── ファイル読み込み ──
+async function loadFile(filename) {
+    const isIndex = (filename === 'index.md');
+    show('loading');
+
+    try {
+        const res = await fetch(LOG_DIR + filename + '?t=' + Date.now());
+        if (!res.ok) throw new Error(res.status);
+
+        const text = await res.text();
+        const body = document.getElementById('md-body');
+        body.innerHTML = marked.parse(text);
+
+        // セッションログへのリンクを内部遷移に変換
+        body.querySelectorAll('a').forEach(a => {
+            const href = a.getAttribute('href');
+            if (!href) return;
+
+            // 相対 .md リンク（例: 2026-04-29.md）
+            if (!href.startsWith('http') && !href.startsWith('../') && href.endsWith('.md')) {
+                a.classList.add('session-link');
+                a.innerHTML = '📄 ' + a.textContent;
+                a.addEventListener('click', e => {
+                    e.preventDefault();
+                    loadFile(href);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+            // 親ディレクトリへの相対リンク（../exam_v6.html など）はそのまま
+        });
+
+        // 最終更新
+        const lastMod = res.headers.get('last-modified');
+        const lu = document.getElementById('last-updated');
+        if (lastMod) {
+            lu.textContent = '最終更新：' + new Date(lastMod).toLocaleString('ja-JP');
+            lu.classList.remove('hidden');
+        }
+
+        show('md-body');
+        document.getElementById('back-bar').classList.toggle('hidden', isIndex);
+
+    } catch {
+        show('error');
+    }
+}
+
+function show(id) {
+    ['loading', 'error', 'md-body'].forEach(i => {
+        const el = document.getElementById(i);
+        if (i === id) {
+            el.classList.remove('hidden');
+            if (i === 'md-body') el.classList.add('fade-up');
+        } else {
+            el.classList.add('hidden');
+        }
+    });
+}
+
+function loadIndex() {
+    loadFile('index.md');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 初期ロード
+loadFile('index.md');
+</script>
+</body>
+</html>
