@@ -3,15 +3,21 @@
  * オフライン時でもアプリを使えるようにするためのキャッシュ管理
  */
 
-const CACHE_NAME = 'takken-notes-v1';
+const CACHE_NAME = 'takken-notes-v2';
 
-// キャッシュするローカルファイル
+// キャッシュするローカルファイル（事前キャッシュ）
 const LOCAL_ASSETS = [
     './study_notes.html',
     './exam_v6.html',
     './roadmap.html',
+    './study_log.html',
     './manifest.json',
     './icon.svg',
+];
+
+// ネットワーク優先にするHTML（頻繁に更新されるページ）
+const NETWORK_FIRST = [
+    './study_log.html',
 ];
 
 // キャッシュする外部リソース（Tailwind CDN）
@@ -73,7 +79,26 @@ self.addEventListener('fetch', event => {
         return;
     }
 
-    // ローカルファイル: キャッシュ優先 → なければネットワーク
+    // ネットワーク優先ページ（study_log.html など頻繁に更新されるもの）
+    const pathname = url.pathname;
+    const isNetworkFirst = NETWORK_FIRST.some(p => pathname.endsWith(p.replace('./', '')));
+
+    if (isNetworkFirst) {
+        event.respondWith(
+            fetch(request)
+                .then(response => {
+                    if (response.ok) {
+                        const clone = response.clone();
+                        caches.open(CACHE_NAME).then(c => c.put(request, clone));
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(request)) // オフライン時はキャッシュを使う
+        );
+        return;
+    }
+
+    // それ以外のローカルファイル: キャッシュ優先 → なければネットワーク
     event.respondWith(
         caches.match(request).then(cached => {
             if (cached) return cached;
