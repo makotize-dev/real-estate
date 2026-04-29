@@ -1,0 +1,36 @@
+{
+    "name": "宅建士 学習ノート",
+    "short_name": "宅建ノート",
+    "description": "宅建士試験対策 — 法律の規定・解説を記録する学習ノート",
+    "lang": "ja",
+    "start_url": "./study_notes.html",
+    "scope": "./",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#0f172a",
+    "theme_color": "#0f172a",
+    "icons": [
+        {
+            "src": "./icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        },
+        {
+            "src": "./icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "maskable"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "ノート追加",
+            "short_name": "追加",
+            "description": "新しい学習ノートを追加する",
+            "url": "./study_notes.html#add",
+            "icons": [{ "src": "./icon.svg", "sizes": "any" }]
+        }
+    ],
+    "categories": ["education", "productivity"]
+}

@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>宅建士 学習ノート</title>
+    <!-- PWA -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="宅建ノート">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; }
+
+        /* タブボタン */
+        .tab-btn {
+            padding: 0.4rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: #64748b;
+            background: white;
+            border: 1.5px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { border-color: #93c5fd; color: #2563eb; }
+        .tab-btn.active                                  { background:#2563eb; color:white; border-color:#2563eb; }
+        .tab-btn[data-subject="権利関係"].active          { background:#ea580c; color:white; border-color:#ea580c; }
+        .tab-btn[data-subject="法令制限"].active          { background:#059669; color:white; border-color:#059669; }
+        .tab-btn[data-subject="税・その他"].active        { background:#7c3aed; color:white; border-color:#7c3aed; }
+
+        /* ノートカード */
+        .note-card {
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        .note-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.10); transform: translateY(-1px); }
+
+        /* 理解度スター */
+        .star-btn { cursor: pointer; font-size: 1.4rem; line-height: 1; padding: 0 2px; }
+        .star-btn.on  { color: #f59e0b; }
+        .star-btn.off { color: #cbd5e1; }
+
+        /* モーダル */
+        .modal-bg {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.55);
+            z-index: 50;
+            display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
+        }
+        .modal-bg.hidden { display: none; }
+
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(10px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .anim { animation: fadeUp 0.25s ease forwards; }
+
+        /* 規定テキスト トグル */
+        .reg-body { display: none; }
+        .reg-body.open { display: block; }
+
+        /* ─── モバイル強化 ─── */
+        /* モーダル: スマホでは下からシート状に開く */
+        @media (max-width: 640px) {
+            #modal-bg { align-items: flex-end; padding: 0; }
+            #modal-bg > div {
+                border-radius: 1.5rem 1.5rem 0 0;
+                max-height: 92dvh;
+                width: 100%;
+            }
+            /* 上部ヘッダーをコンパクトに */
+            header { padding: 1.25rem 1rem 1rem; }
+            /* FABは下ナビに統合するため非表示 */
+            #fab-btn { display: none; }
+        }
+        /* iPhone ノッチ・ホームバー対応 */
+        .safe-pb { padding-bottom: max(env(safe-area-inset-bottom, 0px), 6px); }
+        /* 下ナビ アクティブ状態 */
+        .nav-tab-btn { position: relative; transition: color 0.15s ease; }
+        .nav-tab-btn.nav-active { color: #2563eb !important; }
+        .nav-tab-btn.nav-active::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 15%; right: 15%;
+            height: 2.5px;
+            background: #2563eb;
+            border-radius: 0 0 4px 4px;
+        }
+
+        /* 印刷 */
+        @media print {
+            .no-print { display: none !important; }
+            header { padding: 1rem !important; }
+            .note-card { box-shadow: none !important; border: 1px solid #e2e8f0 !important;
+                         page-break-inside: avoid; margin-bottom: 0.75rem; }
+            .reg-body { display: block !important; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+<!-- ===== ヘッダー ===== -->
+<header class="bg-slate-900 text-white px-6 py-8 text-center">
+    <p class="text-slate-400 text-xs font-bold tracking-widest mb-1">宅地建物取引士 試験対策</p>
+    <h1 class="text-3xl font-extrabold mb-1">学習ノート</h1>
+    <p class="text-slate-400 text-sm mb-5">法律の規定・解説を記録して理解を積み上げる</p>
+    <div class="inline-flex gap-6 bg-slate-800 rounded-2xl px-8 py-4">
+        <div class="text-center">
+            <div class="text-3xl font-extrabold tabular-nums" id="h-total">0</div>
+            <div class="text-slate-400 text-xs mt-0.5">総ノート数</div>
+        </div>
+        <div class="w-px bg-slate-700"></div>
+        <div class="text-center">
+            <div class="text-lg font-extrabold" id="h-round">—</div>
+            <div class="text-slate-400 text-xs mt-0.5">現在のフェーズ</div>
+        </div>
+        <div class="w-px bg-slate-700"></div>
+        <div class="text-center">
+            <div class="text-3xl font-extrabold tabular-nums" id="h-days">—</div>
+            <div class="text-slate-400 text-xs mt-0.5">試験まで（日）</div>
+        </div>
+    </div>
+</header>
+
+<!-- ===== クイックリンク ===== -->
+<div class="bg-slate-800 text-white px-6 py-2 flex gap-4 justify-center text-sm no-print">
+    <a href="exam_v6.html" class="text-slate-300 hover:text-white transition-colors">📚 知識ポータル</a>
+    <span class="text-slate-600">|</span>
+    <a href="roadmap.html" class="text-slate-300 hover:text-white transition-colors">🗺️ ロードマップ</a>
+    <span class="text-slate-600">|</span>
+    <button onclick="window.print()" class="text-slate-300 hover:text-white transition-colors">🖨️ 印刷</button>
+    <span class="text-slate-600">|</span>
+    <button onclick="exportJSON()" class="text-slate-300 hover:text-white transition-colors">💾 エクスポート</button>
+    <span class="text-slate-600">|</span>
+    <label class="text-slate-300 hover:text-white transition-colors cursor-pointer">
+        📥 インポート<input type="file" accept=".json" class="hidden" onchange="importJSON(event)">
+    </label>
+    <span class="text-slate-600">|</span>
+    <button onclick="toggleResources()" class="text-slate-300 hover:text-white transition-colors">📖 参考リンク</button>
+</div>
+
+<!-- ===== 参考情報源パネル ===== -->
+<div id="resources-panel" class="hidden no-print">
+    <div class="max-w-4xl mx-auto px-4 mt-5">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+                <div>
+                    <h2 class="font-extrabold text-slate-800">📖 参考情報源一覧</h2>
+                    <p class="text-slate-500 text-xs mt-0.5">学習時に参照する公式サイト・法令データベースへの直接リンク集</p>
+                </div>
+                <button onclick="toggleResources()" class="text-slate-400 hover:text-slate-600 text-xl leading-none ml-4">✕</button>
+            </div>
+
+            <div class="p-6 space-y-8">
+
+                <!-- ── e-Gov 法令原文 ── -->
+                <section>
+                    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-3">
+                        <h3 class="font-extrabold text-slate-700">法令原文</h3>
+                        <a href="https://elaws.e-gov.go.jp/" target="_blank" rel="noopener"
+                           class="text-sm text-blue-500 hover:underline font-normal">e-Gov 法令検索 ↗</a>
+                        <span class="text-xs text-slate-400">条文をコピーしてノートの「法律の規定」欄に貼り付ける</span>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+                        <!-- 宅建業法 -->
+                        <div class="bg-blue-50 rounded-xl p-4">
+                            <p class="text-xs font-extrabold text-blue-800 mb-3">🏠 宅建業法</p>
+                            <ul class="space-y-2.5">
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=327AC0000000176"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-blue-700 hover:text-blue-900 hover:underline">
+                                        宅地建物取引業法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和27年 法律第176号</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 権利関係 -->
+                        <div class="bg-orange-50 rounded-xl p-4">
+                            <p class="text-xs font-extrabold text-orange-800 mb-3">⚖️ 権利関係</p>
+                            <ul class="space-y-2.5">
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=129AC0000000089"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-orange-700 hover:text-orange-900 hover:underline">
+                                        民法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">明治29年 法律第89号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=403AC0000000090"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-orange-700 hover:text-orange-900 hover:underline">
+                                        借地借家法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">平成3年 法律第90号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=337AC0000000069"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-orange-700 hover:text-orange-900 hover:underline">
+                                        区分所有法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和37年 法律第69号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=416AC0000000123"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-orange-700 hover:text-orange-900 hover:underline">
+                                        不動産登記法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">平成16年 法律第123号</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 法令制限 -->
+                        <div class="bg-emerald-50 rounded-xl p-4">
+                            <p class="text-xs font-extrabold text-emerald-800 mb-3">🏙️ 法令制限</p>
+                            <ul class="space-y-2.5">
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=343AC0000000100"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline">
+                                        都市計画法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和43年 法律第100号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=325AC0000000201"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline">
+                                        建築基準法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和25年 法律第201号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=327AC0000000229"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline">
+                                        農地法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和27年 法律第229号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=349AC0000000092"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline">
+                                        国土利用計画法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和49年 法律第92号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=504AC0000000055"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-emerald-700 hover:text-emerald-900 hover:underline">
+                                        盛土規制法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">令和4年 法律第55号</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 税・その他 -->
+                        <div class="bg-violet-50 rounded-xl p-4">
+                            <p class="text-xs font-extrabold text-violet-800 mb-3">💴 税・その他</p>
+                            <ul class="space-y-2.5">
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=325AC0000000226"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-violet-700 hover:text-violet-900 hover:underline">
+                                        地方税法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和25年 法律第226号<br>（不動産取得税・固定資産税）</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=332AC0000000026"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-violet-700 hover:text-violet-900 hover:underline">
+                                        租税特別措置法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和32年 法律第26号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=342AC0000000023"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-violet-700 hover:text-violet-900 hover:underline">
+                                        印紙税法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和42年 法律第23号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=342AC0000000035"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-violet-700 hover:text-violet-900 hover:underline">
+                                        登録免許税法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和42年 法律第35号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=344AC0000000049"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-violet-700 hover:text-violet-900 hover:underline">
+                                        地価公示法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和44年 法律第49号</p>
+                                </li>
+                                <li>
+                                    <a href="https://elaws.e-gov.go.jp/document?lawid=338AC0000000152"
+                                       target="_blank" rel="noopener"
+                                       class="text-xs font-bold text-violet-700 hover:text-violet-900 hover:underline">
+                                        不動産鑑定評価法 ↗
+                                    </a>
+                                    <p class="text-xs text-slate-400">昭和38年 法律第152号</p>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <p class="text-xs text-slate-400 mt-3">
+                        ※ リンクが開かない場合は <a href="https://elaws.e-gov.go.jp/" target="_blank" rel="noopener" class="underline">e-Gov 検索ページ</a> から法律名で検索してください。
+                    </p>
+                </section>
+
+                <!-- ── 行政機関・公式解説 ── -->
+                <section>
+                    <h3 class="font-extrabold text-slate-700 mb-3">行政機関・公式解説</h3>
+                    <div class="grid sm:grid-cols-3 gap-4">
+                        <div class="border border-slate-100 rounded-xl p-4">
+                            <div class="text-2xl mb-2">🏛️</div>
+                            <p class="font-bold text-slate-800 text-sm mb-1">国土交通省</p>
+                            <p class="text-xs text-slate-500 mb-2">宅建業法・都市計画法・地価公示の行政解説・Q&amp;A・ガイドライン</p>
+                            <a href="https://www.mlit.go.jp/" target="_blank" rel="noopener"
+                               class="text-xs font-bold text-blue-600 hover:underline">mlit.go.jp ↗</a>
+                            <p class="text-xs text-slate-400 mt-1">検索：「宅地建物取引業法」「重要事項説明」「都市計画区域」</p>
+                        </div>
+                        <div class="border border-slate-100 rounded-xl p-4">
+                            <div class="text-2xl mb-2">⚖️</div>
+                            <p class="font-bold text-slate-800 text-sm mb-1">法務省</p>
+                            <p class="text-xs text-slate-500 mb-2">民法改正の解説・不動産登記制度の概要・法令解釈</p>
+                            <a href="https://www.moj.go.jp/" target="_blank" rel="noopener"
+                               class="text-xs font-bold text-blue-600 hover:underline">moj.go.jp ↗</a>
+                            <p class="text-xs text-slate-400 mt-1">検索：「民法改正」「不動産登記」「相続登記」</p>
+                        </div>
+                        <div class="border border-slate-100 rounded-xl p-4">
+                            <div class="text-2xl mb-2">💴</div>
+                            <p class="font-bold text-slate-800 text-sm mb-1">国税庁 タックスアンサー</p>
+                            <p class="text-xs text-slate-500 mb-2">印紙税・登録免許税・譲渡所得・不動産取得に係る税の解説</p>
+                            <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/" target="_blank" rel="noopener"
+                               class="text-xs font-bold text-blue-600 hover:underline">nta.go.jp タックスアンサー ↗</a>
+                            <p class="text-xs text-slate-400 mt-1">税理士として既知の知識と宅建出題角度の差異を確認</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ── 試験情報・過去問 ── -->
+                <section>
+                    <h3 class="font-extrabold text-slate-700 mb-3">試験情報・過去問</h3>
+                    <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="border border-slate-100 rounded-xl p-4">
+                            <div class="text-2xl mb-2">📝</div>
+                            <p class="font-bold text-slate-800 text-sm mb-1">不動産適正取引推進機構（RETIO）</p>
+                            <p class="text-xs text-slate-500 mb-2">試験実施機関。過去問（PDF）・合格基準・統計データを公開</p>
+                            <div class="flex flex-col gap-1">
+                                <a href="https://www.retio.or.jp/" target="_blank" rel="noopener"
+                                   class="text-xs font-bold text-blue-600 hover:underline">retio.or.jp トップページ ↗</a>
+                                <a href="https://www.retio.or.jp/exam/kakomon.html" target="_blank" rel="noopener"
+                                   class="text-xs font-bold text-blue-600 hover:underline">過去問ダウンロード ↗</a>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1">Round 2（7〜8月）の過去問演習で使用</p>
+                        </div>
+                        <div class="border border-slate-100 rounded-xl p-4">
+                            <div class="text-2xl mb-2">🗾</div>
+                            <p class="font-bold text-slate-800 text-sm mb-1">国土交通省 地価・不動産情報</p>
+                            <p class="text-xs text-slate-500 mb-2">地価公示・地価調査・取引価格情報。出題実績あり</p>
+                            <a href="https://www.land.mlit.go.jp/webland/" target="_blank" rel="noopener"
+                               class="text-xs font-bold text-blue-600 hover:underline">land.mlit.go.jp ↗</a>
+                            <p class="text-xs text-slate-400 mt-1">地価公示法の「公示価格の効力」「鑑定評価との関係」を確認</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ── 利用の流れ ── -->
+                <section class="bg-slate-50 rounded-xl p-4">
+                    <h3 class="font-extrabold text-slate-700 text-sm mb-2">📌 推奨する情報取得の流れ（Round 1）</h3>
+                    <ol class="space-y-1.5 text-xs text-slate-600">
+                        <li class="flex gap-2"><span class="font-bold text-slate-400 w-4 flex-shrink-0">1.</span>上記リンクから <strong>e-Gov</strong> で該当条文を開き、通読して要旨を把握する</li>
+                        <li class="flex gap-2"><span class="font-bold text-slate-400 w-4 flex-shrink-0">2.</span>条文の中で重要な部分を選び、<strong>「法律の規定」欄</strong> にコピー貼り付けまたは要約を記入する</li>
+                        <li class="flex gap-2"><span class="font-bold text-slate-400 w-4 flex-shrink-0">3.</span>国交省・法務省・国税庁の解説ページで行政の立場からの解釈を確認し、<strong>「解説・ポイント」欄</strong> に自分の言葉でまとめる</li>
+                        <li class="flex gap-2"><span class="font-bold text-slate-400 w-4 flex-shrink-0">4.</span>Round 2 以降は RETIO の過去問で出題角度を確認し、ノートを補強する</li>
+                    </ol>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 現在ラウンドの学習タスク ===== -->
+<div id="round-banner" class="max-w-4xl mx-auto px-4 mt-6 no-print"></div>
+
+<!-- ===== タブ + 検索 ===== -->
+<div class="max-w-4xl mx-auto px-4 mt-5 no-print">
+    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-3">
+        <div class="flex gap-2 flex-wrap">
+            <button class="tab-btn active" data-subject="all"     onclick="setTab('all')">すべて</button>
+            <button class="tab-btn"        data-subject="宅建業法" onclick="setTab('宅建業法')">🏠 宅建業法</button>
+            <button class="tab-btn"        data-subject="権利関係" onclick="setTab('権利関係')">⚖️ 権利関係</button>
+            <button class="tab-btn"        data-subject="法令制限" onclick="setTab('法令制限')">🏙️ 法令制限</button>
+            <button class="tab-btn"        data-subject="税・その他" onclick="setTab('税・その他')">💴 税・その他</button>
+        </div>
+        <input type="text" id="search" placeholder="キーワード検索…"
+            oninput="render()"
+            class="border border-slate-200 rounded-lg px-3 py-2 text-sm w-full sm:w-56 focus:outline-none focus:border-blue-400">
+    </div>
+    <div class="flex gap-4 items-center text-sm text-slate-500 mb-4">
+        <span>並び順：</span>
+        <select id="sort" onchange="render()"
+            class="border border-slate-200 rounded px-2 py-1 text-sm focus:outline-none">
+            <option value="new">新しい順</option>
+            <option value="old">古い順</option>
+            <option value="level">理解度（高）順</option>
+            <option value="subject">科目順</option>
+        </select>
+        <label class="flex items-center gap-1 cursor-pointer select-none">
+            <input type="checkbox" id="freq-only" onchange="render()">
+            <span>🔥 頻出のみ</span>
+        </label>
+    </div>
+</div>
+
+<!-- ===== ノート一覧 ===== -->
+<main class="max-w-4xl mx-auto px-4 pb-28">
+    <div id="notes-list" class="space-y-4"></div>
+
+    <!-- 空状態 -->
+    <div id="empty-state" class="hidden text-center py-20">
+        <div class="text-6xl mb-4">📝</div>
+        <h3 class="text-xl font-bold text-slate-600 mb-2">まだノートがありません</h3>
+        <p class="text-slate-400 text-sm mb-6">右下の「＋ ノート追加」から<br>学習した規定・解説を記録しましょう。</p>
+        <div id="suggested" class="bg-white rounded-2xl border border-slate-200 p-5 text-left max-w-md mx-auto"></div>
+    </div>
+</main>
+
+<!-- ===== FAB ===== -->
+<button id="fab-btn" onclick="openModal()"
+    class="no-print fixed bottom-6 right-6 bg-blue-600 text-white rounded-full px-5 py-3 font-bold shadow-lg
+           hover:bg-blue-700 active:scale-95 transition-all z-40 flex items-center gap-2">
+    <span class="text-xl leading-none">＋</span><span>ノート追加</span>
+</button>
+
+<!-- ===== モバイル 下部ナビゲーション ===== -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 sm:hidden z-30 no-print safe-pb">
+    <div class="flex">
+        <button data-nav="all" onclick="setTab('all')"
+            class="nav-tab-btn nav-active flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl leading-none">📋</span>
+            <span>すべて</span>
+        </button>
+        <button data-nav="宅建業法" onclick="setTab('宅建業法')"
+            class="nav-tab-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl leading-none">🏠</span>
+            <span>業法</span>
+        </button>
+        <button data-nav="権利関係" onclick="setTab('権利関係')"
+            class="nav-tab-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl leading-none">⚖️</span>
+            <span>権利</span>
+        </button>
+        <button data-nav="法令制限" onclick="setTab('法令制限')"
+            class="nav-tab-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl leading-none">🏙️</span>
+            <span>法令</span>
+        </button>
+        <button data-nav="税・その他" onclick="setTab('税・その他')"
+            class="nav-tab-btn flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-slate-400 active:bg-slate-50">
+            <span class="text-xl leading-none">💴</span>
+            <span>税</span>
+        </button>
+        <button onclick="openModal()"
+            class="flex-1 py-2.5 flex flex-col items-center gap-0.5 text-xs text-white bg-blue-600 font-bold active:bg-blue-700">
+            <span class="text-xl leading-none">＋</span>
+            <span>追加</span>
+        </button>
+    </div>
+</nav>
+
+<!-- ===== モーダル ===== -->
+<div id="modal-bg" class="modal-bg hidden no-print" onclick="bgClose(event)">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto">
+        <div class="bg-slate-900 text-white px-6 py-4 rounded-t-2xl flex justify-between items-center sticky top-0 z-10">
+            <h2 class="font-extrabold" id="modal-title">ノートを追加</h2>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-white text-xl leading-none">✕</button>
+        </div>
+
+        <form id="note-form" onsubmit="saveNote(event)" class="p-6 space-y-4">
+            <input type="hidden" id="f-id">
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">科目 <span class="text-red-500">*</span></label>
+                    <select id="f-subject" required onchange="fillTopics()"
+                        class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
+                        <option value="">選択してください</option>
+                        <option value="宅建業法">🏠 宅建業法</option>
+                        <option value="権利関係">⚖️ 権利関係</option>
+                        <option value="法令制限">🏙️ 法令制限</option>
+                        <option value="税・その他">💴 税・その他</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">ラウンド</label>
+                    <select id="f-round"
+                        class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
+                        <option value="R1">Round 1（5〜6月）骨格を作る</option>
+                        <option value="R2">Round 2（7〜8月）過去問で鍛える</option>
+                        <option value="R3">Round 3（9月）模擬試験</option>
+                        <option value="直前">直前（10月）最終確認</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">トピック <span class="text-red-500">*</span></label>
+                    <select id="f-topic" required
+                        class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
+                        <option value="">科目を先に選んでください</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-1">条文番号</label>
+                    <input type="text" id="f-article" placeholder="例：宅建業法35条"
+                        class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-1">タイトル <span class="text-red-500">*</span></label>
+                <input type="text" id="f-title" required placeholder="例：重要事項説明（35条）の記載事項"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-1">
+                    法律の規定・条文
+                    <span class="text-xs font-normal text-slate-400 ml-1">（e-Gov等からコピー、または要約）</span>
+                </label>
+                <textarea id="f-regulation" rows="5"
+                    placeholder="第○条　宅地建物取引業者は…&#10;&#10;（条文原文または要約をここに記録）"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 font-mono leading-relaxed resize-y"></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-slate-700 mb-1">
+                    解説・ポイント <span class="text-red-500">*</span>
+                    <span class="text-xs font-normal text-slate-400 ml-1">（試験のポイント・税理士知識との比較など）</span>
+                </label>
+                <textarea id="f-explanation" rows="6" required
+                    placeholder="・試験では〜の点が問われる&#10;・○○と△△の違いは…&#10;・税理士業務では… との違いに注意"
+                    class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 leading-relaxed resize-y"></textarea>
+            </div>
+
+            <div class="flex gap-6 items-center flex-wrap">
+                <label class="flex items-center gap-2 cursor-pointer">
+                    <input type="checkbox" id="f-frequent" class="w-4 h-4 accent-red-500">
+                    <span class="text-sm font-bold text-red-600">🔥 頻出問題</span>
+                </label>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-bold text-slate-700">理解度：</span>
+                    <div id="stars-input" class="flex gap-0.5"></div>
+                    <input type="hidden" id="f-level" value="3">
+                </div>
+            </div>
+
+            <div class="flex gap-3 justify-end pt-1 border-t border-slate-100">
+                <button type="button" onclick="closeModal()"
+                    class="px-5 py-2 rounded-lg border border-slate-200 text-slate-600 text-sm hover:bg-slate-50">
+                    キャンセル
+                </button>
+                <button type="submit"
+                    class="px-6 py-2 rounded-lg bg-blue-600 text-white text-sm font-bold hover:bg-blue-700">
+                    保存する
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+// =====================================================
+//  定数
+// =====================================================
+const STORE_KEY = 'takken_notes_v2';
+
+const TOPICS = {
+    '宅建業法': [
+        '免許制度（2・3・5条）',
+        '宅建士制度（15〜22条の2）',
+        '重要事項説明（35条）',
+        '37条書面',
+        '8種制限（37条の2〜41条の2）',
+        '報酬制限（46条）',
+        'その他・宅建業法',
+    ],
+    '権利関係': [
+        '意思表示（93〜96条）',
+        '代理（99〜118条）',
+        '物権変動・対抗要件（177条）',
+        '担保物権',
+        '借地借家法',
+        '区分所有法',
+        '不動産登記法',
+        'その他・権利関係',
+    ],
+    '法令制限': [
+        '都市計画法',
+        '建築基準法',
+        '農地法',
+        '国土利用計画法',
+        '盛土規制法',
+        'その他・法令制限',
+    ],
+    '税・その他': [
+        '不動産取得税',
+        '固定資産税',
+        '印紙税',
+        '登録免許税',
+        '譲渡所得',
+        '租税特別措置法',
+        '地価公示',
+        '不動産鑑定評価',
+        'その他・税',
+    ],
+};
+
+const COLORS = {
+    '宅建業法': { bg:'bg-blue-50',   text:'text-blue-800',   border:'border-l-blue-500',   tag:'bg-blue-100 text-blue-800'   },
+    '権利関係': { bg:'bg-orange-50', text:'text-orange-800', border:'border-l-orange-500', tag:'bg-orange-100 text-orange-800' },
+    '法令制限': { bg:'bg-emerald-50',text:'text-emerald-800',border:'border-l-emerald-500',tag:'bg-emerald-100 text-emerald-800'},
+    '税・その他':{ bg:'bg-violet-50', text:'text-violet-800', border:'border-l-violet-500', tag:'bg-violet-100 text-violet-800' },
+};
+
+// =====================================================
+//  ラウンド判定
+// =====================================================
+function currentRound() {
+    const d = new Date();
+    if (d < new Date('2026-05-01')) return { key:'R1', label:'準備期間', period:'4月', color:'slate' };
+    if (d < new Date('2026-07-01')) return { key:'R1', label:'Round 1',  period:'5〜6月', color:'blue' };
+    if (d < new Date('2026-09-01')) return { key:'R2', label:'Round 2',  period:'7〜8月', color:'violet' };
+    if (d < new Date('2026-10-01')) return { key:'R3', label:'Round 3',  period:'9月',    color:'rose' };
+    if (d < new Date('2026-10-19')) return { key:'直前','label':'直前期', period:'10月',  color:'red' };
+    return { key:'—', label:'試験後', period:'—', color:'slate' };
+}
+
+// =====================================================
+//  ストレージ
+// =====================================================
+function load() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+    catch { return []; }
+}
+function save(notes) { localStorage.setItem(STORE_KEY, JSON.stringify(notes)); }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+// =====================================================
+//  ヘッダー更新
+// =====================================================
+function updateHeader() {
+    const r = currentRound();
+    const notes = load();
+    const exam = new Date('2026-10-18');
+    const days = Math.max(0, Math.ceil((exam - new Date()) / 86400000));
+    document.getElementById('h-total').textContent = notes.length;
+    document.getElementById('h-round').textContent = `${r.label}（${r.period}）`;
+    document.getElementById('h-days').textContent  = days;
+}
+
+// =====================================================
+//  ラウンドバナー
+// =====================================================
+const ROUND_TASKS = {
+    R1: {
+        '宅建業法': '2・3・5条（免許制度）→ 15〜22条の2（宅建士）→ 35・37条 → 8種制限 → 46条（報酬）を条文で通読',
+        '権利関係': '93〜96条（意思表示）・99〜118条（代理）・177条（対抗要件）・借地借家法・区分所有法・不動産登記法',
+        '法令制限': '都市計画法1〜43条・建築基準法1〜60条を通読して構造を把握。農地法・国土利用計画法・盛土規制法は概要のみ',
+        '税・その他': '地方税法・租税特別措置法の宅建出題角度を確認・登録免許税法・印紙税法（別表）を確認',
+    },
+    R2: {
+        '宅建業法': '過去問10年分を2周（7月1周・8月1周）。間違えた問題をノートに記録・分析',
+        '権利関係': '過去問10年分を1〜2周。借地借家法・区分所有法の頻出問題を重点的に',
+        '法令制限': '数字・許可権者の暗記。過去問で出題パターンを把握',
+        '税・その他': '地価公示・不動産鑑定評価基準を追加学習。過去問演習',
+    },
+    R3: {
+        '宅建業法': '模擬試験後の弱点補強・チートシート最終確認',
+        '権利関係': '苦手単元の集中強化',
+        '法令制限': '数字・期限・面積の最終確認',
+        '税・その他': '頻出ポイントの整理と最終確認',
+    },
+};
+
+function updateBanner() {
+    const r = currentRound();
+    const el = document.getElementById('round-banner');
+    const tasks = ROUND_TASKS[r.key];
+    if (!tasks) return;
+
+    const bgMap = { blue:'bg-blue-50 border-blue-200', violet:'bg-violet-50 border-violet-200',
+                    rose:'bg-rose-50 border-rose-200',  red:'bg-red-50 border-red-200',
+                    slate:'bg-slate-50 border-slate-200' };
+    const hMap  = { blue:'text-blue-800', violet:'text-violet-800', rose:'text-rose-800',
+                    red:'text-red-800', slate:'text-slate-700' };
+    const bg = bgMap[r.color] || bgMap.slate;
+    const h  = hMap[r.color]  || hMap.slate;
+
+    el.innerHTML = `
+        <div class="rounded-2xl border p-5 ${bg}">
+            <div class="flex items-center gap-2 mb-3">
+                <span class="font-extrabold text-base ${h}">${r.label}</span>
+                <span class="text-sm opacity-60">${r.period}</span>
+                <span class="ml-auto text-xs opacity-50">現在のフェーズ — 今週の学習タスク</span>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-3">
+                ${Object.entries(tasks).map(([s, t]) => `
+                    <div>
+                        <p class="text-xs font-extrabold ${h} mb-0.5">${s}</p>
+                        <p class="text-xs text-slate-600 leading-relaxed">${t}</p>
+                    </div>`).join('')}
+            </div>
+        </div>`;
+}
+
+// =====================================================
+//  タブ
+// =====================================================
+let curSubject = 'all';
+function setTab(s) {
+    curSubject = s;
+    // 上部タブ
+    document.querySelectorAll('.tab-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.subject === s));
+    // 下部ナビ（モバイル）
+    document.querySelectorAll('.nav-tab-btn').forEach(b =>
+        b.classList.toggle('nav-active', b.dataset.nav === s));
+    render();
+}
+
+// =====================================================
+//  フィルタ & ソート
+// =====================================================
+function filtered() {
+    const notes = load();
+    const q = document.getElementById('search').value.trim().toLowerCase();
+    const freqOnly = document.getElementById('freq-only').checked;
+    const sort = document.getElementById('sort').value;
+
+    let out = notes.filter(n => {
+        if (curSubject !== 'all' && n.subject !== curSubject) return false;
+        if (freqOnly && !n.frequent) return false;
+        if (q) {
+            const hay = [n.title, n.article, n.topic, n.regulation, n.explanation]
+                .join(' ').toLowerCase();
+            if (!hay.includes(q)) return false;
+        }
+        return true;
+    });
+
+    out.sort((a, b) => {
+        if (sort === 'old')     return (a.date||'').localeCompare(b.date||'');
+        if (sort === 'level')   return (b.level||0) - (a.level||0);
+        if (sort === 'subject') return a.subject.localeCompare(b.subject) || a.topic.localeCompare(b.topic);
+        return (b.date||'').localeCompare(a.date||''); // new
+    });
+
+    return out;
+}
+
+// =====================================================
+//  レンダリング
+// =====================================================
+function render() {
+    updateHeader();
+    const notes = filtered();
+    const list  = document.getElementById('notes-list');
+    const empty = document.getElementById('empty-state');
+
+    if (notes.length === 0) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        renderEmpty();
+        return;
+    }
+    empty.classList.add('hidden');
+    list.innerHTML = notes.map(noteCard).join('');
+}
+
+function noteCard(n) {
+    const c = COLORS[n.subject] || COLORS['宅建業法'];
+    const stars = [1,2,3,4,5].map(i =>
+        i <= (n.level||0)
+            ? '<span style="color:#f59e0b">★</span>'
+            : '<span style="color:#cbd5e1">☆</span>'
+    ).join('');
+    const regId = 'r-' + n.id;
+
+    return `
+    <article class="note-card bg-white rounded-2xl border-l-4 ${c.border} shadow-sm p-5 anim">
+        <div class="flex items-start justify-between gap-3 mb-3">
+            <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-xs font-extrabold px-2 py-0.5 rounded-full ${c.tag}">${n.subject}</span>
+                <span class="text-xs text-slate-500">${n.topic}</span>
+                ${n.article ? `<code class="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded">${esc(n.article)}</code>` : ''}
+                <span class="text-xs border border-slate-200 text-slate-400 px-2 py-0.5 rounded">${n.round||''}</span>
+                ${n.frequent ? `<span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">🔥 頻出</span>` : ''}
+            </div>
+            <div class="flex gap-1 no-print flex-shrink-0">
+                <button onclick="startEdit('${n.id}')"
+                    class="text-slate-400 hover:text-blue-500 text-sm px-2 py-1 rounded hover:bg-blue-50"
+                    title="編集">✏️</button>
+                <button onclick="del('${n.id}')"
+                    class="text-slate-400 hover:text-red-500 text-sm px-2 py-1 rounded hover:bg-red-50"
+                    title="削除">🗑️</button>
+            </div>
+        </div>
+
+        <h3 class="font-extrabold text-slate-800 text-base mb-3">${esc(n.title)}</h3>
+
+        ${n.regulation ? `
+        <div class="mb-3">
+            <button onclick="toggleReg('${regId}')"
+                class="no-print text-xs font-bold text-slate-400 hover:text-slate-600 flex items-center gap-1 mb-1">
+                <span id="${regId}-ico">▶</span> 法律の規定を表示
+            </button>
+            <div id="${regId}" class="reg-body">
+                <pre class="bg-slate-50 border border-slate-100 rounded-lg p-3 text-xs text-slate-600 font-mono whitespace-pre-wrap leading-relaxed overflow-x-auto">${esc(n.regulation)}</pre>
+            </div>
+        </div>` : ''}
+
+        <div class="bg-blue-50 rounded-xl p-4 text-sm text-slate-700 whitespace-pre-wrap leading-relaxed">${esc(n.explanation)}</div>
+
+        <div class="flex items-center justify-between mt-3 text-xs text-slate-400">
+            <span class="text-base leading-none">${stars}</span>
+            <span>${n.date||''}</span>
+        </div>
+    </article>`;
+}
+
+function toggleReg(id) {
+    const el  = document.getElementById(id);
+    const ico = document.getElementById(id + '-ico');
+    const open = el.classList.toggle('open');
+    ico.textContent = open ? '▼' : '▶';
+}
+
+function renderEmpty() {
+    const r = currentRound();
+    const suggest = {
+        R1: ['宅建業法：2・3・5条（免許制度）から記録を始める', '宅建業法：35条（重要事項説明）の記載事項',
+             '権利関係：意思表示の瑕疵（93〜96条）', '法令制限：都市計画法の区域区分'],
+        R2: ['各科目の過去問で間違えた問題の解説', '弱点単元の補強ノート'],
+        R3: ['模擬試験の振り返り', '頻出ひっかけポイントの整理'],
+        '直前': ['最終チェック項目', '本試験当日の確認事項'],
+    };
+    const items = suggest[r.key] || ['記録したい条文・解説をノートに追加してください'];
+
+    document.getElementById('suggested').innerHTML = `
+        <h4 class="font-bold text-slate-700 mb-3">📋 ${r.label} のおすすめ記録トピック</h4>
+        <ul class="space-y-2">
+            ${items.map(i=>`
+            <li class="text-sm text-slate-600 flex items-start gap-2">
+                <span class="text-blue-400">›</span>${i}
+            </li>`).join('')}
+        </ul>`;
+}
+
+// =====================================================
+//  モーダル
+// =====================================================
+let editId = null;
+let starVal = 3;
+
+function openModal(id = null) {
+    editId = id;
+    document.getElementById('modal-title').textContent = id ? 'ノートを編集' : 'ノートを追加';
+    document.getElementById('note-form').reset();
+
+    if (id) {
+        const n = load().find(x => x.id === id);
+        if (n) {
+            document.getElementById('f-subject').value = n.subject;
+            fillTopics();
+            document.getElementById('f-topic').value     = n.topic;
+            document.getElementById('f-round').value     = n.round   || 'R1';
+            document.getElementById('f-article').value   = n.article || '';
+            document.getElementById('f-title').value     = n.title;
+            document.getElementById('f-regulation').value = n.regulation || '';
+            document.getElementById('f-explanation').value = n.explanation;
+            document.getElementById('f-frequent').checked  = n.frequent || false;
+            starVal = n.level || 3;
+        }
+    } else {
+        starVal = 3;
+        const r = currentRound();
+        document.getElementById('f-round').value = (r.key === 'R1' || r.key === 'R2' || r.key === 'R3' || r.key === '直前')
+            ? r.key : 'R1';
+    }
+
+    renderStars();
+    document.getElementById('modal-bg').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('modal-bg').classList.add('hidden');
+    document.body.style.overflow = '';
+    editId = null;
+}
+
+function bgClose(e) {
+    if (e.target === document.getElementById('modal-bg')) closeModal();
+}
+
+function fillTopics() {
+    const subj = document.getElementById('f-subject').value;
+    const sel  = document.getElementById('f-topic');
+    sel.innerHTML = (TOPICS[subj] || []).map(t => `<option value="${t}">${t}</option>`).join('');
+}
+
+function renderStars() {
+    document.getElementById('stars-input').innerHTML = [1,2,3,4,5].map(i => `
+        <button type="button" onclick="setStar(${i})"
+            class="star-btn ${i <= starVal ? 'on' : 'off'}">
+            ${i <= starVal ? '★' : '☆'}
+        </button>`).join('');
+    document.getElementById('f-level').value = starVal;
+}
+
+function setStar(v) { starVal = v; renderStars(); }
+
+// =====================================================
+//  CRUD
+// =====================================================
+function saveNote(e) {
+    e.preventDefault();
+    const today = new Date().toLocaleDateString('ja-JP',
+        { year:'numeric', month:'2-digit', day:'2-digit' }).replace(/\//g, '-');
+
+    const note = {
+        id:          editId || uid(),
+        subject:     document.getElementById('f-subject').value,
+        round:       document.getElementById('f-round').value,
+        topic:       document.getElementById('f-topic').value,
+        article:     document.getElementById('f-article').value.trim(),
+        title:       document.getElementById('f-title').value.trim(),
+        regulation:  document.getElementById('f-regulation').value.trim(),
+        explanation: document.getElementById('f-explanation').value.trim(),
+        frequent:    document.getElementById('f-frequent').checked,
+        level:       starVal,
+        date:        today,
+    };
+
+    let notes = load();
+    notes = editId
+        ? notes.map(n => n.id === editId ? note : n)
+        : [note, ...notes];
+    save(notes);
+    closeModal();
+    render();
+}
+
+function startEdit(id) { openModal(id); }
+
+function del(id) {
+    if (!confirm('このノートを削除しますか？')) return;
+    save(load().filter(n => n.id !== id));
+    render();
+}
+
+// =====================================================
+//  エクスポート（JSON）
+// =====================================================
+function toggleResources() {
+    const panel = document.getElementById('resources-panel');
+    const isHidden = panel.classList.toggle('hidden');
+    if (!isHidden) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
+function exportJSON() {
+    const blob = new Blob([JSON.stringify(load(), null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'takken_notes_' + new Date().toISOString().slice(0,10) + '.json';
+    a.click();
+}
+
+// =====================================================
+//  ユーティリティ
+// =====================================================
+function esc(s) {
+    if (!s) return '';
+    return String(s)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// =====================================================
+//  初期化
+// =====================================================
+document.addEventListener('DOMContentLoaded', () => {
+    updateHeader();
+    updateBanner();
+    render();
+    // URLハッシュで#add → 起動直後にモーダルを開く（ショートカット対応）
+    if (location.hash === '#add') { openModal(); history.replaceState(null, '', ' '); }
+});
+
+// =====================================================
+//  JSON インポート（PCで書き出したノートをスマホに転送）
+// =====================================================
+function importJSON(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        try {
+            const imported = JSON.parse(ev.target.result);
+            if (!Array.isArray(imported)) throw new Error('not array');
+            const existing = load();
+            const ids = new Set(existing.map(n => n.id));
+            const added = imported.filter(n => n.id && !ids.has(n.id));
+            save([...added, ...existing]);
+            render();
+            alert(`✅ ${added.length} 件のノートをインポートしました。\n（重複 ${imported.length - added.length} 件はスキップ）`);
+        } catch {
+            alert('❌ 読み込みに失敗しました。\nエクスポートした JSON ファイルを選択してください。');
+        }
+        e.target.value = ''; // 同じファイルを再選択できるようリセット
+    };
+    reader.readAsText(file);
+}
+
+// =====================================================
+//  PWA — Service Worker 登録
+//  GitHub Pages など HTTPS 環境でのみ有効
+// =====================================================
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {
+            // file:// では動作しない（想定内）
+        });
+    });
+}
+</script>
+</body>
+</html>

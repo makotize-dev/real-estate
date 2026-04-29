@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- 背景 -->
+  <rect width="512" height="512" rx="96" fill="#1e40af"/>
+  <!-- ノート本体 -->
+  <rect x="112" y="88" width="288" height="352" rx="18" fill="white"/>
+  <!-- 左綴じバインダー -->
+  <rect x="112" y="88" width="40" height="352" rx="18" fill="#dbeafe"/>
+  <rect x="140" y="88" width="12" height="352" fill="#dbeafe"/>
+  <!-- リングホール -->
+  <circle cx="152" cy="176" r="12" fill="white" stroke="#93c5fd" stroke-width="4"/>
+  <circle cx="152" cy="256" r="12" fill="white" stroke="#93c5fd" stroke-width="4"/>
+  <circle cx="152" cy="336" r="12" fill="white" stroke="#93c5fd" stroke-width="4"/>
+  <!-- テキスト行 (見出し) -->
+  <rect x="176" y="148" width="184" height="14" rx="7" fill="#2563eb"/>
+  <!-- テキスト行 (本文) -->
+  <rect x="176" y="178" width="144" height="10" rx="5" fill="#bfdbfe"/>
+  <rect x="176" y="198" width="168" height="10" rx="5" fill="#bfdbfe"/>
+  <rect x="176" y="218" width="130" height="10" rx="5" fill="#bfdbfe"/>
+  <!-- 見出し2 -->
+  <rect x="176" y="250" width="184" height="14" rx="7" fill="#2563eb"/>
+  <!-- 本文2 -->
+  <rect x="176" y="280" width="160" height="10" rx="5" fill="#bfdbfe"/>
+  <rect x="176" y="300" width="148" height="10" rx="5" fill="#bfdbfe"/>
+  <rect x="176" y="320" width="172" height="10" rx="5" fill="#bfdbfe"/>
+  <!-- 見出し3 -->
+  <rect x="176" y="352" width="120" height="14" rx="7" fill="#93c5fd"/>
+</svg>
