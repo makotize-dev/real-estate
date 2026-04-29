@@ -16,7 +16,12 @@
 real-estate/
 ├── CLAUDE.md                          # このファイル（プロジェクト設定）
 ├── README.md                          # プロジェクト概要
-├── exam_v6.html                       # インタラクティブ学習ポータル（宅建業法中心）
+├── exam_v6.html                       # 知識ポータル（宅建業法・知識カード・クイズ30問）
+├── roadmap.html                       # 螺旋型学習ロードマップ（週配分ヒートマップ）
+├── study_notes.html                   # 学習ノートアプリ（条文・解説を記録・localStorage）
+├── manifest.json                      # PWAマニフェスト
+├── sw.js                              # Service Worker（オフラインキャッシュ）
+├── icon.svg                           # アプリアイコン
 ├── takken_guide_outline.md            # 全4科目アウトライン（ルート）
 └── guide-to-be-certified/
     ├── takken_guide_outline.md        # 全4科目アウトライン（詳細版）
@@ -50,15 +55,16 @@ real-estate/
 
 ## 現在の学習リソース
 
-### 既存コンテンツ（claude.aiで作成済み）
+### 既存コンテンツ
 - `guide-to-be-certified/` の詳細ガイド6章分（合計約5,200行）
-- `exam_v6.html`：宅建業法の知識カード・比較表・一問一答（12問）・計算例
+- `exam_v6.html`：宅建業法の知識カード・比較表・一問一答（30問）・計算例
+- `roadmap.html`：螺旋型学習ロードマップ（R1〜R3スケジュール・ヒートマップ）
+- `study_notes.html`：学習ノートアプリ（条文・解説を科目別に記録・参考リンク集内蔵）
+- GitHub Pages 公開済み：`https://makotize-dev.github.io/real-estate/`
 
 ### 今後作成したいコンテンツ（TODO）
 - [ ] 科目別チートシート（重要事項の一覧・暗記用）
 - [ ] 過去問ベースの一問一答（権利関係・法令上の制限・税）
-- [ ] exam_v6.html を拡張、または科目別HTMLを追加
-- [ ] 学習進捗トラッカー
 - [ ] 直前対策まとめ（頻出ポイント・ひっかけパターン）
 
 ---
@@ -75,7 +81,8 @@ real-estate/
 - 試験頻出事項には明示的にマークをつける（例：`【頻出】`）
 - 表・フローチャートを積極的に使い視覚的に整理する
 
-### HTMLコンテンツ（exam_v6.html スタイル）
+### HTMLコンテンツのスタイル
 - スタンドアロン動作（サーバー不要、ブラウザで開くだけ）
-- CSSはファイル内に埋め込み
-- スマホ・PCどちらでも見やすいレイアウト
+- CSSはファイル内に埋め込み（Tailwind CDN + `<style>`）
+- スマホ・PCどちらでも見やすいレスポンシブレイアウト
+- PWA対応（`manifest.json` / `sw.js` は共通で全HTMLから参照）
