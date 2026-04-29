@@ -22,9 +22,8 @@ real-estate/
 ├── manifest.json                      # PWAマニフェスト
 ├── sw.js                              # Service Worker（オフラインキャッシュ）
 ├── icon.svg                           # アプリアイコン
-├── takken_guide_outline.md            # 全4科目アウトライン（ルート）
 └── guide-to-be-certified/
-    ├── takken_guide_outline.md        # 全4科目アウトライン（詳細版）
+    ├── takken_guide_outline.md        # 資格取得ガイド概要版（税理士向けダブルライセンス）
     ├── takken_chapter1_detailed.md    # 宅建士制度の概要・社会的意義
     ├── takken_chapter2_detailed.md    # 宅建士の実務（独占業務・日常業務）
     ├── takken_chapter3_detailed.md    # 税理士が取得するメリット（相続市場・収益モデル）
