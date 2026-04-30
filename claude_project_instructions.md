@@ -77,10 +77,10 @@
 
 ## 参考リンク（条文確認用）
 
-- **e-Gov 法令検索**（全条文）：https://elaws.e-gov.go.jp/
-- **宅地建物取引業法**：https://elaws.e-gov.go.jp/document?lawid=327AC0000000176
-- **民法**：https://elaws.e-gov.go.jp/document?lawid=129AC0000000089
-- **借地借家法**：https://elaws.e-gov.go.jp/document?lawid=403AC0000000090
-- **都市計画法**：https://elaws.e-gov.go.jp/document?lawid=343AC0000000100
-- **建築基準法**：https://elaws.e-gov.go.jp/document?lawid=325AC0000000201
+- **e-Gov 法令検索**（全条文）：https://laws.e-gov.go.jp/
+- **宅地建物取引業法**：https://laws.e-gov.go.jp/document?lawid=327AC1000000176
+- **民法**：https://laws.e-gov.go.jp/document?lawid=129AC0000000089
+- **借地借家法**：https://laws.e-gov.go.jp/document?lawid=403AC0000000090
+- **都市計画法**：https://laws.e-gov.go.jp/document?lawid=343AC0000000100
+- **建築基準法**：https://laws.e-gov.go.jp/document?lawid=325AC0000000201
 - **RETIO 過去問**：https://www.retio.or.jp/exam/kakomon.html
