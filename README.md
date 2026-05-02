@@ -13,7 +13,7 @@
 |--------|-----|------|
 | 📚 知識ポータル | [exam_v6.html](https://makotize-dev.github.io/real-estate/exam_v6.html) | 宅建業法の知識カード・比較表・一問一答（30問） |
 | 🗺️ ロードマップ | [roadmap.html](https://makotize-dev.github.io/real-estate/roadmap.html) | 螺旋型学習プラン・週9h配分ヒートマップ |
-| 📝 学習ノート | [study_notes.html](https://makotize-dev.github.io/real-estate/study_notes.html) | 法律の規定・解説を記録するノートアプリ |
+| 📝 学習ノート | [study_notes.html](https://makotize-dev.github.io/real-estate/study_notes.html) | 科目別の個人用リファレンス（Markdownビューワー） |
 
 スマホのブラウザで開き「ホーム画面に追加」するとアプリとして使えます（PWA対応・オフライン動作）。
 
@@ -25,7 +25,8 @@
 real-estate/
 ├── exam_v6.html              # 知識ポータル（宅建業法中心）
 ├── roadmap.html              # 学習ロードマップ（螺旋型3ラウンド）
-├── study_notes.html          # 学習ノートアプリ（localStorage保存）
+├── study_notes.html          # 学習ノートビューワー（study_notes/*.md を表示）
+├── study_notes/              # 科目別個人用リファレンス（Git管理・Claude が追記）
 ├── manifest.json             # PWAマニフェスト
 ├── sw.js                     # Service Worker（オフラインキャッシュ）
 ├── icon.svg                  # アプリアイコン
@@ -75,12 +76,9 @@ real-estate/
 - ラウンドごとのタスクリスト
 
 ### 📝 学習ノート（study_notes.html）
-- 条文・解説を科目別・トピック別に記録（localStorage保存）
-- 頻出フラグ・理解度（★5段階）の管理
-- キーワード検索・頻出フィルタ・並び替え
-- e-Gov 法令検索など参考リンク集を内蔵
-- JSON エクスポート／インポート（PC↔スマホのデータ転送）
-- 印刷対応
+- `study_notes/*.md` を科目別タブで表示するMarkdownビューワー
+- セッション末に Claude が内容を追記・Git管理（データが消えない）
+- 宅建業法・権利関係・法令制限・税その他の4科目タブ
 
 ---
 
@@ -90,10 +88,10 @@ real-estate/
 
 ```bash
 # Windows
-start study_notes.html
+start exam_v6.html
 
 # macOS
-open study_notes.html
+open exam_v6.html
 ```
 
 ---

@@ -3,7 +3,7 @@
  * オフライン時でもアプリを使えるようにするためのキャッシュ管理
  */
 
-const CACHE_NAME = 'takken-notes-v2';
+const CACHE_NAME = 'takken-notes-v3';
 
 // キャッシュするローカルファイル（事前キャッシュ）
 const LOCAL_ASSETS = [
@@ -15,9 +15,12 @@ const LOCAL_ASSETS = [
     './icon.svg',
 ];
 
-// ネットワーク優先にするHTML（頻繁に更新されるページ）
+// ネットワーク優先にするHTML・ファイル（頻繁に更新されるもの）
 const NETWORK_FIRST = [
     './study_log.html',
+    './study_notes.html',
+    './study_notes/',   // study_notes/*.md を常に最新取得
+    './study_log/',     // study_log/*.md を常に最新取得
 ];
 
 // キャッシュする外部リソース（Tailwind CDN）

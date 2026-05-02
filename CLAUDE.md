@@ -18,10 +18,13 @@ real-estate/
 ├── README.md                          # プロジェクト概要
 ├── exam_v6.html                       # 知識ポータル（宅建業法・知識カード・クイズ30問）
 ├── roadmap.html                       # 螺旋型学習ロードマップ（週配分ヒートマップ）
-├── study_notes.html                   # 学習ノートアプリ（条文・解説を記録・localStorage）
+├── study_notes.html                   # 学習ノートビューワー（study_notes/*.md を表示）
 ├── manifest.json                      # PWAマニフェスト
 ├── sw.js                              # Service Worker（オフラインキャッシュ）
 ├── icon.svg                           # アプリアイコン
+├── study_notes/
+│   ├── 宅建業法.md                    # 宅建業法の個人用リファレンス（Claude が追記）
+│   └── （権利関係・法令制限・税は学習進捗に応じて追加）
 └── guide-to-be-certified/
     ├── takken_guide_outline.md        # 資格取得ガイド概要版（税理士向けダブルライセンス）
     ├── takken_chapter1_detailed.md    # 宅建士制度の概要・社会的意義
@@ -58,7 +61,8 @@ real-estate/
 - `guide-to-be-certified/` の詳細ガイド6章分（合計約5,200行）
 - `exam_v6.html`：宅建業法の知識カード・比較表・一問一答（30問）・計算例
 - `roadmap.html`：螺旋型学習ロードマップ（R1〜R3スケジュール・ヒートマップ）
-- `study_notes.html`：学習ノートアプリ（条文・解説を科目別に記録・参考リンク集内蔵）
+- `study_notes.html`：学習ノートビューワー（`study_notes/*.md` を科目別タブで表示）
+- `study_notes/宅建業法.md` 等：セッション末に Claude が追記する個人用リファレンス（Git管理）
 - GitHub Pages 公開済み：`https://makotize-dev.github.io/real-estate/`
 
 ### 今後作成したいコンテンツ（TODO）
