@@ -16,15 +16,22 @@
 real-estate/
 ├── CLAUDE.md                          # このファイル（プロジェクト設定）
 ├── README.md                          # プロジェクト概要
+├── laws.md                            # 法令リンク集（e-Gov URL・必要時参照）
 ├── exam_v6.html                       # 知識ポータル（宅建業法・知識カード・クイズ30問）
 ├── roadmap.html                       # 螺旋型学習ロードマップ（週配分ヒートマップ）
 ├── study_notes.html                   # 学習ノートビューワー（study_notes/*.md を表示）
+├── study_log.html                     # 学習ログビューワー（study_log/*.md を表示）
 ├── manifest.json                      # PWAマニフェスト
 ├── sw.js                              # Service Worker（オフラインキャッシュ）
 ├── icon.svg                           # アプリアイコン
 ├── study_notes/
 │   ├── 宅建業法.md                    # 宅建業法の個人用リファレンス（Claude が追記）
-│   └── （権利関係・法令制限・税は学習進捗に応じて追加）
+│   ├── 権利関係.md                    # 権利関係（民法等）の個人用リファレンス
+│   └── （法令制限・税は学習進捗に応じて追加）
+├── study_log/
+│   ├── index.md                       # 進捗サマリー（毎セッション更新）
+│   ├── _template.md                   # 日次ログテンプレート
+│   └── YYYY-MM-DD.md                  # セッションごとの日次ログ
 └── guide-to-be-certified/
     ├── takken_guide_outline.md        # 資格取得ガイド概要版（税理士向けダブルライセンス）
     ├── takken_chapter1_detailed.md    # 宅建士制度の概要・社会的意義
@@ -34,6 +41,8 @@ real-estate/
     ├── takken_chapter5_detailed.md    # 合格までの学習計画（科目別戦略・スケジュール）
     └── takken_chapter6_detailed.md    # 学習継続のコツ（繁忙期対策・モチベーション管理）
 ```
+
+**条文URLは `laws.md` を参照**（e-Gov の宅建業法・民法・借地借家法・都市計画法・建築基準法・地方税法等の全URL）。常時参照は不要なため CLAUDE.md には載せていない。
 
 ---
 
