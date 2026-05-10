@@ -12,7 +12,7 @@
 | ページ | URL | 内容 |
 |--------|-----|------|
 | 📚 知識ポータル | [exam_v6.html](https://makotize-dev.github.io/real-estate/exam_v6.html) | 宅建業法の知識カード・比較表・一問一答（30問） |
-| 🗺️ ロードマップ | [roadmap.html](https://makotize-dev.github.io/real-estate/roadmap.html) | 螺旋型学習プラン・週9h配分ヒートマップ |
+| 🗺️ ロードマップ | [roadmap.html](https://makotize-dev.github.io/real-estate/roadmap.html) | 螺旋型学習プラン・週10h配分ヒートマップ |
 | 📝 学習ノート | [study_notes.html](https://makotize-dev.github.io/real-estate/study_notes.html) | 科目別の個人用リファレンス（Markdownビューワー） |
 
 スマホのブラウザで開き「ホーム画面に追加」するとアプリとして使えます（PWA対応・オフライン動作）。
@@ -46,10 +46,10 @@ real-estate/
 
 | フェーズ | 期間 | 方針 |
 |----------|------|------|
-| Round 1 | 5〜6月（週9h） | 全科目の条文を通読して骨格を作る |
-| Round 2 | 7〜8月（週9h） | 過去問10年分を繰り返し、弱点を数値で把握 |
-| Round 3 | 9月（週9h） | 模擬試験・弱点集中・チートシート確認 |
-| 直前期 | 10月（週8h） | 最終確認・体調管理 |
+| Round 1 | 5〜6月（週10h） | 全科目の条文を通読して骨格を作る |
+| Round 2 | 7〜8月（週10h） | 過去問10年分を繰り返し、弱点を数値で把握 |
+| Round 3 | 9月（週10h） | 模擬試験・弱点集中・チートシート確認 |
+| 直前期 | 10月（週9h） | 最終確認・体調管理 |
 
 ### 科目別目標
 
