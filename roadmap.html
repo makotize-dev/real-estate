@@ -17,6 +17,7 @@
         .gy-2  { background: #bfdbfe; color: #1e3a8a; }
 
         /* 権利関係（orange） */
+        .ke-3  { background: #9a3412; color: #fff; }
         .ke-25 { background: #c2410c; color: #fff; }
         .ke-2  { background: #fb923c; color: #fff; }
 
@@ -30,7 +31,9 @@
         .ze-05 { background: #ede9fe; color: #5b21b6; }
 
         /* 模擬試験（rose） */
+        .mo-3  { background: #881337; color: #fff; }
         .mo-2  { background: #be123c; color: #fff; }
+        .mo-1  { background: #fda4af; color: #9f1239; }
         .mo-05 { background: #fecdd3; color: #9f1239; }
         .mo-0  { background: #f1f5f9; color: #94a3b8; font-weight: 400; }
 
@@ -121,7 +124,7 @@
         <div class="grid grid-cols-3 gap-3 mt-3 text-center text-sm">
             <div class="bg-blue-50 rounded-xl p-3">
                 <div class="font-extrabold text-blue-700">Round 1</div>
-                <div class="text-xs text-blue-500 mt-0.5">5〜6月（8週）</div>
+                <div class="text-xs text-blue-500 mt-0.5">5〜6月（9週）</div>
                 <div class="text-xs text-slate-500 mt-2">全科目の骨格を作る<br>法令原文 ＋ ポータル</div>
             </div>
             <div class="bg-violet-50 rounded-xl p-3">
@@ -137,12 +140,12 @@
         </div>
     </section>
 
-    <!-- ▼ 週9時間のヒートマップ ▼ -->
+    <!-- ▼ 週10時間のヒートマップ ▼ -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-        <h2 class="font-extrabold text-slate-800 text-lg mb-1">週9時間の科目配分</h2>
+        <h2 class="font-extrabold text-slate-800 text-lg mb-1">週10時間の科目配分</h2>
         <p class="text-slate-500 text-sm mb-5">
             数字は<strong>週あたりの学習時間（h）</strong>。セルが濃いほど比重が高い。
-            5〜9月の週計はすべて9時間。
+            5〜9月の週計はすべて10時間（10月は直前期で9時間）。
         </p>
 
         <div class="overflow-x-auto">
@@ -169,21 +172,21 @@
                         <td class="hc gy-2">2h</td>
                         <td class="hc gy-2">2h</td>
                     </tr>
-                    <!-- 権利関係: 2.5 / 2.5 / 2 / 2 / 2 / 2 -->
+                    <!-- 権利関係: 3 / 3 / 2.5 / 2.5 / 2 / 2 -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">⚖️ 権利関係</td>
+                        <td class="hc ke-3">3h</td>
+                        <td class="hc ke-3">3h</td>
                         <td class="hc ke-25">2.5h</td>
                         <td class="hc ke-25">2.5h</td>
-                        <td class="hc ke-2">2h</td>
-                        <td class="hc ke-2">2h</td>
                         <td class="hc ke-2">2h</td>
                         <td class="hc ke-2">2h</td>
                     </tr>
-                    <!-- 法令制限: 1.5 / 1.5 / 2 / 2 / 2 / 1.5 -->
+                    <!-- 法令制限: 2 / 2 / 2 / 2 / 2 / 1.5 -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">🏙️ 法令制限</td>
-                        <td class="hc ho-15">1.5h</td>
-                        <td class="hc ho-15">1.5h</td>
+                        <td class="hc ho-2">2h</td>
+                        <td class="hc ho-2">2h</td>
                         <td class="hc ho-2">2h</td>
                         <td class="hc ho-2">2h</td>
                         <td class="hc ho-2">2h</td>
@@ -199,25 +202,25 @@
                         <td class="hc ze-1">1h</td>
                         <td class="hc ze-05">0.5h</td>
                     </tr>
-                    <!-- 模擬試験: 0 / 0 / 0.5 / 0.5 / 2 / 2 -->
+                    <!-- 模擬試験: 0 / 0 / 1 / 1 / 3 / 3 -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">📝 模擬試験</td>
                         <td class="hc mo-0">—</td>
                         <td class="hc mo-0">—</td>
-                        <td class="hc mo-05">0.5h</td>
-                        <td class="hc mo-05">0.5h</td>
-                        <td class="hc mo-2">2h</td>
-                        <td class="hc mo-2">2h</td>
+                        <td class="hc mo-1">1h</td>
+                        <td class="hc mo-1">1h</td>
+                        <td class="hc mo-3">3h</td>
+                        <td class="hc mo-3">3h</td>
                     </tr>
                     <!-- 週計 -->
                     <tr>
                         <td class="text-xs text-slate-400 pr-2 pt-3">週計</td>
+                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
+                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
+                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
+                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
+                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">8h</td>
                     </tr>
                 </tbody>
             </table>
@@ -237,7 +240,7 @@
             <div class="round-card border-blue-200">
                 <div class="bg-blue-500 text-white px-6 py-4">
                     <div class="font-extrabold text-xl">Round 1 — 全科目の骨格を作る</div>
-                    <div class="text-blue-100 text-sm mt-0.5">5月・6月 ｜ 週9h × 8週 ≈ 72時間</div>
+                    <div class="text-blue-100 text-sm mt-0.5">5月・6月 ｜ 週10h × 9週 ≈ 90時間</div>
                 </div>
                 <div class="bg-blue-50 border-b border-blue-100 px-6 py-3 text-sm">
                     <span class="font-extrabold text-blue-700">▶ 学習方式：</span>
@@ -254,7 +257,7 @@
                         </ul>
                     </div>
                     <div>
-                        <p class="text-xs font-extrabold text-orange-700 mb-2">⚖️ 権利関係（週2.5h）</p>
+                        <p class="text-xs font-extrabold text-orange-700 mb-2">⚖️ 権利関係（週3h）</p>
                         <ul>
                             <li class="task-li">民法 93〜96条（意思表示）・99〜118条（代理）・177条（対抗要件）を条文で速習</li>
                             <li class="task-li">借地借家法・区分所有法は条文＋国交省解説で重点学習（頻出）</li>
@@ -262,7 +265,7 @@
                         </ul>
                     </div>
                     <div>
-                        <p class="text-xs font-extrabold text-emerald-700 mb-2">🏙️ 法令制限（週1.5h）</p>
+                        <p class="text-xs font-extrabold text-emerald-700 mb-2">🏙️ 法令制限（週2h）</p>
                         <ul>
                             <li class="task-li">都市計画法 1〜43条・建築基準法 1〜60条を条文で通読し構造を把握</li>
                             <li class="task-li">農地法・国土利用計画法・盛土規制法は条文の概要のみ確認</li>
@@ -284,7 +287,7 @@
             <div class="round-card border-violet-200">
                 <div class="bg-violet-600 text-white px-6 py-4">
                     <div class="font-extrabold text-xl">Round 2 — 全科目を過去問で鍛える</div>
-                    <div class="text-violet-100 text-sm mt-0.5">7月・8月 ｜ 週9h × 9週 ≈ 81時間</div>
+                    <div class="text-violet-100 text-sm mt-0.5">7月・8月 ｜ 週10h × 9週 ≈ 90時間</div>
                 </div>
                 <div class="bg-violet-50 border-b border-violet-100 px-6 py-3 text-sm">
                     <span class="font-extrabold text-violet-700">▶ 進め方：</span>
@@ -300,7 +303,7 @@
                         </ul>
                     </div>
                     <div>
-                        <p class="text-xs font-extrabold text-orange-700 mb-2">⚖️ 権利関係（週2h）</p>
+                        <p class="text-xs font-extrabold text-orange-700 mb-2">⚖️ 権利関係（週2.5h）</p>
                         <ul>
                             <li class="task-li">過去問10年分を1〜2周</li>
                             <li class="task-li">借地借家法・区分所有法の頻出問題を中心に</li>
@@ -316,7 +319,7 @@
                         </ul>
                     </div>
                     <div>
-                        <p class="text-xs font-extrabold text-violet-700 mb-2">💴 税・その他（週1.5h）＋ 模擬（週0.5h）</p>
+                        <p class="text-xs font-extrabold text-violet-700 mb-2">💴 税・その他（週1.5h）＋ 模擬（週1h）</p>
                         <ul>
                             <li class="task-li">過去問で宅建特有の出題パターンを確認</li>
                             <li class="task-li">地価公示・不動産鑑定評価基準を整理</li>
@@ -330,11 +333,11 @@
             <div class="round-card border-rose-200">
                 <div class="bg-rose-600 text-white px-6 py-4">
                     <div class="font-extrabold text-xl">Round 3 — 模擬試験・弱点仕上げ</div>
-                    <div class="text-rose-100 text-sm mt-0.5">9月 ｜ 週9h × 4週 ≈ 36時間</div>
+                    <div class="text-rose-100 text-sm mt-0.5">9月 ｜ 週10h × 4週 ≈ 40時間</div>
                 </div>
                 <div class="p-6 grid md:grid-cols-2 gap-6">
                     <div>
-                        <p class="text-xs font-extrabold text-rose-700 mb-2">📝 模擬試験（週2h）</p>
+                        <p class="text-xs font-extrabold text-rose-700 mb-2">📝 模擬試験（週3h）</p>
                         <ul>
                             <li class="task-li">市販の予想問題集で2〜3回（50問×2時間）</li>
                             <li class="task-li">時間配分を体で覚える</li>
@@ -447,7 +450,7 @@
         <div class="mb-7">
             <div class="flex items-center gap-2 mb-3">
                 <span class="bg-blue-500 text-white text-xs font-extrabold px-3 py-1 rounded-full">5月 Round 1</span>
-                <span class="text-slate-400 text-xs">W1〜W4 ｜ 週9h × 4週 ≈ 36時間</span>
+                <span class="text-slate-400 text-xs">W1〜W4 ｜ 週10h（W1は10日間）</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs" style="border-collapse:separate; border-spacing:4px;">
@@ -455,8 +458,8 @@
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
                             <th class="text-left pb-1" style="min-width:155px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法</span> <span class="text-slate-300 font-normal">3.5h</span></th>
-                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2.5h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">1.5h</span></th>
+                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">3h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">2h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他</span> <span class="text-slate-300 font-normal">1.5h</span></th>
                         </tr>
                     </thead>
@@ -464,7 +467,7 @@
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W1</span>
-                                <div class="text-slate-400" style="font-size:11px;">5/1〜7</div>
+                                <div class="text-slate-400" style="font-size:11px;">5/1〜10</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">宅建業の定義・免許制度</div>
@@ -486,7 +489,7 @@
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W2</span>
-                                <div class="text-slate-400" style="font-size:11px;">5/8〜14</div>
+                                <div class="text-slate-400" style="font-size:11px;">5/11〜17</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">宅建士制度</div>
@@ -508,7 +511,7 @@
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W3</span>
-                                <div class="text-slate-400" style="font-size:11px;">5/15〜21</div>
+                                <div class="text-slate-400" style="font-size:11px;">5/18〜24</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">営業保証金・保証協会</div>
@@ -530,7 +533,7 @@
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W4</span>
-                                <div class="text-slate-400" style="font-size:11px;">5/22〜31</div>
+                                <div class="text-slate-400" style="font-size:11px;">5/25〜31</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">媒介契約</div>
@@ -554,11 +557,11 @@
             </div>
         </div>
 
-        <!-- ─── 6月（W5〜W8）─── -->
+        <!-- ─── 6月（W5〜W9）─── -->
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
                 <span class="bg-blue-700 text-white text-xs font-extrabold px-3 py-1 rounded-full">6月 Round 1</span>
-                <span class="text-slate-400 text-xs">W5〜W8 ｜ 週9h × 4週 ≈ 36時間</span>
+                <span class="text-slate-400 text-xs">W5〜W9 ｜ 週10h（W9は2日間）</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs" style="border-collapse:separate; border-spacing:4px;">
@@ -566,8 +569,8 @@
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
                             <th class="text-left pb-1" style="min-width:155px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法</span> <span class="text-slate-300 font-normal">3.5h</span></th>
-                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2.5h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">1.5h</span></th>
+                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">3h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">2h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他</span> <span class="text-slate-300 font-normal">1.5h</span></th>
                         </tr>
                     </thead>
@@ -641,14 +644,14 @@
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W8</span>
-                                <div class="text-slate-400" style="font-size:11px;">6/22〜30</div>
+                                <div class="text-slate-400" style="font-size:11px;">6/22〜28</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">報酬計算 ＋ R1 総点検</div>
+                                <div class="font-bold text-slate-700 leading-snug">報酬計算</div>
                                 <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 46条・国交省告示<br>（売買・賃貸の上限計算）</div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">不動産登記法 ＋ R1 総点検</div>
+                                <div class="font-bold text-slate-700 leading-snug">不動産登記法</div>
                                 <div class="text-orange-500 mt-0.5" style="font-size:11px;">不動産登記法 1〜16条<br>（登記の種類・対抗要件・仮登記）</div>
                             </td>
                             <td class="bg-emerald-50 rounded-lg p-2 align-top">
@@ -658,6 +661,28 @@
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">全科目弱点メモ作成</div>
                                 <div class="text-violet-500 mt-0.5" style="font-size:11px;">クイズで間違えた問題を整理<br>R2（過去問演習）の優先リスト作成</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="align-top py-2 pr-2">
+                                <span class="font-extrabold text-slate-600">W9</span>
+                                <div class="text-slate-400" style="font-size:11px;">6/29〜30</div>
+                            </td>
+                            <td class="bg-blue-50 rounded-lg p-2 align-top">
+                                <div class="font-bold text-slate-700 leading-snug">R1 宅建業法 総点検</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">免許〜報酬まで通し復習<br>（R2 過去問の優先順位確定）</div>
+                            </td>
+                            <td class="bg-orange-50 rounded-lg p-2 align-top">
+                                <div class="font-bold text-slate-700 leading-snug">R1 権利関係 総点検</div>
+                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">民法・借地借家法・区分所有法・登記法<br>（弱点条文をリスト化）</div>
+                            </td>
+                            <td class="bg-emerald-50 rounded-lg p-2 align-top">
+                                <div class="font-bold text-slate-700 leading-snug">R2 移行準備</div>
+                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">過去問サイト確認・<br>7月の週次計画策定</div>
+                            </td>
+                            <td class="bg-violet-50 rounded-lg p-2 align-top">
+                                <div class="font-bold text-slate-700 leading-snug">R1 税 総点検</div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">取得税・固定資産税・印紙税・登録免許税<br>（数字の最終確認）</div>
                             </td>
                         </tr>
                     </tbody>
@@ -723,7 +748,7 @@
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
                             <th class="text-left pb-1" style="min-width:155px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法</span> <span class="text-slate-300 font-normal">3h</span></th>
-                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2h</span></th>
+                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2.5h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">2h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他</span> <span class="text-slate-300 font-normal">1.5h</span></th>
                         </tr>
@@ -834,9 +859,9 @@
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
                             <th class="text-left pb-1" style="min-width:155px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法</span> <span class="text-slate-300 font-normal">3h</span></th>
-                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2h</span></th>
+                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2.5h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">2h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他</span> <span class="text-slate-300 font-normal">1.5h＋模擬0.5h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他</span> <span class="text-slate-300 font-normal">1.5h＋模擬1h</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1006,14 +1031,14 @@
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
                 <span class="bg-rose-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">9月 Round 3</span>
-                <span class="text-slate-400 text-xs">W1〜W4 ｜ 週9h × 4週 ≈ 36時間</span>
+                <span class="text-slate-400 text-xs">W1〜W4 ｜ 週10h × 4週 ≈ 40時間</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs" style="border-collapse:separate; border-spacing:4px;">
                     <thead>
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
-                            <th class="text-left pb-1" style="min-width:125px;"><span class="text-rose-600 font-extrabold">📝 模擬試験</span> <span class="text-slate-300 font-normal">2h</span></th>
+                            <th class="text-left pb-1" style="min-width:125px;"><span class="text-rose-600 font-extrabold">📝 模擬試験</span> <span class="text-slate-300 font-normal">3h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
