@@ -141,8 +141,9 @@ study_log/
 ## 開発ガイドライン
 
 ### ブランチ運用
-- メインブランチ：`main`
-- 作業ブランチ：`claude/` プレフィックスで作成
+- ひとり学習のためレビュー・PRは不要。**`main` で直接作業する**（作業ブランチは作らない）。
+- セッション終了時のログは `main` にコミットし、`git push origin main` で完結させる。
+- 注意：Claude Code を worktree で起動すると自動で `claude/` ブランチ上になる。`main` で作業するには、worktree ではなくリポジトリ本体のフォルダ（`C:\dev\real-estate`）で起動する。worktree で起動してしまった場合は、コミット後に `git push origin HEAD:main` で `main` へ反映する。
 
 ### コンテンツ作成の方針
 - 税理士目線での解説を優先（既存知識との比較・つながりを意識）
