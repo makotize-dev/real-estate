@@ -55,7 +55,19 @@
 Claude が条文を確認する際は、以下のAPIエンドポイントが利用可能：
 
 - 個別条文取得：`https://laws.e-gov.go.jp/api/1/articles;lawNum={法令番号URLエンコード};article={条番号}`
-- 例（宅建業法11条）：`https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%BA%8C%E5%8D%81%E4%B8%83%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E7%99%BE%E4%B8%83%E5%8D%81%E5%85%AD%E5%8F%B7;article=11`
 - 法令ID指定の全文取得：`https://laws.e-gov.go.jp/api/1/lawdata/{法令ID}`（量が多いと末尾切れあり）
 
 ブラウザ表示用URL（`/document?lawid=...` や `/law/...`）は JavaScript レンダリングのため WebFetch では取得不可。
+
+### 主要法令の API URL テンプレート（コピー用）
+
+漢字の手動エンコードでミスが頻発するため、**動作確認済みの URL を verbatim でコピー**して article 番号だけ差し替える運用にする。
+
+| 法令 | 法令番号 | API URL テンプレート（articleを差し替え）|
+|------|---------|---------------------------------------|
+| 宅地建物取引業法 | 昭和27年法律第176号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%BA%8C%E5%8D%81%E4%B8%83%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E7%99%BE%E4%B8%83%E5%8D%81%E5%85%AD%E5%8F%B7;article={N}` |
+| 民法 | 明治29年法律第89号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%8E%E6%B2%BB%E4%BA%8C%E5%8D%81%E4%B9%9D%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E5%85%AB%E5%8D%81%E4%B9%9D%E5%8F%B7;article={N}` |
+
+新しい法令を使うときは、初回に**正しいエンコードを確認してこの表に追加**してから利用すること（記憶ベースでエンコードしない）。
+
+枝番付き条文（例：民法34条の2）の article パラメータは `34_2` の形式。
