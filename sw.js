@@ -3,7 +3,7 @@
  * オフライン時でもアプリを使えるようにするためのキャッシュ管理
  */
 
-const CACHE_NAME = 'takken-notes-v3';
+const CACHE_NAME = 'takken-notes-v4';
 
 // キャッシュするローカルファイル（事前キャッシュ）
 const LOCAL_ASSETS = [
@@ -19,6 +19,7 @@ const LOCAL_ASSETS = [
 const NETWORK_FIRST = [
     './study_log.html',
     './study_notes.html',
+    './exam_v6.html',   // 問題を頻繁に追加するため常に最新取得
     './study_notes/',   // study_notes/*.md を常に最新取得
     './study_log/',     // study_log/*.md を常に最新取得
 ];
