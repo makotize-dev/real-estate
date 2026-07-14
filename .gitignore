@@ -1,2 +1,6 @@
 # Claude Code の内部ディレクトリ（ワークツリー・セッション情報）
-.claude/
+.claude/*
+
+# ただし鉄則C（捏造禁止）の機械的ガードはリポジトリに残す
+!.claude/settings.json
+!.claude/hooks/

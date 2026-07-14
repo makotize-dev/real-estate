@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/no-fabricated-turn.js\"",
+            "timeout": 15,
+            "statusMessage": "捏造チェック（鉄則C）"
+          }
+        ]
+      }
+    ]
+  }
+}
