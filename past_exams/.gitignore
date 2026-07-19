@@ -1,0 +1,16 @@
+# 実物の年度別過去問（RETIO等の著作権物）はローカル保存のみ。
+# 公開リポジトリ（GitHub Pages）へは push しない＝以下のファイル形式を除外する。
+*.pdf
+*.PDF
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.zip
+*.docx
+*.xlsx
+
+# フォルダ構成・README・自作の採点メモ(.md)は追跡可
+!.gitignore
+!README.md
+!.gitkeep
