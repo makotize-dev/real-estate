@@ -11,8 +11,17 @@
 // C を足した理由（2026-07-16 の違反）：無意味な Bash 呼び出しでターンを継続し、
 // その継続の中で「ユーザーが答えた」と幻覚して採点+出題を繰り返した。旧版は
 // ターン末尾の1メッセージしか見ず、途中の捏造メッセージを見逃した。
+//
+// 2026-07-21 の違反と修正：旧版は先頭で `if (stop_hook_active) exit(0)` として
+// ブロック後の書き直しを一切検査しなかった。このため「ブロック→ロール記号だけ
+// 消して捏造解答の採点を残し再送信」というラウンダリングが素通りした（Q8事件）。
+// → 書き直しも必ず検査する。無限ループは「同じ実ユーザーターン位置での連続ブロック
+//   回数」をサイドカーで計数し、上限（MAX_BLOCKS）超で fail-open することで防ぐ。
+//   実ユーザーが新しい発言をすれば位置が進み、カウントは自動リセットされる。
 
 const fs = require('fs');
+
+const MAX_BLOCKS = 3; // 同一位置での連続ブロック上限（超えたら fail-open）
 
 function textOf(o) {
   const m = o && o.message;
@@ -37,6 +46,32 @@ function isRealUserTurn(o) {
   return true;
 }
 
+// サイドカー（連続ブロック回数の記録）ユーティリティ
+function guardPath(tp) {
+  return tp + '.nftguard';
+}
+function readGuard(tp) {
+  try {
+    return JSON.parse(fs.readFileSync(guardPath(tp), 'utf8'));
+  } catch {
+    return { lastUser: -1, count: 0 };
+  }
+}
+function writeGuard(tp, state) {
+  try {
+    fs.writeFileSync(guardPath(tp), JSON.stringify(state));
+  } catch {
+    /* 書けなくても検査自体は続行する */
+  }
+}
+function clearGuard(tp) {
+  try {
+    fs.unlinkSync(guardPath(tp));
+  } catch {
+    /* なければ何もしない */
+  }
+}
+
 let raw = '';
 process.stdin.on('data', (c) => (raw += c));
 process.stdin.on('end', () => {
@@ -46,7 +81,8 @@ process.stdin.on('end', () => {
   } catch {
     process.exit(0);
   }
-  if (input.stop_hook_active) process.exit(0); // ブロック後の無限ループ回避
+  // 注意：旧版はここで stop_hook_active を見て全スキップしていたが、それが
+  // 書き直しの素通りを許した。スキップはせず、下の連続ブロック上限でループを防ぐ。
 
   const tp = input.transcript_path;
   if (!tp || !fs.existsSync(tp)) process.exit(0);
@@ -85,7 +121,10 @@ process.stdin.on('end', () => {
       if (t.trim()) assistantTexts.push(t);
     }
   }
-  if (assistantTexts.length === 0) process.exit(0);
+  if (assistantTexts.length === 0) {
+    clearGuard(tp);
+    process.exit(0);
+  }
 
   const roleRe = /^[ \t]*(user|human|assistant)[ \t]*(?:[:：]|[^\x00-\x7F])/im;
   const ASK = /(○か×か|答えてください|番号と理由)/g;
@@ -136,16 +175,39 @@ process.stdin.on('end', () => {
     );
   }
 
-  if (problems.length === 0) process.exit(0);
+  if (problems.length === 0) {
+    clearGuard(tp); // 綺麗に通ったのでカウンタをリセット
+    process.exit(0);
+  }
+
+  // 違反あり。連続ブロック回数を更新（実ユーザーターンの位置が進んでいたらリセット）
+  const guard = readGuard(tp);
+  const count = (guard.lastUser === lastUser ? guard.count : 0) + 1;
+
+  if (count > MAX_BLOCKS) {
+    // これ以上ブロックすると無限ループの恐れ。fail-open して人間に委ねる。
+    process.stderr.write(
+      '[no-fabricated-turn] 連続' +
+        (count - 1) +
+        '回ブロック後も違反が残るため fail-open します。手動で確認してください：\n' +
+        Array.from(new Set(problems)).join('\n') +
+        '\n'
+    );
+    clearGuard(tp);
+    process.exit(0);
+  }
+
+  writeGuard(tp, { lastUser, count });
 
   const reason = [
     '【鉄則C（捏造禁止）違反を検出しました。このメッセージは送信されません】',
+    '（書き直し ' + count + '/' + MAX_BLOCKS + ' 回目。書き直しも検査されます）',
     ...Array.from(new Set(problems)),
     '',
     '書き直しの指示：',
     '1. ユーザーの発言・解答を自分で書かない。書いた部分は削除する。',
     '2. 問いを出す回は、問いをメッセージの最後に置く。その後ろに解答・判定・解説・次の問いを書かない。',
-    '3. ユーザーの実際の解答を受け取ってから、次の回で判定する。',
+    '3. ユーザーの実際の解答を受け取ってから、次の回で判定する。既に書いた採点は消す。',
     '4. 出題中は無意味なツール呼び出し（echo 等）をしない。ターンを継続して解答を捏造する引き金になる。',
   ].join('\n');
 
