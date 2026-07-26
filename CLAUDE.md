@@ -33,6 +33,9 @@ real-estate/
 │   ├── index.md                       # 進捗サマリー（毎セッション更新）
 │   ├── _template.md                   # 日次ログテンプレート
 │   └── YYYY-MM-DD.md                  # セッションごとの日次ログ
+├── past_exams/                        # 実物の年度別過去問（PDFはgitignore・.mdのみ追跡）
+│   ├── README.md                      # 過去問演習の運用ルール（活動開始時に必読）
+│   └── 過去問演習記録.md               # 実物過去問の結果・推移・誤答論点の恒久記録
 └── guide-to-be-certified/
     ├── takken_guide_outline.md        # 資格取得ガイド概要版（税理士向けダブルライセンス）
     ├── takken_chapter1_detailed.md    # 宅建士制度の概要・社会的意義
