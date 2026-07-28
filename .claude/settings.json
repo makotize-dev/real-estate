@@ -8,6 +8,12 @@
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/no-fabricated-turn.js\"",
             "timeout": 15,
             "statusMessage": "捏造チェック（鉄則C）"
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/context-length-warn.js\"",
+            "timeout": 15,
+            "statusMessage": "スレッド長チェック"
           }
         ]
       }
