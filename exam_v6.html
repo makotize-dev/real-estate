@@ -60,6 +60,9 @@
             <button id="wrong-btn" onclick="start('wrong')" class="bg-white border-2 border-red-300 text-red-600 hover:bg-red-50 font-bold py-3.5 rounded-xl transition">
                 間違いだけ再テスト <span id="wrong-count" class="text-xs"></span>
             </button>
+            <button id="export-btn" onclick="exportWrong()" class="bg-white border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-bold py-3 rounded-xl transition text-sm">
+                誤答リストを書き出す（.md）
+            </button>
         </div>
 
         <div id="last-result" class="hidden bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-900 text-center mb-5"></div>
@@ -104,10 +107,15 @@
             <p id="r-pct" class="text-sm font-bold text-slate-500"></p>
             <div id="r-breakdown" class="mt-5 space-y-2 text-left text-sm"></div>
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div id="r-wrong-list" class="hidden bg-white rounded-2xl shadow-sm border p-5 mb-5">
+            <h3 class="font-bold text-slate-700 mb-3 text-sm">今回間違えた問題</h3>
+            <ol id="r-wrong-items" class="space-y-2 text-sm list-decimal list-inside text-slate-700"></ol>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
             <button id="r-retry-wrong" onclick="start('wrong')" class="bg-white border-2 border-red-300 text-red-600 hover:bg-red-50 font-bold py-3 rounded-xl transition text-sm">間違いだけ復習</button>
             <button onclick="goHome()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition text-sm">ホームへ</button>
         </div>
+        <button onclick="exportWrong()" class="w-full bg-white border-2 border-slate-300 text-slate-600 hover:bg-slate-50 font-bold py-3 rounded-xl transition text-sm">誤答リストを書き出す（.md）</button>
     </section>
 
 </div>
@@ -642,10 +650,64 @@ function wrongIds(){
     return Object.keys(s).filter(id => s[id].lastWrong);
 }
 
+/* 誤答リストを Markdown で書き出す（Claude が読めるようにファイル化する）
+   出力先はブラウザの既定ダウンロードフォルダ。ファイル名に日付が入る。 */
+function exportWrong(){
+    const s = loadStats();
+    const ids = wrongIds();
+    const now = new Date();
+    const p2 = n => String(n).padStart(2,'0');
+    const stamp = `${now.getFullYear()}-${p2(now.getMonth()+1)}-${p2(now.getDate())}`;
+    const time = `${p2(now.getHours())}:${p2(now.getMinutes())}`;
+
+    let last = null;
+    try { last = JSON.parse(localStorage.getItem('examv6_last')); } catch(e){}
+
+    const lines = [];
+    lines.push(`# exam_v6 誤答リスト ${stamp} ${time}`);
+    lines.push('');
+    if(last) lines.push(`- 直近の結果：**${last.score} / ${last.total}**（正答率 ${Math.round(last.score/last.total*100)}%）`);
+    lines.push(`- 収録問題数：${QUESTIONS.length}問`);
+    lines.push(`- 誤答バンク：**${ids.length}問**（直近の解答が誤りだったもの）`);
+    lines.push('');
+
+    if(ids.length === 0){
+        lines.push('誤答バンクは空です。');
+    } else {
+        // 科目ごとにまとめる
+        const bySub = {};
+        ids.forEach(id => {
+            const q = QUESTIONS.find(x => x.id === id);
+            if(!q) return;
+            (bySub[q.subject] = bySub[q.subject] || []).push({ q, st: s[id] });
+        });
+        Object.keys(bySub).forEach(sub => {
+            lines.push(`## ${sub}（${bySub[sub].length}問）`);
+            lines.push('');
+            lines.push('| id | 論点 | 根拠 | 正解 | 出題/誤答 | 問題文 |');
+            lines.push('|---|---|---|:--:|:--:|---|');
+            bySub[sub].forEach(({q, st}) => {
+                const qt = q.q.replace(/\|/g, '／');
+                lines.push(`| \`${q.id}\` | ${q.topic} | ${q.source} | ${q.answer ? '○' : '×'} | ${st.seen}/${st.wrong} | ${qt} |`);
+            });
+            lines.push('');
+        });
+    }
+
+    const blob = new Blob([lines.join('\n')], { type:'text/markdown;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `exam_v6_wrong_${stamp}.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
 /* =========================================================
    エンジン
    ========================================================= */
-let queue = [], idx = 0, score = 0, perSubject = {};
+let queue = [], idx = 0, score = 0, perSubject = {}, roundWrong = [];
 
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
@@ -687,7 +749,7 @@ function start(mode, subject){
     else pool = QUESTIONS.slice();
     if(pool.length===0) return;
     queue = shuffle(pool.slice());
-    idx = 0; score = 0; perSubject = {};
+    idx = 0; score = 0; perSubject = {}; roundWrong = [];
     show('quiz');
     renderQuestion();
 }
@@ -735,6 +797,7 @@ function answer(val, btn){
     if(correct) score++;
     perSubject[q.subject] = perSubject[q.subject] || {c:0,n:0};
     perSubject[q.subject].n++; if(correct) perSubject[q.subject].c++;
+    if(!correct && !roundWrong.includes(q.id)) roundWrong.push(q.id);
     recordResult(q.id, correct);
 
     const ex = document.getElementById('q-explain');
@@ -779,6 +842,25 @@ function showResult(){
             <span class="text-slate-600">${p.c} / ${p.n}</span>
           </div>`;
     });
+
+    // 今回間違えた問題を結果画面に一覧表示する
+    const wrongThisRound = queue.filter(q => roundWrong.includes(q.id));
+    const box = document.getElementById('r-wrong-list');
+    const items = document.getElementById('r-wrong-items');
+    items.innerHTML = '';
+    if(wrongThisRound.length){
+        box.classList.remove('hidden');
+        wrongThisRound.forEach(q=>{
+            items.innerHTML += `
+              <li class="border-b border-slate-100 pb-2">
+                <span class="font-bold c-${subKey(q.subject)}">${q.subject}</span>
+                <span class="text-slate-700">${q.topic}</span>
+                <span class="block text-xs text-slate-400 mt-0.5">${q.source}</span>
+              </li>`;
+        });
+    } else {
+        box.classList.add('hidden');
+    }
 
     const w = wrongIds().length;
     const rw = document.getElementById('r-retry-wrong');
