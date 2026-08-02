@@ -60,6 +60,7 @@
 
 ```bash
 git add study_log/ study_notes/ exam_v6.html
+# ↑に加え、触った回だけ： roadmap.html past_exams/ laws.md memory は対象外（リポジトリ外）
 git commit -m "学習ログ：YYYY-MM-DD（学習内容の一言メモ）"
 git push origin main
 ```
