@@ -12,6 +12,7 @@
         .hc { border-radius: 8px; text-align: center; padding: 10px 6px; font-weight: 700; font-size: 13px; }
 
         /* 宅建業法（blue） */
+        .gy-4  { background: #172554; color: #fff; }
         .gy-35 { background: #1e40af; color: #fff; }
         .gy-3  { background: #2563eb; color: #fff; }
         .gy-2  { background: #bfdbfe; color: #1e3a8a; }
@@ -32,6 +33,7 @@
 
         /* 模擬試験（rose） */
         .mo-3  { background: #881337; color: #fff; }
+        .mo-25 { background: #9f1239; color: #fff; }
         .mo-2  { background: #be123c; color: #fff; }
         .mo-1  { background: #fda4af; color: #9f1239; }
         .mo-05 { background: #fecdd3; color: #9f1239; }
@@ -162,53 +164,53 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 宅建業法: 3.5 / 3.5 / 3 / 3 / 2 / 2 -->
+                    <!-- 宅建業法: 3.5 / 3.5 / 3 / 4 / 3 / 2　※8月・9月は2026-08-02改定（実測2回で差の6.5〜8.5点が業法に集中） -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">🏠 宅建業法</td>
                         <td class="hc gy-35">3.5h</td>
                         <td class="hc gy-35">3.5h</td>
                         <td class="hc gy-3">3h</td>
+                        <td class="hc gy-4">4h</td>
                         <td class="hc gy-3">3h</td>
                         <td class="hc gy-2">2h</td>
-                        <td class="hc gy-2">2h</td>
                     </tr>
-                    <!-- 権利関係: 3 / 3 / 2.5 / 2.5 / 2 / 2 -->
+                    <!-- 権利関係: 3 / 3 / 2.5 / 2 / 2 / 2 -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">⚖️ 権利関係</td>
                         <td class="hc ke-3">3h</td>
                         <td class="hc ke-3">3h</td>
                         <td class="hc ke-25">2.5h</td>
-                        <td class="hc ke-25">2.5h</td>
+                        <td class="hc ke-2">2h</td>
                         <td class="hc ke-2">2h</td>
                         <td class="hc ke-2">2h</td>
                     </tr>
-                    <!-- 法令制限: 2 / 2 / 2 / 2 / 2 / 1.5 -->
+                    <!-- 法令制限: 2 / 2 / 2 / 1.5 / 1.5 / 1.5 -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">🏙️ 法令制限</td>
                         <td class="hc ho-2">2h</td>
                         <td class="hc ho-2">2h</td>
                         <td class="hc ho-2">2h</td>
-                        <td class="hc ho-2">2h</td>
-                        <td class="hc ho-2">2h</td>
+                        <td class="hc ho-15">1.5h</td>
+                        <td class="hc ho-15">1.5h</td>
                         <td class="hc ho-15">1.5h</td>
                     </tr>
-                    <!-- 税・その他: 1.5 / 1.5 / 1.5 / 1.5 / 1 / 0.5 -->
+                    <!-- 税・その他＋免除: 1.5 / 1.5 / 1.5 / 1 / 1.5 / 0.5　※8月内訳＝税0.25・免除0.75 -->
                     <tr>
-                        <td class="text-xs font-bold text-slate-600 pr-2 py-1">💴 税・その他</td>
-                        <td class="hc ze-15">1.5h</td>
+                        <td class="text-xs font-bold text-slate-600 pr-2 py-1">💴 税・その他＋免除</td>
                         <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-1">1h</td>
+                        <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-05">0.5h</td>
                     </tr>
-                    <!-- 模擬試験: 0 / 0 / 1 / 1 / 3 / 3 -->
+                    <!-- 実物過去問・模試: 0 / 0 / 1 / 2.5 / 3 / 3 -->
                     <tr>
-                        <td class="text-xs font-bold text-slate-600 pr-2 py-1">📝 模擬試験</td>
+                        <td class="text-xs font-bold text-slate-600 pr-2 py-1">📝 実物過去問・模試</td>
                         <td class="hc mo-0">—</td>
                         <td class="hc mo-0">—</td>
                         <td class="hc mo-1">1h</td>
-                        <td class="hc mo-1">1h</td>
+                        <td class="hc mo-25">2.5h</td>
                         <td class="hc mo-3">3h</td>
                         <td class="hc mo-3">3h</td>
                     </tr>
@@ -218,16 +220,17 @@
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
+                        <td class="text-center text-sm font-extrabold text-rose-600 pt-3">11h</td>
+                        <td class="text-center text-sm font-extrabold text-rose-600 pt-3">11h</td>
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <p class="text-xs text-slate-400 mt-3">
-            ※ 税・その他は税理士としての既存知識があるため、他科目より比重を低く設定。<br>
-            ※ 10月は直前期のため学習量を少し落とし、体調管理を優先。
+            ※ 税・その他は税理士としての既存知識があるため、他科目より比重を低く設定。<b>ただし同じ枠に入る免除科目（5問）が弱い</b>ので、8月以降は内訳を <b>税0.25h／免除0.75h</b> に組み替える。<br>
+            ※ <b class="text-rose-600">8月・9月は週11h（2026-08-02 改定）</b>＝平日1h×5＋土3h＋日3h。実測2回（23/50・28/50）で<b>目標38点までの差12.5点のうち6.5〜8.5点が宅建業法</b>に集中していたため、業法へ寄せた。<b>実物過去問のレビューは各科目枠の内数</b>（別枠にすると他を食うため。1年度あたり上限2h）。<br>
+            ※ 10月は直前期のため学習量を少し落とし、体調管理を優先。<b>10月の配分は8/2の改定対象外＝R3終了時に見直す。</b>
         </p>
     </section>
 
@@ -288,7 +291,7 @@
             <div class="round-card border-violet-200">
                 <div class="bg-violet-600 text-white px-6 py-4">
                     <div class="font-extrabold text-xl">Round 2 — 全科目を過去問で鍛える</div>
-                    <div class="text-violet-100 text-sm mt-0.5">7月・8月 ｜ 週10h × 9週 ≈ 90時間</div>
+                    <div class="text-violet-100 text-sm mt-0.5">7月・8月 ｜ 週10h（7月）→ <b>週11h（8月・8/2改定）</b>× 9週 ≈ 94時間</div>
                 </div>
                 <div class="bg-violet-50 border-b border-violet-100 px-6 py-3 text-sm">
                     <span class="font-extrabold text-violet-700">▶ 進め方：</span>
@@ -334,7 +337,7 @@
             <div class="round-card border-rose-200">
                 <div class="bg-rose-600 text-white px-6 py-4">
                     <div class="font-extrabold text-xl">Round 3 — 模擬試験・弱点仕上げ</div>
-                    <div class="text-rose-100 text-sm mt-0.5">9月 ｜ 週10h × 4週 ≈ 40時間</div>
+                    <div class="text-rose-100 text-sm mt-0.5">9月 ｜ <b>週11h × 4週 ≈ 44時間（8/2改定）</b></div>
                 </div>
                 <div class="p-6 grid md:grid-cols-2 gap-6">
                     <div>
@@ -810,24 +813,33 @@
         </div>
 
         <div class="mb-6 text-xs bg-amber-50 border border-amber-200 rounded-lg p-3 text-slate-600">
-            <span class="font-bold text-amber-700">【8月ブロック再設計（7/19確定）】</span>R2 は R1 と同じ<b>月〜日サイクル</b>に統一。8月の日付を月〜日に確定（W5=7/27〜8/2／W6=8/3〜9／W7=8/10〜16／W8=8/17〜23／W9=8/24〜30）。<b>週末に実物の年度別過去問を導入</b>：<b>土＝誤答バンク総ざらい／日＝実物年度別過去問①〜⑤</b>（自力50問2時間→各問に確信度マーク〔無印＝自信あり／△＝消去法・あやしい／?＝勘〕→<b>誤答＋「あやしい正解(△/?)」</b>を条文レビュー＝まぐれ正解を炙り出す）。私は過去問の問題文を複製せず、論点を解説＋e-Gov検証＋<b>法改正フィルタ</b>（古い年度で正解が変わる肢を警告）。<b>W8は土＝本番模試(50問2h)／日＝解析</b>。<b>年度＝R2で平成30・令和元・2・3・4、令和5・6はR3の直前に温存</b>。薄い分野（<b>不動産登記法・二次的債権・不動産鑑定評価基準・統計</b>）に独立枠を新設。
+            <span class="font-bold text-amber-700">【8月ブロック再設計（7/19確定）】</span>R2 は R1 と同じ<b>月〜日サイクル</b>に統一。8月の日付を月〜日に確定（W5=7/27〜8/2／W6=8/3〜9／W7=8/10〜16／W8=8/17〜23／W9=8/24〜30）。<b>週末に実物の年度別過去問を導入</b>：<b>土＝誤答バンク総ざらい／日＝実物年度別過去問</b>（自力50問2時間→各問に確信度マーク〔無印＝自信あり／△＝消去法・あやしい／?＝勘〕→<b>誤答＋「あやしい正解(△/?)」</b>を条文レビュー＝まぐれ正解を炙り出す）。私は過去問の問題文を複製せず、論点を解説＋e-Gov検証＋<b>法改正フィルタ</b>（古い年度で正解が変わる肢を警告）。<b>W8は土＝本番模試(50問2h)／日＝解析</b>。薄い分野（<b>不動産登記法・二次的債権・不動産鑑定評価基準・統計</b>）に独立枠を新設。
+        </div>
+
+        <div class="mb-6 text-xs bg-rose-50 border border-rose-300 rounded-lg p-3 text-slate-600">
+            <span class="font-bold text-rose-700">【実測2回にもとづく再設計（2026-08-02 確定）】</span>実物①令和元=<b>23/50</b>・②令和2=<b>28/50</b>（所要75分→93分）。科目別平均は<b>業法9.5/20・権利9.5/14・法令2.5/8・税その他4.0/8</b>で、<b>目標38点までの差12.5点のうち6.5〜8.5点が宅建業法</b>に集中。これを受け4点を変更した。
+            <b>①週10h→週11h</b>（平日1h×5＋土3h＋日3h。休日を各3hに延長）。
+            <b>②配分＝業法3h→<span class="text-rose-700">4h</span>／権利2.5h→2h／法令2h→1.5h／税・その他1.5h→1h（内訳を<b>税0.25h・免除0.75h</b>に組み替え＝弱いのは免除で平均2/5）／実物過去問1h→<span class="text-rose-700">2.5h</span>（解答2h＋採点・読み筋メモ・トリアージ0.5h）</b>。
+            <b>③実物レビューは科目枠の「内数」として明示</b>（別枠にすると必ず他を食う。<b>1年度あたり上限2h</b>・優先順＝誤答の積極的誤り→個数問題→あやしい正解→消去法の誤答。<b>入り切らない分は失点の型に分類してバンクへ送り条文には戻らない</b>）。
+            <b>④業法は「条文通読の2周目」をやめ4肢当てはめ中心へ</b>。8/2に決着した3問はいずれも<b>条文は既習</b>で、落ちた原因は〔準用リストを開かない(26条2項)／枝番の境界を読み飛ばす(78条2項の「37条」と「37条の2」)／肢の前半が正しいと後半を検証しない／規制の対象主体を取り違える(2条2号)〕だった。<b>時間を増やすだけでは伸びないと判断</b>。あわせて<b>免除科目に独立枠を新設</b>（問50・問46と2回続けてroadmapに枠がないgapが出たため）。
+            <b>⑤8/9(W6日)は実物なし＝「業法の当てはめ特訓＋レビュー消化デー」</b>。8月に実物が4週連続で入り<b>週4h(36%)が計測と復習</b>に消えて業法特訓が入らないため、<b>令和3年をR3(9月)へ送る</b>。<b>8月＝弱点を潰す月／9月＝実戦月</b>。
         </div>
 
         <!-- ─── 8月（W5〜W9）─── -->
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
                 <span class="bg-violet-800 text-white text-xs font-extrabold px-3 py-1 rounded-full">8月 Round 2</span>
-                <span class="text-slate-400 text-xs">W5〜W9 ｜ 7/27〜8/30（月〜日）｜ 1周目の残り＋2周目・薄い分野・実物過去問・模試</span>
+                <span class="text-slate-400 text-xs">W5〜W9 ｜ 7/27〜8/30（月〜日）｜ <b class="text-rose-600">W6以降は週11h（8/2改定）</b>・弱点を潰す月・実物過去問・模試</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs" style="border-collapse:separate; border-spacing:4px;">
                     <thead>
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
-                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法</span> <span class="text-slate-300 font-normal">3h</span></th>
-                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2.5h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">2h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他</span> <span class="text-slate-300 font-normal">1.5h＋模擬1h</span></th>
+                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法</span> <span class="text-rose-500 font-bold">4h</span><span class="text-slate-300 font-normal">（W5まで3h）</span></th>
+                            <th class="text-left pb-1" style="min-width:155px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係</span> <span class="text-slate-300 font-normal">2h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限</span> <span class="text-slate-300 font-normal">1.5h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-violet-600 font-extrabold">💴 税・その他＋免除</span> <span class="text-slate-300 font-normal">1h（税0.25／<b>免除0.75</b>）＋実物2.5h</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -859,8 +871,8 @@
                                 <div class="text-slate-400" style="font-size:11px;">8/3〜9</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">宅建業法 2周目（免許・宅建士・保証金）</div>
-                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 2〜29条・64条の2〜<br>（数字・欠格事由・供託額を再確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">業法 <span class="text-rose-600">4肢当てはめ</span>（免許・宅建士・保証金）</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 2〜29条・64条の2〜<br>通読でなく事例型で当てはめ。<b>準用・枝番・除外の境界一覧</b>（26条2項の準用先／78条2項の「33条の2」「37条の2〜43条」）<br><b>内数：実物レビュー1.2h</b></div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">権利 2周目（借地借家・区分所有・抵当権）</div>
@@ -871,8 +883,8 @@
                                 <div class="text-emerald-600 mt-0.5" style="font-size:11px;">建築基準法 1〜60条<br>（高さ制限・日影規制・防火/準防火）</div>
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">税 2周目＋統計仕上げ</div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">取得税/固定/譲渡/登免/印紙 の弱点<br>＋統計の最新データ</div>
+                                <div class="font-bold text-slate-700 leading-snug">免除＋税 2周目／<span class="text-rose-600">8/9(日)は実物なし</span></div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;"><b>免除0.75h</b>＝統計仕上げ・機構法・景表法／税0.25h＝取得/固定/譲渡/登免/印紙の弱点<br><b>8/9＝業法の当てはめ特訓＋レビュー消化デー</b>（令和3年はR3へ送り）</div>
                             </td>
                         </tr>
                         <tr>
@@ -881,8 +893,8 @@
                                 <div class="text-slate-400" style="font-size:11px;">8/10〜16</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">宅建業法 2周目（35/37・8種・報酬）</div>
-                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 34条の2〜46条<br>（重要条文の数字・例外規定を確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">業法 <span class="text-rose-600">4肢当てはめ</span>（35/37・8種・報酬）</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 34条の2〜46条<br>事例型で当てはめ。<b>業者間で外れるのは33条の2と37条の2〜43条だけ（37条は外れない）</b><br><b>内数：実物レビュー1.2h</b></div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">権利 2周目（不登法・二次的債権＋民法横断）</div>
@@ -893,8 +905,8 @@
                                 <div class="text-emerald-600 mt-0.5" style="font-size:11px;">農地法 2〜5条・国土利用計画法 23〜27条<br>（許可権者・届出面積・例外を完全暗記）</div>
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">税・その他 R2 総復習</div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">取得/固定/譲渡/登免/印紙/地価/鑑定/統計<br>（国税庁タックスアンサーで要件を再確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">免除＋税 R2 総復習／<span class="text-rose-600">8/16(日)＝実物③ 令和4</span></div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">免除0.75h＝機構法/景表法/統計/土地建物／税0.25h＝取得/固定/譲渡/登免/印紙<br><b>実物③＝令和4年</b>（解答2h＋採点・読み筋メモ0.5h）</div>
                             </td>
                         </tr>
                         <tr>
@@ -916,8 +928,8 @@
                                 <div class="text-emerald-600 mt-0.5" style="font-size:11px;">都計/建基/農地/国土の穴<br>（誤答バンク上位）</div>
                             </td>
                             <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">📝 本番模試（土・50問2時間）</div>
-                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">実物1年分を時間厳守で通す<br>日＝全問解説→条文・弱点更新</div>
+                                <div class="font-bold text-rose-700 leading-snug">📝 本番模試＝<span class="text-rose-700">令和5年</span>（8/22 土・50問2時間）</div>
+                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">実物1年分を時間厳守で通す<br>日＝レビュー（上限2h・型分類）→条文・弱点更新</div>
                             </td>
                         </tr>
                         <tr>
@@ -940,7 +952,7 @@
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">R2総括・R3引き継ぎメモ作成</div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">土＝実物過去問⑤(最終)／日＝R2総括<br>全科目弱点の優先リスト→R3へ</div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;"><b>土(8/29)＝令和元年の解き直し</b>（7/26に23/50だった同じ問題＝同一の物差しで伸び幅を測る）／日＝R2総括<br>全科目弱点の優先リスト→R3へ</div>
                             </td>
                         </tr>
                     </tbody>
@@ -998,7 +1010,7 @@
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
                 <span class="bg-rose-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">9月 Round 3</span>
-                <span class="text-slate-400 text-xs">W1〜W4 ｜ 週10h × 4週 ≈ 40時間</span>
+                <span class="text-slate-400 text-xs">W1〜W4 ｜ <b class="text-rose-600">週11h × 4週 ≈ 44時間（8/2改定）</b>｜ 実戦月</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs" style="border-collapse:separate; border-spacing:4px;">
@@ -1006,10 +1018,10 @@
                         <tr>
                             <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
                             <th class="text-left pb-1" style="min-width:125px;"><span class="text-rose-600 font-extrabold">📝 模擬試験</span> <span class="text-slate-300 font-normal">3h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法弱点</span> <span class="text-rose-500 font-bold">3h</span></th>
                             <th class="text-left pb-1" style="min-width:140px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
-                            <th class="text-left pb-1" style="min-width:115px;"><span class="text-violet-600 font-extrabold">💴 税弱点</span> <span class="text-slate-300 font-normal">1h</span></th>
+                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限弱点</span> <span class="text-slate-300 font-normal">1.5h</span></th>
+                            <th class="text-left pb-1" style="min-width:115px;"><span class="text-violet-600 font-extrabold">💴 税＋免除弱点</span> <span class="text-slate-300 font-normal">1.5h</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1019,8 +1031,8 @@
                                 <div class="text-slate-400" style="font-size:11px;">9/1〜7</div>
                             </td>
                             <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">模擬試験①（50問・2h）</div>
-                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">時間厳守で実施<br>全問解説を必ず読む</div>
+                                <div class="font-bold text-rose-700 leading-snug">模擬試験①＝<span class="text-rose-700">令和3年</span>（50問・2h）</div>
+                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">時間厳守で実施（8月から送った1本）<br>レビューは上限2h・型分類</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">免許制度・保証金・媒介契約 弱点反復</div>
@@ -1045,8 +1057,8 @@
                                 <div class="text-slate-400" style="font-size:11px;">9/8〜14</div>
                             </td>
                             <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">模擬試験②（50問・2h）</div>
-                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">時間厳守で実施<br>全問解説を必ず読む</div>
+                                <div class="font-bold text-rose-700 leading-snug">模擬試験②＝<span class="text-rose-700">令和6年（新品）</span>（50問・2h）</div>
+                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">時間厳守で実施<br>レビューは上限2h・型分類</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
                                 <div class="font-bold text-slate-700 leading-snug">35条・37条・8種制限 ひっかけ反復</div>
@@ -1071,7 +1083,7 @@
                                 <div class="text-slate-400" style="font-size:11px;">9/15〜21</div>
                             </td>
                             <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">模擬試験③（50問・2h）</div>
+                                <div class="font-bold text-rose-700 leading-snug">模擬試験③＝<span class="text-rose-700">令和7年（新品）</span>（50問・2h）</div>
                                 <div class="text-rose-500 mt-0.5" style="font-size:11px;">R3 最終模擬試験<br>スコアと時間配分を記録</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
@@ -1197,7 +1209,8 @@
 
 <script>
     // ── カウントダウン ──────────────────────────────────────────
-    // 平日1h×5 + 休日2h×2 = 週9h（ユーザー確認済み）
+    // 週時間：平日1h×5 + 休日2.5h×2 = 週10h（2026-05-10）→ 8月・9月は休日3h×2 = 週11h（2026-08-02改定）
+    // ※このカウントダウンは日数のみを計算するので、週時間の改定による変更は不要
     const EXAM  = new Date('2026-10-18T09:00:00+09:00');
     const today = new Date();
     const msLeft   = EXAM - today;
