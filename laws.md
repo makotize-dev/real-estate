@@ -11,7 +11,8 @@
 - **宅地建物取引業法**：https://laws.e-gov.go.jp/document?lawid=327AC1000000176
 - **宅地建物取引業法施行令**：https://laws.e-gov.go.jp/document?lawid=339CO0000000383
 - **宅地建物取引業法施行規則**：https://laws.e-gov.go.jp/document?lawid=332M50004000012
-- **宅地建物取引業者営業保証金規則**（法務省令・国土交通省令）：**lawId 未取得**。2026-08-02 に**ユーザーが e-Gov から1〜5条の逐語を取得して貼り付け**（法27条2項の還付手続＝1〜4条／**法28条1項の「省令で定める日」＝5条「通知書の送付を受けた日」**）。Claude 側では未取得なので、W6で lawId を確認してここに登録する。
+- **宅地建物取引業者営業保証金規則**（昭和三十二年法務省・建設省令第一号）：**lawId `332M50004010001`**（2026-08-06 取得）。法27条2項の還付手続＝1〜4条／**法28条1項の「省令で定める日」＝5条「通知書の送付を受けた日」**（2026-08-02 にユーザーが逐語を貼り付け）。
+- **宅地建物取引業保証協会弁済業務保証金規則**（昭和四十八年法務省・建設省令第二号）：**lawId `348M50004010002`**（2026-08-06 取得・逐語確認）。**1条＝法64条の8第3項の「省令で定める日」＝協会が4条の通知書の送付を受けた日**／**2条1項＝還付を受けようとする者は通知書3通を「供託所に提出」**（＝還付請求の相手は供託所であって協会ではない）／2条2項＝払渡請求書に協会の認証書面を添付／5条＝取戻し。
 
 ---
 
@@ -124,6 +125,24 @@ $x = [System.Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray())
 | 印紙税法 | 昭和42年法律第23号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E5%9B%9B%E5%8D%81%E4%BA%8C%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%B8%89%E5%8F%B7;article={N}`（8条で動作確認済・lawid=342AC0000000023・**別表第一は取得不可**）|
 
 | 都市計画法施行令 | 昭和44年政令第158号 | `https://laws.e-gov.go.jp/api/1/articles;lawId=344CO0000000158;article={N}`（19条・21条・22条の2・1条で動作確認済・2026-07-28。LawTitle「都市計画法施行令」LawNum「昭和四十四年政令第百五十八号」を返り値で検証）|
+
+### ⭐ 省令・政令の lawId は法令一覧APIで検索できる（2026-08-06 発見）
+
+lawId が分からない省令は、**法令一覧API** で名称検索すれば取得できる（`1`=全法令／`2`=憲法・法律／`3`=政令・勅令／`4`=府省令・規則）。
+
+```powershell
+$u="https://laws.e-gov.go.jp/api/1/lawlists/4"
+$r=Invoke-WebRequest -Uri $u -UseBasicParsing
+$x=[System.Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray())
+$lines = $x -split "`n"
+for ($i=0; $i -lt $lines.Count; $i++) {
+  if ($lines[$i] -match '検索したい法令名') {
+    $lines[[Math]::Max(0,$i-4)..[Math]::Min($lines.Count-1,$i+4)] | ForEach-Object { $_.Trim() }
+  }
+}
+```
+
+`<LawId>` `<LawName>` `<LawNo>` が並んで返るので、**法令名と法令番号で lawId の正しさを検証できる**（推定→検証のループが不要になる）。これで宅建業者営業保証金規則・保証協会弁済業務保証金規則の lawId を確定した。
 
 ### ⭐ `articles;lawId=` 形式（漢字エンコード不要・2026-07-28 発見）
 
