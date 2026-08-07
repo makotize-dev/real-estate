@@ -44,6 +44,10 @@
 - **印紙税法**：https://laws.e-gov.go.jp/document?lawid=342AC0000000023
 - **登録免許税法**：https://laws.e-gov.go.jp/document?lawid=342AC0000000035
 - **地価公示法**：https://laws.e-gov.go.jp/document?lawid=344AC0000000049
+- **地価公示法施行規則**（昭和四十四年建設省令第五十五号）：lawId **`344M50004000055`**（2026-08-07 取得）。**2条＝標準地の価格判定の基準日は「一月一日」**（法2条1項は「一定の基準日」としか定めず、日付は省令にある）
+- **国土利用計画法施行令**（昭和四十九年政令第三百八十七号）：lawId **`349CO0000000387`**（2026-08-07 取得）。**9条＝基準地の標準価格**（1項＝1人以上の不動産鑑定士・「国土交通省令で定める一定の基準日」／5項＝**周知に努める**＝努力義務）
+- **国土利用計画法施行規則**（昭和四十九年総理府令第七十二号）：lawId **`349M50000002072`**（2026-08-07 取得）。**14条＝令9条1項の基準日は「七月一日」**（都道府県地価調査）
+- **独立行政法人住宅金融支援機構法施行令**（平成十九年政令第三十号）：lawId **`419CO0000000030`**（2026-08-07 取得）。※**法・施行令とも「据置」の語がゼロ**＝貸付金の据置期間は法令の層になく、業務方法書・商品制度の層にある
 - **不動産鑑定評価法**（不動産の鑑定評価に関する法律）：https://laws.e-gov.go.jp/document?lawid=338AC0000000152
 - **独立行政法人住宅金融支援機構法**（免除科目・問46）：https://laws.e-gov.go.jp/document?lawid=417AC0000000082
 - **不当景品類及び不当表示防止法**（景表法・免除科目・問47）：https://laws.e-gov.go.jp/document?lawid=337AC0000000134
@@ -120,11 +124,26 @@ $x = [System.Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray())
 | 建築基準法施行令 | 昭和25年政令第338号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%BA%8C%E5%8D%81%E4%BA%94%E5%B9%B4%E6%94%BF%E4%BB%A4%E7%AC%AC%E4%B8%89%E7%99%BE%E4%B8%89%E5%8D%81%E5%85%AB%E5%8F%B7;article={N}`（136条の2で動作確認済・lawdataは末尾切れ）|
 | 土地区画整理法 | 昭和29年法律第119号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%BA%8C%E5%8D%81%E4%B9%9D%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E7%99%BE%E5%8D%81%E4%B9%9D%E5%8F%B7;article={N}`（98条で動作確認済・lawid=329AC0000000119）|
 | 都市計画法 | 昭和43年法律第100号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E5%9B%9B%E5%8D%81%E4%B8%89%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E7%99%BE%E5%8F%B7;article={N}`（29条で動作確認済・lawid=343AC0000000100）|
-| 地方税法 | 昭和25年法律第226号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%BA%8C%E5%8D%81%E4%BA%94%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E4%BA%8C%E7%99%BE%E4%BA%8C%E5%8D%81%E5%85%AD%E5%8F%B7;article={N}`（73条の17で動作確認済・lawid=325AC0000000226・**附則/別表は取得不可**）|
+| 地方税法 | 昭和25年法律第226号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%BA%8C%E5%8D%81%E4%BA%94%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E4%BA%8C%E7%99%BE%E4%BA%8C%E5%8D%81%E5%85%AD%E5%8F%B7;article={N}`（73条の17で動作確認済・lawid=325AC0000000226・**附則/別表は articles では取得不可だが lawdata なら読める**＝下記）|
 | 租税特別措置法 | 昭和32年法律第26号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E4%B8%89%E5%8D%81%E4%BA%8C%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E4%BA%8C%E5%8D%81%E5%85%AD%E5%8F%B7;article={N}`（72条の2で動作確認済・lawid=332AC0000000026・**附則/別表は取得不可**）|
 | 印紙税法 | 昭和42年法律第23号 | `https://laws.e-gov.go.jp/api/1/articles;lawNum=%E6%98%AD%E5%92%8C%E5%9B%9B%E5%8D%81%E4%BA%8C%E5%B9%B4%E6%B3%95%E5%BE%8B%E7%AC%AC%E4%BA%8C%E5%8D%81%E4%B8%89%E5%8F%B7;article={N}`（8条で動作確認済・lawid=342AC0000000023・**別表第一は取得不可**）|
 
 | 都市計画法施行令 | 昭和44年政令第158号 | `https://laws.e-gov.go.jp/api/1/articles;lawId=344CO0000000158;article={N}`（19条・21条・22条の2・1条で動作確認済・2026-07-28。LawTitle「都市計画法施行令」LawNum「昭和四十四年政令第百五十八号」を返り値で検証）|
+
+### ⭐ 附則・別表は `articles` では取れないが `lawdata`（全文）なら読める（2026-08-07 訂正）
+
+従前このファイルには「地方税法の**附則/別表は取得不可**」と書いていたが、**取得できないのは個別条文API（`articles`）だけ**で、**全文取得（`lawdata`）には附則も入っている**。
+
+```powershell
+$u="https://laws.e-gov.go.jp/api/1/lawdata/325AC0000000226"
+$r=Invoke-WebRequest -Uri $u -UseBasicParsing
+$x=[System.Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray())
+$i = $x.IndexOf('不動産取得税の税率の特例')   # 探したい見出し・語で位置を取る
+($x.Substring($i-200, 2500)) -replace '<[^>]+>','|' -replace '\|+','|'
+```
+
+- 地方税法は **8,270,754字**で返り、**末尾（`</DataRoot>`）まで切れずに取得できた**（2026-08-07 実測）。「量が多いと末尾切れ」は法令によるので、**末尾200字を確認して切れていないか毎回検証する**。
+- これで**附則11条の2**（住宅又は土地の取得は標準税率**100分の3**・平成18年4月1日〜令和9年3月31日）を逐語確認できた。**別表**が同じ方法で取れるかは未検証。
 
 ### ⭐ 省令・政令の lawId は法令一覧APIで検索できる（2026-08-06 発見）
 
