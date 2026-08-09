@@ -52,6 +52,12 @@
 - **⭐ 法令名から lawId を引く方法**（2026-08-09 に法律で動作確認）：`https://laws.e-gov.go.jp/api/1/lawlists/1`（1＝法律／2＝政令等／4＝省令）を取得し、`<LawId>…</LawId><LawName>…</LawName><LawNo>…</LawNo>` を正規表現で抽出して名称でフィルタする。**LawName と LawNo が並ぶので返り値で検証できる**
 - **⭐⭐ 別表（AppdxTable）も `lawdata` で取れる**（2026-08-09 確定・**7/28以来の「別表第二は取得できない」は誤り**）：取得できないのは**個別条文API（`articles`）だけ**。`lawdata` の全文には `<AppdxTable>` として入っている（**8/7に地方税法の附則で確認した構造と同じ**）。**⚠ `<AppdxTable>` は属性なしタグ**なので、正規表現を `<AppdxTable\s[^>]*>` にすると**1件も拾えず「別表なし」と誤判定する**。`<AppdxTable[\s>]` とすること。建築基準法（891,385字）から**別表第一9,941字／第二27,872字／第三16,952字／第四18,792字**を抽出して動作確認。表の中身は `</TableRow>`→改行・`</TableColumn>`→`|` に置換してからタグを剥がすと読める
 - **⭐ ルビタグで正規表現が切れる**（2026-08-09 判明）：条見出しに難読漢字があると `<ArticleCaption>` の中に `<Ruby>` が入り、`<ArticleCaption>([^<]*)</ArticleCaption>` が**マッチせず、その条文ごと抽出結果から落ちる**（民法「意思表示」の節が93条を落として94条始まりに、代理が20条→19条になった）。**条文一覧を機械抽出するときは、いったん要素全体を取ってから `<[^>]+>` を剥がす**方式にし、**節ごとの条数を数えて検算する**
+- **⭐⭐ 施行日を指定して条文を取る（API v2）**（2026-08-10 発見・**改正の確認はこの経路にする**）：`https://laws.e-gov.go.jp/api/2/law_data/{lawId}?asof=YYYY-MM-DD&law_full_text_format=xml`。**試験は「実施年の4月1日現在施行の法令」が基準なので `asof=2026-04-01` で固定できる**。
+  - **⚠ 返り値はJSONで、`law_full_text` は Base64**。`([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($j.law_full_text)))` でデコードする（デコード前に条文を検索すると**0件になって「条文がない」と誤判定する**——2026-08-10 に実際にやりかけた）。
+  - **改正の履歴**＝`https://laws.e-gov.go.jp/api/2/law_revisions/{lawId}`。`law_revision_id`（例 `327AC1000000176_20260401_507AC0000000068`）・`amendment_enforcement_date`・`amendment_law_num`・`current_revision_status`（**`CurrentEnforced` が現行**）が並ぶ。
+  - **v1 の `lawdata`／`articles` が返すのは現行版**（2026-08-10 に宅建業法8条で v2 の `asof=2026-04-01` と一致を確認）。**ユーザーが見ている画面と条文が食い違ったときは、まずこの2つで版を突き合わせる**（この日は画面が2025-03-31 時点の旧版だった）。
+  - **⚠ 派生調査はここで止める**：改正法の特定・全条文差分は**保守枠へ送る**（学習枠で続けると時間が流れる＝`study_log/宿題.md` 1 のW7暫定運用）。
+- **⚠ `TAIL_OK` 判定は `TrimEnd()` してから**（2026-08-10）：`lawdata` の応答は末尾に改行が付くため、`$x.EndsWith("</DataRoot>")` は**正常な全文でも false になる**。末尾切れの判定は `$x.TrimEnd().EndsWith("</DataRoot>")` で行う。
 - **⭐ 章立て（章・節の構成）が必要なときは `lawdata` を使う**（2026-08-09 判明）：個別条文API `articles;lawId=…;article=N` は **`<Chapter>`／`<ChapterTitle>` を返さない**。`https://laws.e-gov.go.jp/api/1/lawdata/{lawId}` を取得し `<Chapter Num="…"><ChapterTitle>…` と直後の `<Article Num="…">` を正規表現で拾えば、各章の名称と先頭条が分かる（建築基準法 891,385字で動作確認）
 - **独立行政法人住宅金融支援機構法施行令**（平成十九年政令第三十号）：lawId **`419CO0000000030`**（2026-08-07 取得）。※**法・施行令とも「据置」の語がゼロ**＝貸付金の据置期間は法令の層になく、業務方法書・商品制度の層にある
 - **不動産鑑定評価法**（不動産の鑑定評価に関する法律）：https://laws.e-gov.go.jp/document?lawid=338AC0000000152
