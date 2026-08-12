@@ -28,6 +28,7 @@
         .opt-btn.correct { background:#10b981; border-color:#10b981; color:#fff; }
         .opt-btn.wrong   { background:#ef4444; border-color:#ef4444; color:#fff; }
         .opt-btn.muted   { opacity:.5; }
+        .opt-btn.choice  { font-weight:500; font-size:0.95rem; line-height:1.65; }
         @keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:none;} }
         .fade-up { animation: fadeUp .25s ease; }
         /* 科目色 */
@@ -56,6 +57,9 @@
         </div>
 
         <div class="grid grid-cols-1 gap-3 mb-5">
+            <button id="due-btn" onclick="start('due')" class="bg-white border-2 border-amber-300 text-amber-700 hover:bg-amber-50 font-bold py-3.5 rounded-xl transition">
+                今日の想起（期限が来た問） <span id="due-count" class="text-xs"></span>
+            </button>
             <button onclick="start('all')" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 rounded-xl transition">全科目まぜて出題</button>
             <button id="wrong-btn" onclick="start('wrong')" class="bg-white border-2 border-red-300 text-red-600 hover:bg-red-50 font-bold py-3.5 rounded-xl transition">
                 間違いだけ再テスト <span id="wrong-count" class="text-xs"></span>
@@ -68,8 +72,8 @@
         <div id="last-result" class="hidden bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-900 text-center mb-5"></div>
 
         <p class="text-xs text-slate-400 text-center leading-relaxed">
-            一問一答（○×）中心。各問に根拠条文を表示。<br>
-            問題は学習の進度に合わせて追加していきます（税は次回追加予定）。
+            一問一答（○×）と4肢択一。各問に根拠条文を表示。<br>
+            「今日の想起」は各問の次回出題日（study_log/宿題.md と対応）で選びます。
         </p>
     </section>
 
@@ -145,7 +149,14 @@ const SUBJECTS = {
 
 /* =========================================================
    問題バンク（すべて e-Gov 逐語確認済み）
-   answer: true = 文は正しい(○) / false = 誤り(×)
+
+   ○×の問：choices を持たない。answer: true = 文は正しい(○) / false = 誤り(×)
+   4肢の問：choices に4つの肢を配列で持ち、answer は正答の添字（0〜3）
+            q に「誤っているものはどれか」等の問い方を書く
+   due    ：想起の次回出題日 'YYYY-MM-DD'（study_log/宿題.md 2の3 と対応）。
+            ホームの「今日の想起」はこの日付が今日以前の問だけを出す。
+            localStorage を使わないので閲覧データを削除しても消えない。
+            消化したら宿題.md の間隔（1日後・4日後・11日後）に従って手で書き換える。
    law: LAWS のキー / source: 表示する根拠条文
    ========================================================= */
 const QUESTIONS = [
@@ -701,6 +712,95 @@ const QUESTIONS = [
     q:'宅地建物取引業者Aは、甲事務所の従業者Bが退職したため、個人情報保護の観点から、従業者名簿のBに関する記載を退職日にすべて消去した。この取扱いは宅地建物取引業法に違反しない。',
     answer:false,
     explain:'×。施行規則17条の2第1項4号は「当該事務所の従業者でなくなつたときは、その年月日」を記載事項として定めており、退職は記載を消す事由ではなく記載を積み増す事由。さらに同条4項は従業者名簿を「最終の記載をした日から十年間保存」しなければならないと定めるので、消去は記載事項と保存義務の両方に反する。制度目的は、取引時に在籍していた従業者を後から追跡できるようにすること（48条4項で取引の関係者の請求による閲覧に供する）。誤り肢の型＝もっともらしい理由（個人情報保護）を付けて条文と逆の結論を導く（2026-08-03 実物 令和2年 問39肢3で失点）。' },
+
+  // ---- 4肢の問（2026-08-12 追加。すべて同日に e-Gov 逐語確認）----
+  { id:'ho-kb6-4a', subject:'法令制限', topic:'建築確認の要否（6条1項の号ごとの軸）', law:'建築基準法', source:'建築基準法6条1項柱書・1〜3号・2項', due:'2026-08-13',
+    q:'建築確認について、誤っているものはどれか。',
+    choices:[
+      '都市計画区域内（知事が指定する除外区域ではない）において、木造平家建て・延べ面積100㎡の一戸建て住宅を新築する場合、建築確認を受ける必要がある。',
+      '都市計画区域内において、鉄骨造2階建て・延べ面積300㎡の事務所（別表第一（い）欄の用途ではない）の大規模の修繕をする場合、建築確認を受ける必要はない。',
+      '都市計画区域内において、木造平家建て・延べ面積150㎡の一戸建て住宅の大規模の模様替をする場合、建築確認を受ける必要はない。',
+      '防火地域及び準防火地域外において建築物を増築しようとする場合で、その増築に係る部分の床面積の合計が10㎡以内であるときは、建築確認を受ける必要はない。'
+    ],
+    answer:1,
+    explain:'誤りは2。6条1項柱書は「第一号若しくは第二号に掲げる建築物を建築しようとする場合…これらの建築物の大規模の修繕若しくは大規模の模様替をしようとする場合又は第三号に掲げる建築物を建築しようとする場合」と書き分けており、修繕・模様替が対象になるのは1号2号の建築物だけ。2階建て300㎡は2号（二以上の階数を有し、又は延べ面積が200㎡を超える）に当たるので修繕でも確認が要る。1＝3号は場所だけを定め規模の要件がないので平家100㎡でも必要。3＝1号2号のいずれにも当たらず、3号は「建築」に限られるので模様替は対象外。4＝6条2項。※新築には2項は効かない（増築・改築・移転の3つのみ）。' },
+
+  { id:'ho-kb2126-4a', subject:'法令制限', topic:'天井の高さ（令21条2項）と防火壁の1,000㎡区画（26条）', law:'建築基準法', source:'建築基準法施行令21条2項／建築基準法26条1項本文・ただし書1号2号', due:'2026-08-13',
+    q:'単体規定について、誤っているものはどれか。',
+    choices:[
+      '居室の天井の高さは2.1m以上でなければならず、一室で天井の高さの異なる部分がある場合においては、その最も低い部分の高さによる。',
+      '延べ面積1,200㎡の建築物であっても、耐火建築物であれば、防火壁又は防火床による1,000㎡以内ごとの区画は不要である。',
+      '延べ面積が1,000㎡を超える建築物は、原則として防火上有効な構造の防火壁又は防火床によって有効に区画し、各区画における床面積の合計をそれぞれ1,000㎡以内としなければならない。',
+      '卸売市場の上家や機械製作工場のように火災の発生のおそれが少ない用途に供する建築物であっても、主要構造部が不燃材料で造られたもの等の要件に該当しなければ、1,000㎡区画の規定の適用は免れない。'
+    ],
+    answer:0,
+    explain:'誤りは1。令21条2項は「一室で天井の高さの異なる部分がある場合においては、その平均の高さによる」と定める（最も低い部分ではない）。2＝26条1項ただし書1号は「耐火建築物又は準耐火建築物」を無条件に外す。3＝26条1項本文。4＝ただし書2号は用途に加えて「次のイ又はロのいずれかに該当するもの」（イ＝主要構造部が不燃材料等、ロ＝政令の技術的基準）を要求しており、1号（無条件）と2号（要件付き）で条件の付き方が非対称。' },
+
+  { id:'ken-hosho-448-4a', subject:'権利関係', topic:'保証の付従性と主たる債務者について生じた事由（448条・457条）', law:'民法', source:'民法448条1項2項・457条1項3項', due:'2026-08-16',
+    q:'AのBに対する債務をCが保証した（連帯保証ではない）。誤っているものはどれか。',
+    choices:[
+      '保証契約の締結後にAB間の合意で主たる債務の目的又は態様が加重されたときは、Cの保証債務も加重される。',
+      'Cの負担が債務の目的又は態様においてAの主たる債務より重いときは、Cの負担は主たる債務の限度に減縮される。',
+      'Aに対する履行の請求その他の事由による時効の完成猶予及び更新は、Cに対してもその効力を生ずる。',
+      'AがBに対して取消権を有するときは、Cは、その権利の行使によってAがその債務を免れるべき限度において、Bに対して債務の履行を拒むことができる。'
+    ],
+    answer:0,
+    explain:'誤りは1。448条2項は「主たる債務の目的又は態様が保証契約の締結後に加重されたときであっても、保証人の負担は加重されない」。2＝448条1項（減縮）。3＝457条1項（及ぶのは時効の完成猶予及び更新だけで、時効の利益の放棄は入っていない）。4＝457条3項は「債務の履行を拒むことができる」にとどまり、保証人が主たる債務者の債権で相殺できるとは定めていない。' },
+
+  { id:'ken-hosho-kyusho-4a', subject:'権利関係', topic:'保証人の求償権の3軸（委託の有無・弁済期の前後・通知）', law:'民法', source:'民法459条1項・459条の2第1項3項・462条1項2項', due:'2026-08-16',
+    q:'Aの債務をCが保証し、Cが弁済した。誤っているものはどれか。',
+    choices:[
+      'CがAの委託を受けて保証をし、弁済期後に弁済したときは、Cは、そのために支出した財産の額（その額が消滅した主たる債務の額を超えるときはその消滅した額）についてAに求償することができる。',
+      'CがAの委託を受けて保証をし、主たる債務の弁済期前に弁済したときは、Cは、Aがその当時利益を受けた限度で求償権を有し、その求償権を直ちに行使することができる。',
+      'CがAの意思に反して保証をしたときは、Cは、Aが現に利益を受けている限度においてのみ求償権を有する。',
+      'CがAの委託は受けていないが意思には反しないで保証をしたときは、Cは、Aがその当時利益を受けた限度において求償権を有する。'
+    ],
+    answer:1,
+    explain:'誤りは2。459条の2第3項は「第一項の求償権は、主たる債務の弁済期以後でなければ、これを行使することができない」と定める。求償の範囲（利益を受けた限度）は正しいが、行使の時期で切られる。1＝459条1項。3＝462条2項（「現に」利益を受けている限度）。4＝462条1項が459条の2第1項を準用（利益を受けた限度であって支出した財産の額ではない）。' },
+
+  { id:'ho-kb56-7-4a', subject:'法令制限', topic:'斜線制限を外す経路②＝56条7項（政令の基準・測定位置）', law:'建築基準法', source:'建築基準法56条7項柱書・1〜3号／同条1項2号3号', due:'2026-08-16',
+    q:'建築基準法56条7項について、正しいものはどれか。',
+    choices:[
+      '7項による適用除外を受けるには、特定行政庁の許可を受け、建築審査会の同意を得なければならない。',
+      '7項2号の測定位置は、隣地境界線から、勾配1.25の建築物にあっては16m、勾配2.5の建築物にあっては12.4mだけ外側の線上である。',
+      '7項3号の測定位置は、第一種低層住居専用地域内の建築物では真北方向に8m、第一種中高層住居専用地域内の建築物では4mだけ外側の線上である。',
+      '7項1号の測定位置は、前面道路の中心線上の政令で定める位置である。'
+    ],
+    answer:1,
+    explain:'正しいのは2。7項柱書は「政令で定める基準に適合する建築物については、それぞれ当該各号に掲げる規定は、適用しない」で、許可も同意も要求していない（1が誤り）。3は数値が逆で、低層住専・田園住居が4m、中高層住専が8m。4は「前面道路の反対側の境界線上」。※3つの測定位置は、いずれもその斜線を外側へ延長して高さ0になる点＝立ち上がり÷勾配（20÷1.25＝16／31÷2.5＝12.4／5÷1.25＝4／10÷1.25＝8。道路斜線は立ち上がりがないので反対側の境界線そのもの）。この対応は条文の数値から出てくるもので、条文にこの説明文はない。' },
+
+  { id:'ho-takasa-hazusu-4a', subject:'法令制限', topic:'高さの制限から外れる経路（55条・56条・56条の2の非対称）', law:'建築基準法', source:'建築基準法55条4項1号・5項／44条2項／56条7項／56条の2第1項ただし書', due:'2026-08-16',
+    q:'高さの制限から外れる経路について、誤っているものはどれか。',
+    choices:[
+      '56条1項各号の斜線制限は、特定行政庁が許可し、建築審査会が同意すれば適用されない。',
+      '55条1項及び2項の高さの限度は、その敷地の周囲に広い公園、広場、道路その他の空地を有する建築物で、低層住宅に係る良好な住居の環境を害するおそれがないと特定行政庁が認めて許可したものには、適用されない。',
+      '56条の2第1項の日影規制は、特定行政庁が周囲の居住環境を害するおそれがないと認めて建築審査会の同意を得て許可した場合には、適用されない。',
+      '55条4項の許可をする場合、特定行政庁はあらかじめ建築審査会の同意を得なければならない。'
+    ],
+    answer:0,
+    explain:'誤りは1。56条には許可による適用除外の規定がなく、外れる経路は7項（政令で定める基準に適合する建築物）だけ。逆に56条には7項があるが、55条・56条の2には政令の基準による適用除外がない。2＝55条4項1号。3＝56条の2第1項ただし書（同意が条文本体に直接書かれている型）。4＝55条5項が44条2項（あらかじめ建築審査会の同意を得なければならない）を準用する型。' },
+
+  { id:'ho-nouchi45-4a', subject:'法令制限', topic:'農地法4条・5条（転用・市街化区域特例・一時的利用・協議みなし）', law:'農地法', source:'農地法4条1項7号・8項／5条1項・2項6号7号・3項', due:'2026-08-16',
+    q:'農地法の転用の規制について、誤っているものはどれか。',
+    choices:[
+      '農地の所有者が自己の農地を宅地にして住宅を建てる場合において、その農地が市街化区域内にあり、あらかじめ農業委員会に届け出たときは、4条1項の許可を受ける必要はない。',
+      '国が道路の用に供するため農地を農地以外のものにしようとする場合において、4条1項2号の農林水産省令で定める施設に当たらないときは、国と都道府県知事等との協議が成立することをもって4条1項の許可があったものとみなされる。',
+      '砂利採取のため農地を一時的に貸し付ける場合には5条1項の許可を要するが、一時的な利用に供するため農地の所有権を取得しようとする場合は、その利用の後にその土地が耕作の目的に供されることが確実と認められれば、許可を受けることができる。',
+      '5条1項の許可を受けないでした権利の設定又は移転は、その効力を生じない。'
+    ],
+    answer:2,
+    explain:'誤りは3。5条2項6号は「仮設工作物の設置その他の一時的な利用に供するため所有権を取得しようとする場合」を、原状回復の確実性を問わずに許可できない場合として定めている。確実性の条件が付くのは7号＝所有権以外の権利を取得しようとする場合。1＝4条1項7号（市街化区域内は届出で許可不要。3条にはこの特例がない）。2＝4条8項（国土利用計画法18条1項の協議＝許可みなしと同じ型）。4＝5条3項が3条6項を準用。' },
+
+  { id:'ho-nouchi3-4a', subject:'法令制限', topic:'農地法3条の許可不要と3条の3の届出（12号の射程）', law:'農地法', source:'農地法3条1項柱書・12号・3条の3', due:'2026-08-16',
+    q:'農地法3条について、誤っているものはどれか。',
+    choices:[
+      '相続により農地の所有権を取得した者は、3条1項の許可を受ける必要はないが、遅滞なく、その農地の存する市町村の農業委員会にその旨を届け出なければならない。',
+      '遺産の分割により農地について3条1項本文に掲げる権利が移転される場合には、3条1項の許可は不要であり、3条の3の届出も不要である。',
+      '市街化区域内にある農地を、耕作の目的で売買する場合であっても、3条1項の許可を受けなければならない。',
+      '農地に抵当権を設定する場合には、3条1項の許可を受ける必要はない。'
+    ],
+    answer:1,
+    explain:'誤りは2。3条の3は届出を要しない場合として「同項各号（第十二号及び第十六号を除く。）のいずれかに該当する場合」と定めており、12号（遺産の分割等）は除外から除かれている＝届出が必要。1＝単純な相続は12号ではなく、3条1項柱書が「当事者が…許可を受けなければならない」＝法律行為を前提とするため射程外（解釈）。結論は同じでも根拠条文が違う。3＝市街化区域の特例は4条・5条にあるだけで3条にはない。4＝抵当権は3条1項本文の列挙（所有権・地上権・永小作権・質権・使用貸借による権利・賃借権若しくはその他の使用及び収益を目的とする権利）になく、使用収益が農家に残るので「その他の使用及び収益を目的とする権利」にも当たらない（反対解釈）。' },
 ];
 
 /* =========================================================
@@ -708,7 +808,7 @@ const QUESTIONS = [
    ========================================================= */
 const LS_KEY = 'examv6_stats_v1';
 function loadStats(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e){ return {}; } }
-function saveStats(s){ localStorage.setItem(LS_KEY, JSON.stringify(s)); }
+function saveStats(s){ try { localStorage.setItem(LS_KEY, JSON.stringify(s)); } catch(e){} }
 function recordResult(id, correct){
     const s = loadStats();
     if(!s[id]) s[id] = { seen:0, wrong:0, lastWrong:false };
@@ -717,6 +817,12 @@ function recordResult(id, correct){
     s[id].lastWrong = !correct;
     saveStats(s);
 }
+function todayStr(){
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function dueQuestions(){ const t = todayStr(); return QUESTIONS.filter(q => q.due && q.due <= t); }
+
 function wrongIds(){
     const s = loadStats();
     return Object.keys(s).filter(id => s[id].lastWrong);
@@ -807,6 +913,12 @@ function renderHome(){
     });
     document.getElementById('total-count').textContent = `全 ${total} 問`;
 
+    const d = dueQuestions().length;
+    document.getElementById('due-count').textContent = d>0 ? `（${d}問）` : '（なし）';
+    document.getElementById('due-btn').disabled = d===0;
+    document.getElementById('due-btn').classList.toggle('opacity-40', d===0);
+    document.getElementById('due-btn').classList.toggle('cursor-not-allowed', d===0);
+
     const w = wrongIds().length;
     document.getElementById('wrong-count').textContent = w>0 ? `（${w}問）` : '（なし）';
     document.getElementById('wrong-btn').disabled = w===0;
@@ -818,6 +930,7 @@ function start(mode, subject){
     let pool;
     if(mode==='subject') pool = QUESTIONS.filter(q=>q.subject===subject);
     else if(mode==='wrong'){ const w = wrongIds(); pool = QUESTIONS.filter(q=>w.includes(q.id)); }
+    else if(mode==='due') pool = dueQuestions();
     else pool = QUESTIONS.slice();
     if(pool.length===0) return;
     queue = shuffle(pool.slice());
@@ -842,10 +955,14 @@ function renderQuestion(){
 
     const opts = document.getElementById('q-options');
     opts.innerHTML = '';
-    [['○ 正しい', true], ['× 誤り', false]].forEach(([label, val])=>{
+    const pairs = q.choices
+        ? q.choices.map((c,i)=>[`${i+1}　${c}`, i])
+        : [['○ 正しい', true], ['× 誤り', false]];
+    pairs.forEach(([label, val])=>{
         const b = document.createElement('button');
-        b.className = 'opt-btn';
+        b.className = q.choices ? 'opt-btn choice' : 'opt-btn';
         b.textContent = label;
+        b.dataset.val = JSON.stringify(val);
         b.onclick = ()=>answer(val, b);
         opts.appendChild(b);
     });
@@ -860,7 +977,8 @@ function answer(val, btn){
     const buttons = document.querySelectorAll('#q-options .opt-btn');
     buttons.forEach(b=>{
         b.disabled = true;
-        const isThisCorrect = (b.textContent.startsWith('○') ? true : false) === q.answer;
+        let bv; try { bv = JSON.parse(b.dataset.val); } catch(e){ bv = null; }
+        const isThisCorrect = bv === q.answer;
         if(isThisCorrect) b.classList.add('correct');
         else b.classList.add('muted');
     });
@@ -941,7 +1059,7 @@ function showResult(){
     rw.classList.toggle('cursor-not-allowed', w===0);
 
     // 直近結果をホームに表示
-    localStorage.setItem('examv6_last', JSON.stringify({score, total:queue.length, at:Date.now()}));
+    try { localStorage.setItem('examv6_last', JSON.stringify({score, total:queue.length, at:Date.now()})); } catch(e){}
 }
 
 function goHome(){ renderHome(); show('home'); showLast(); }
