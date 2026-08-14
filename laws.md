@@ -109,9 +109,28 @@ $x = [System.Text.Encoding]::UTF8.GetString($r.RawContentStream.ToArray())
 
 生XMLは要約モデルを経由しないため、**逐語性がより確実**。今後は法令取得の第一選択をこの方法にする。
 
-### ⚠️ この環境では PDF のテキスト抽出が全滅する（2026-07-31 判明）
+### ⭐ 日本語PDFは **pypdf** で読める（2026-08-14 判明・**下の「全滅」は誤りだった**）
 
-日本語PDF（`past_exams/` の実物過去問、公正競争規約のPDF等）から Claude 側でテキストを取り出す手段が**現状ひとつもない**。
+**`python` に pypdf 6.9.2 がインストール済み**で、`past_exams/` の実物過去問（27ページ）から**50問すべての問題文と《模範解答》の表（番号・正解・難易度・出典）を抽出できた**。7/31に「全滅」と判定したのは、**試した4手段にPythonが入っていなかった**ため（下表のとおり Read ツール・pdftotext・WebFetch・ブラウザの4つしか試していない）。
+
+```bash
+python -c "
+import pypdf, io
+r = pypdf.PdfReader('2019(R1).pdf')
+with io.open('out.txt','w',encoding='utf-8') as f:
+    for i,p in enumerate(r.pages):
+        f.write('===== PAGE %d =====\n' % (i+1)); f.write((p.extract_text() or '')+'\n')
+"
+```
+
+- **⚠ コンソールに直接 print すると文字化けする**（Git Bash の文字コード）。**必ず UTF-8 でファイルに書き出してから読む**。化けて見えても抽出自体は成功していることがあるので、`print` の結果だけで失敗と判定しない。
+- **⚠ 抽出結果は scratchpad に置き、git には入れない**（`past_exams/README.md`＝著作権物は push しない・問題文は複製しない）。
+- **未検証**：公正競争規約・国交省「解釈・運用の考え方」など**URL先のPDF**。ダウンロードが必要なので、実行の前にユーザーの許可を取る。
+- 環境の確認結果（2026-08-14）：`pdftotext` あり（ただし poppler-data なしで日本語不可）／`pdftoppm`・`pdfimages`・`tesseract`・`mutool`・`qpdf`・`gs` は**いずれも無い**／`python`＋`pypdf 6.9.2` あり。
+
+### 〔経緯として残す〕2026-07-31 に「全滅」と判定したときの記録
+
+日本語PDF（`past_exams/` の実物過去問、公正競争規約のPDF等）から Claude 側でテキストを取り出す手段が**現状ひとつもない**〔**2026-08-14 に誤りと判明＝上記**〕。
 
 | 手段 | 結果 |
 |---|---|
