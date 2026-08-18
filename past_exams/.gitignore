@@ -14,3 +14,6 @@
 !.gitignore
 !README.md
 !.gitkeep
+
+# 過去問PDFから抽出した問題文（著作権物のテキスト）＝2026-08-18 追加
+_extract/
