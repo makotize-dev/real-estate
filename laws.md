@@ -10,6 +10,8 @@
 - **🔴 v2 に `response_format=xml` を付ければ Base64 デコードは不要**（2026-08-17 実測）。`https://laws.e-gov.go.jp/api/2/law_data/{lawId}?asof=2026-04-01&response_format=xml` で施行日版の生XMLが直接返り、`<law_revision_id>` で版を検証できる（例＝宅建業法 `327AC1000000176_20260401_507AC0000000068`）。**8/14の「Base64デコードを忘れると条文が0件に見える」はこの形式では起きない。**
 - **🔴 `<SupplProvision` が `<MainProvision` より前に現れることがある**（宅建業法＝3436 対 3524）。**附則と本則を切り分けるときは `IndexOf` の単純な前後比較ではなく、`<MainProvision`〜`</MainProvision>` の範囲で絞る**（2026-08-17 に単純な split で例外を出した）。
 - **日本語PDFは `pypdf` で読める**。ただし**コンソールに直接 print すると文字化けする**ので、**必ずUTF-8でファイルに書き出してから読む**（2026-08-16 にこれを破って1往復を無駄にした。**2026-08-17 も同じことをして1往復無駄にした＝2回目**）
+- **🔴 `Invoke-WebRequest` の `.Content` は PowerShell 5.1 では既に文字列**（2026-08-25 実測）。`[Text.Encoding]::UTF8.GetString($r.Content)` は `Cannot convert argument "bytes"` で落ち、**エラーメッセージに応答全文（1.9MB・文字化け）が載って1往復無駄になる**。**`-OutFile` でファイルに落としてから `[IO.File]::ReadAllText($path, [Text.Encoding]::UTF8)` で読む**（PDFと同じ「ファイルに書き出してから読む」型）。
+- **🔴 `.ps1` に日本語を書くと PowerShell 5.1 が ANSI として読んで壊れる**（2026-08-25 実測。BOM無しUTF-8で保存されるため）。**全角スペースが `縲` 等に化け、日本語のファイル名は `螳ｿ鬘・md` になって `FileNotFoundException`**。**スクリプト本体はASCIIだけにし、日本語の文字列・パスは①UTF-8のJSON/テキストに置いて `[IO.File]::ReadAllText(..., UTF8)` で読む ②`[Text.Encoding]::UTF8.GetString([byte[]]@(0x..,...))` で組み立てる、のどちらかにする。**
 - **WebFetch が「著作権」を理由に逐語を拒否することがある** → PowerShell で生XMLを直接取得する
 - **附則・別表は `articles` では取れない。`lawdata`（全文）なら読める**／**省令・政令の lawId は法令一覧APIで検索できる**／**`articles;lawId=` 形式なら漢字エンコード不要**
 
