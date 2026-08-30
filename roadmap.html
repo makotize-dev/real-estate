@@ -39,6 +39,11 @@
         .mo-05 { background: #fecdd3; color: #9f1239; }
         .mo-0  { background: #f1f5f9; color: #94a3b8; font-weight: 400; }
 
+        /* 想起＝間隔反復（amber）※2026-08-30 新設 */
+        .so-6  { background: #92400e; color: #fff; }
+        .so-3  { background: #fbbf24; color: #451a03; }
+        .so-in { background: #fef3c7; color: #92400e; font-weight: 400; font-size: 11px; }
+
         /* ── タスクリスト ── */
         .task-li { font-size: 13px; color: #475569; margin-bottom: 5px;
                    padding-left: 1em; text-indent: -1em; line-height: 1.6; }
@@ -95,8 +100,9 @@
 
         <!--
             フェーズバーの比率（4/28〜10/18 = 173日）
-            今(4/28-30):2日=1% / R1(5/1-6/30):61日=35% / R2(7/1-8/31):62日=36%
-            R3(9/1-9/30):30日=17% / 直前(10/1-10/18):18日=11%  合計=100%
+            今(4/28-30):2日=1% / R1(5/1-6/30):61日=35% / R2(7/1-8/30):61日=36%
+            R3(8/31-10/18):49日=28%  合計=100%
+            ※2026-08-30 改定＝R3と直前期を1本に統合（週を月〜日に揃えたためR2は8/30終わり・R3は8/31始まり。旧R3は9/1〜9/30で8/31が無枠だった）
         -->
         <div class="flex rounded-xl overflow-hidden text-white font-bold text-sm" style="height:48px;">
             <div class="bg-slate-400 flex items-center justify-center" style="width:1%"></div>
@@ -108,11 +114,10 @@
                 Round 2
                 <span class="hidden sm:inline text-violet-100 font-normal text-xs">7〜8月</span>
             </div>
-            <div class="bg-rose-600 flex items-center justify-center gap-1" style="width:17%">
+            <div class="bg-rose-600 flex items-center justify-center gap-1" style="width:28%">
                 Round 3
-                <span class="hidden sm:inline text-rose-100 font-normal text-xs">9月</span>
+                <span class="hidden sm:inline text-rose-100 font-normal text-xs">8/31〜10/18</span>
             </div>
-            <div class="bg-red-800 flex items-center justify-center text-xs" style="width:11%">直前</div>
         </div>
         <!-- 今日マーカー（JS で位置を計算） -->
         <div class="relative h-6 mt-0.5">
@@ -136,18 +141,18 @@
             </div>
             <div class="bg-rose-50 rounded-xl p-3">
                 <div class="font-extrabold text-rose-700">Round 3</div>
-                <div class="text-xs text-rose-500 mt-0.5">9月（4週）</div>
-                <div class="text-xs text-slate-500 mt-2">模擬試験 ＋ 弱点集中<br>チートシート最終確認</div>
+                <div class="text-xs text-rose-500 mt-0.5">8/31〜10/18（7週）</div>
+                <div class="text-xs text-slate-500 mt-2">模試3本 ＋ 想起の周回<br>10月も同じ設計で通す</div>
             </div>
         </div>
     </section>
 
     <!-- ▼ 週10時間のヒートマップ ▼ -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-        <h2 class="font-extrabold text-slate-800 text-lg mb-1">週10時間の科目配分</h2>
+        <h2 class="font-extrabold text-slate-800 text-lg mb-1">週あたりの科目配分</h2>
         <p class="text-slate-500 text-sm mb-5">
             数字は<strong>週あたりの学習時間（h）</strong>。セルが濃いほど比重が高い。
-            5〜9月の週計はすべて10時間（10月は直前期で9時間）。
+            5〜7月は週10h、8月は週11h（W7〜W9は13.5h）、<b class="text-rose-600">9〜10月は週13.5h（2026-08-30 改定）</b>。
         </p>
 
         <div class="overflow-x-auto">
@@ -160,11 +165,11 @@
                         <th class="text-center text-xs font-bold text-violet-600 pb-1">7月<br><span class="font-normal text-slate-300">R2</span></th>
                         <th class="text-center text-xs font-bold text-violet-600 pb-1">8月<br><span class="font-normal text-slate-300">R2</span></th>
                         <th class="text-center text-xs font-bold text-rose-600 pb-1">9月<br><span class="font-normal text-slate-300">R3</span></th>
-                        <th class="text-center text-xs font-bold text-red-800 pb-1">10月<br><span class="font-normal text-slate-300">直前</span></th>
+                        <th class="text-center text-xs font-bold text-rose-600 pb-1">10月<br><span class="font-normal text-slate-300">R3</span></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 宅建業法: 3.5 / 3.5 / 3 / 4 / 3 / 2　※8月・9月は2026-08-02改定（実測2回で差の6.5〜8.5点が業法に集中） -->
+                    <!-- 宅建業法: 3.5 / 3.5 / 3 / 4 / 3 / 3　※8月・9月は2026-08-02改定（実測2回で差の6.5〜8.5点が業法に集中）／10月は2026-08-30改定（2h→3h・平日1.5h化） -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">🏠 宅建業法</td>
                         <td class="hc gy-35">3.5h</td>
@@ -172,7 +177,7 @@
                         <td class="hc gy-3">3h</td>
                         <td class="hc gy-4">4h</td>
                         <td class="hc gy-3">3h</td>
-                        <td class="hc gy-2">2h</td>
+                        <td class="hc gy-3">3h</td>
                     </tr>
                     <!-- 権利関係: 3 / 3 / 2.5 / 2 / 2 / 2 -->
                     <tr>
@@ -194,17 +199,17 @@
                         <td class="hc ho-15">1.5h</td>
                         <td class="hc ho-15">1.5h</td>
                     </tr>
-                    <!-- 税・その他＋免除: 1.5 / 1.5 / 1.5 / 1 / 1.5 / 0.5　※8月内訳＝税0.25・免除0.75 -->
+                    <!-- 税・その他＋免除: 1.5 / 1.5 / 1.5 / 1 / 1 / 1　※8月内訳＝税0.25・免除0.75／9〜10月は2026-08-30改定で1h（想起の在庫に占める割合が9%＝4科目で最小のため0.5hを想起へ回した） -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">💴 税・その他＋免除</td>
                         <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-15">1.5h</td>
                         <td class="hc ze-1">1h</td>
-                        <td class="hc ze-15">1.5h</td>
-                        <td class="hc ze-05">0.5h</td>
+                        <td class="hc ze-1">1h</td>
+                        <td class="hc ze-1">1h</td>
                     </tr>
-                    <!-- 実物過去問・模試: 0 / 0 / 1 / 2.5 / 3 / 3 -->
+                    <!-- 実物過去問・模試: 0 / 0 / 1 / 2.5 / 3 / 0　※模試3本は9/20までに終わるので10月はゼロ（2026-08-30） -->
                     <tr>
                         <td class="text-xs font-bold text-slate-600 pr-2 py-1">📝 実物過去問・模試</td>
                         <td class="hc mo-0">—</td>
@@ -212,7 +217,17 @@
                         <td class="hc mo-1">1h</td>
                         <td class="hc mo-25">2.5h</td>
                         <td class="hc mo-3">3h</td>
-                        <td class="hc mo-3">3h</td>
+                        <td class="hc mo-0">—</td>
+                    </tr>
+                    <!-- 想起（間隔反復）: — / — / — / 内数 / 3 / 6　※2026-08-30 新設＝独立枠。8月までは各科目枠の内数だったため測定が枠から消える日があった -->
+                    <tr>
+                        <td class="text-xs font-bold text-slate-600 pr-2 py-1">🔁 想起（条文非表示）</td>
+                        <td class="hc mo-0">—</td>
+                        <td class="hc mo-0">—</td>
+                        <td class="hc mo-0">—</td>
+                        <td class="hc so-in">内数</td>
+                        <td class="hc so-3">3h</td>
+                        <td class="hc so-6">6h</td>
                     </tr>
                     <!-- 週計 -->
                     <tr>
@@ -221,8 +236,8 @@
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
                         <td class="text-center text-sm font-extrabold text-slate-600 pt-3">10h</td>
                         <td class="text-center text-sm font-extrabold text-rose-600 pt-3">11h</td>
-                        <td class="text-center text-sm font-extrabold text-rose-600 pt-3">11h</td>
-                        <td class="text-center text-sm font-extrabold text-slate-600 pt-3">9h</td>
+                        <td class="text-center text-sm font-extrabold text-rose-600 pt-3">13.5h</td>
+                        <td class="text-center text-sm font-extrabold text-rose-600 pt-3">13.5h</td>
                     </tr>
                 </tbody>
             </table>
@@ -230,7 +245,10 @@
         <p class="text-xs text-slate-400 mt-3">
             ※ 税・その他は税理士としての既存知識があるため、他科目より比重を低く設定。<b>ただし同じ枠に入る免除科目（5問）が弱い</b>ので、8月以降は内訳を <b>税0.25h／免除0.75h</b> に組み替える。<br>
             ※ <b class="text-rose-600">8月・9月は週11h（2026-08-02 改定）</b>＝平日1h×5＋土3h＋日3h。<b class="text-teal-700">さらに W7〜W9（8/10〜8/30）は週13.5h＝平日を1.5hに（2026-08-09 改定・R3は11hのまま据え置き）</b>。実測2回（23/50・28/50）で<b>目標38点までの差12.5点のうち6.5〜8.5点が宅建業法</b>に集中していたため、業法へ寄せた。<b>実物過去問のレビューは各科目枠の内数</b>（別枠にすると他を食うため。1年度あたり上限2h）。<br>
-            ※ 10月は直前期のため学習量を少し落とし、体調管理を優先。<b>10月の配分は8/2の改定対象外＝R3終了時に見直す。</b>
+            ※ <b class="text-rose-600">【2026-08-30 改定＝R2終了時の見直し】9〜10月を1本の設計にし、週13.5h（平日1.5h×5＋土3h＋日3h）を10/18まで通す。</b>変更は3点。<br>
+            　<b>①想起（条文非表示の間隔反復）を独立枠にした</b>＝<b>週3h＝平日0.5h×5＋土0.5h</b>（10月はさらに日曜3hも想起へ）。原資は平日の増分2.5h＋税・免除から0.5h。8月までは各科目枠の内数だったため、忙しい日に測定そのものが消えた（8/29＝0件・8/30＝2件）。<b>R2末の在庫は109件</b>で、7週で卒業させるには週末にも置く必要がある（容量約460件回 対 必要約455件回＝私の試算）。<br>
+            　<b>②10月の「直前期＝週9h」をやめた</b>（旧＝8/2改定の対象外として保留していた枠）。<b>③模試は9/20までに3本とも終わる</b>ので10月の日曜3hは想起の周回に充てる。<br>
+            ※ 旧記述：10月は直前期のため学習量を落とし体調管理を優先（週9h）。<b>新しいことをやらない方針は維持する</b>（10月に増えるのは<u>反復</u>であって新規範囲ではない）。
         </p>
     </section>
 
@@ -336,25 +354,32 @@
             <!-- Round 3 -->
             <div class="round-card border-rose-200">
                 <div class="bg-rose-600 text-white px-6 py-4">
-                    <div class="font-extrabold text-xl">Round 3 — 模擬試験・弱点仕上げ</div>
-                    <div class="text-rose-100 text-sm mt-0.5">9月 ｜ <b>週11h × 4週 ≈ 44時間（8/2改定）</b></div>
+                    <div class="font-extrabold text-xl">Round 3 — 模試 × 想起の周回</div>
+                    <div class="text-rose-100 text-sm mt-0.5"><b>8/31〜10/18（7週）｜ 週13.5h × 7週 ≈ 94.5時間（2026-08-30 改定）</b>　※旧＝9月のみ週11h×4週＋直前期week9h</div>
                 </div>
-                <div class="p-6 grid md:grid-cols-2 gap-6">
+                <div class="p-6 grid md:grid-cols-3 gap-6">
                     <div>
-                        <p class="text-xs font-extrabold text-rose-700 mb-2">📝 模擬試験（週3h）</p>
+                        <p class="text-xs font-extrabold text-rose-700 mb-2">📝 模試（日曜3h・3本）</p>
                         <ul>
-                            <li class="task-li">市販の予想問題集で2〜3回（50問×2時間）</li>
-                            <li class="task-li">時間配分を体で覚える</li>
-                            <li class="task-li">解いたら全問の解説を必ず読む</li>
+                            <li class="task-li"><b>9/6＝令和3年／9/13＝令和6年／9/20＝令和7年</b>（手元7年度のうち未使用の3本）</li>
+                            <li class="task-li">50問2時間・時間厳守。レビューは各科目枠の内数（1年度2h上限）</li>
+                            <li class="task-li"><b>10月は模試なし</b>＝日曜3hも想起の周回へ</li>
                         </ul>
                     </div>
                     <div>
-                        <p class="text-xs font-extrabold text-slate-600 mb-2">⚡ 弱点集中（週7h）</p>
+                        <p class="text-xs font-extrabold text-amber-700 mb-2">🔁 想起＝独立枠（週3h・10月は6h）</p>
                         <ul>
-                            <li class="task-li">Round 2 で間違えた問題ノートを総復習</li>
-                            <li class="task-li">チートシートで重要数字を最終確認</li>
-                            <li class="task-li">統計問題の最新データを確認＝<b>W3（9/15〜21）に固定</b>（8/7改定・地価調査9月中旬／法人企業統計9月初旬の公表直後）</li>
-                            <li class="task-li">ひっかけパターンを意識して反復</li>
+                            <li class="task-li"><b>条文非表示・4肢＋根拠</b>。母集団は <code>study_log/宿題.md</code> 2の3（R2末＝<b>109件</b>）</li>
+                            <li class="task-li">間隔〔1日後・4日後・11日後〕・<b>2回連続○で卒業</b>。×なら1日後へ戻す</li>
+                            <li class="task-li"><b>W6（10/5〜11）以降は新規を積まない</b>＝回しきる側に振る</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="text-xs font-extrabold text-slate-600 mb-2">⚡ 科目枠（週7.5h）</p>
+                        <ul>
+                            <li class="task-li">業法3h／権利2h／法令1.5h／<b>税・免除1h</b>（税・免除だけ0.5h減＝想起の在庫に占める割合が9%で4科目中最小）</li>
+                            <li class="task-li">中身は<b>その週の模試の誤答</b>＋<b>想起で×が続く論点</b>。R1・R2のような範囲指定はしない</li>
+                            <li class="task-li"><b>統計＝W3（9/14〜20）に固定</b>（8/7改定。地価調査9月中旬／法人企業統計9月初旬の公表直後で、5本が揃う唯一の週）</li>
                         </ul>
                     </div>
                 </div>
@@ -363,34 +388,37 @@
             <!-- 直前期 -->
             <div class="round-card border-red-300" style="background:#fff5f5;">
                 <div class="bg-red-800 text-white px-6 py-4">
-                    <div class="font-extrabold text-xl">直前期（10月 1〜18日）</div>
-                    <div class="text-red-100 text-sm mt-0.5">新しいことはやらない。確認と体調管理のみ。</div>
+                    <div class="font-extrabold text-xl">10月（R3 の後半＝W5〜W7）</div>
+                    <div class="text-red-100 text-sm mt-0.5"><b>独立した「直前期」をやめ、R3の続きとして通す（2026-08-30 改定）</b>。新しい範囲はやらない・反復の密度だけ上げる。</div>
                 </div>
                 <div class="p-6 grid md:grid-cols-3 gap-4 text-sm">
                     <div>
-                        <p class="font-bold text-slate-700 mb-2">1〜10日</p>
+                        <p class="font-bold text-slate-700 mb-2">W5（9/28〜10/4）</p>
                         <ul>
-                            <li class="task-li">チートシートを毎日1周</li>
-                            <li class="task-li">弱点ノートの暗記固め</li>
-                            <li class="task-li">宅建業法クイズを毎日</li>
+                            <li class="task-li"><b>想起の周回</b>（日曜3hも想起へ＝模試は9/20で終わる）</li>
+                            <li class="task-li">×が2回以上続く論点だけを条文へ戻す</li>
+                            <li class="task-li">穴の補充はこの週まで</li>
                         </ul>
                     </div>
                     <div>
-                        <p class="font-bold text-slate-700 mb-2">11〜15日</p>
+                        <p class="font-bold text-slate-700 mb-2">W6（10/5〜11）</p>
                         <ul>
-                            <li class="task-li">新規追加は一切なし</li>
-                            <li class="task-li">各科目まとめを流し読み</li>
+                            <li class="task-li"><b>🔴 新規を積むのはここで止める</b>（積むほど回しきれなくなる）</li>
+                            <li class="task-li">卒業していない論点だけを回す</li>
                             <li class="task-li">睡眠・体調管理を優先</li>
                         </ul>
                     </div>
                     <div>
-                        <p class="font-bold text-slate-700 mb-2">16〜17日</p>
+                        <p class="font-bold text-slate-700 mb-2">W7（10/12〜18）</p>
                         <ul>
-                            <li class="task-li">軽い確認のみ</li>
+                            <li class="task-li">想起の最終周回のみ</li>
                             <li class="task-li">持ち物・試験会場を確認</li>
                             <li class="task-li" style="color:#dc2626; font-weight:700;">🎯 10/18（日）本試験</li>
                         </ul>
                     </div>
+                </div>
+                <div class="px-6 pb-5 -mt-2">
+                    <p class="text-xs text-slate-500 leading-relaxed"><b>⚠ 「チートシートを毎日1周」を外した</b>＝チートシートは 2026-06-07 に廃止し、<b>早い段階では作らない</b>と決めたため（<code>study_log/2026-06-07.md</code>）。毎日回す対象は <b><code>study_log/宿題.md</code> 2の3 の想起表</b>が担う。R2の実測では、条文を見ながらの正解は同日中に反転し（8/9）、誤答を条文へ戻しても33%が再発した（8/29）ため、<b>「読むもの」より「測るもの」を置く</b>。</p>
                 </div>
             </div>
 
@@ -1011,182 +1039,260 @@
                 </div>
             </div>
             <p class="text-xs text-slate-400 mt-3">
-                ※ Round 3（9月）は弱点ノートと模擬試験2〜3回の集中仕上げに移行する。
+                ※ Round 3（<b>8/31〜10/18 の7週</b>・2026-08-30 改定）は<b>模試3本（9/6・9/13・9/20）＋想起の周回</b>へ移行する。
             </p>
         </div>
     </section>
 
     <!-- ▼ 週別学習トピック（Round 3 / 模擬試験 × 弱点仕上げ） ▼ -->
     <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
-        <h2 class="font-extrabold text-slate-800 text-lg mb-1">週別学習トピック — Round 3（模擬試験 × 弱点仕上げ）</h2>
+        <h2 class="font-extrabold text-slate-800 text-lg mb-1">週別学習トピック — Round 3（模試 × 想起の周回）</h2>
         <p class="text-slate-500 text-sm mb-1">
-            模擬試験3回（W1〜W3）を本番形式で実施し、<strong class="text-slate-700">誤答を必ず条文に戻る</strong>。
-            <span class="text-rose-600 font-semibold">W4は模擬なし・チートシートで直前対策モードへ移行</span>。
+            <b class="text-rose-600">8/31〜10/18 の7週を1本の設計にした（2026-08-30 改定）。</b>週は<b>月〜日</b>（R1・R2と同じ区切り。旧R3は 9/1〜7 の火〜月で <b>8/31 が無枠</b>だった）。
         </p>
         <p class="text-slate-500 text-sm mb-5">
-            新しい範囲は一切追加しない。弱点ノート＋チートシートの反復仕上げ。
+            新しい範囲は追加しない。<b>科目枠の中身は「その週の模試の誤答」と「想起で×が続く論点」だけ</b>で、R1・R2のような条文範囲の指定はしない（R2末の型分類＝誤答17問のうち<b>14問が「ノートにあるのに出てこない」</b>層だったため）。
         </p>
 
-        <!-- ─── 9月（W1〜W4）─── -->
+        <!-- ─── R3（8/31〜10/18）7週 ─── -->
         <div class="mb-6">
             <div class="flex items-center gap-2 mb-3">
-                <span class="bg-rose-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">9月 Round 3</span>
-                <span class="text-slate-400 text-xs">W1〜W4 ｜ <b class="text-rose-600">週11h × 4週 ≈ 44時間（8/2改定）</b>｜ 実戦月</span>
+                <span class="bg-rose-600 text-white text-xs font-extrabold px-3 py-1 rounded-full">Round 3 ｜ 8/31〜10/18</span>
+                <span class="text-slate-400 text-xs"><b class="text-rose-600">週13.5h × 7週 ≈ 94.5時間</b>（平日1.5h×5＋土3h＋日3h）</span>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-xs" style="border-collapse:separate; border-spacing:4px;">
                     <thead>
                         <tr>
-                            <th class="text-left text-slate-400 font-bold pb-1" style="min-width:58px;"></th>
-                            <th class="text-left pb-1" style="min-width:125px;"><span class="text-rose-600 font-extrabold">📝 模擬試験</span> <span class="text-slate-300 font-normal">3h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-blue-600 font-extrabold">🏠 宅建業法弱点</span> <span class="text-rose-500 font-bold">3h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-orange-600 font-extrabold">⚖️ 権利関係弱点</span> <span class="text-slate-300 font-normal">2h</span></th>
-                            <th class="text-left pb-1" style="min-width:140px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令制限弱点</span> <span class="text-slate-300 font-normal">1.5h</span></th>
-                            <th class="text-left pb-1" style="min-width:115px;"><span class="text-violet-600 font-extrabold">💴 税＋免除弱点</span> <span class="text-slate-300 font-normal">1.5h</span></th>
-                        </tr>
+                            <th class="text-left text-slate-400 font-bold pb-1" style="min-width:70px;"></th>
+                            <th class="text-left pb-1" style="min-width:150px;"><span class="text-amber-600 font-extrabold">🔁 想起</span> <span class="text-rose-500 font-bold">3h</span></th>
+                            <th class="text-left pb-1" style="min-width:130px;"><span class="text-blue-600 font-extrabold">🏠 業法</span> <span class="text-slate-300 font-normal">3h</span></th>
+                            <th class="text-left pb-1" style="min-width:120px;"><span class="text-orange-600 font-extrabold">⚖️ 権利</span> <span class="text-slate-300 font-normal">2h</span></th>
+                            <th class="text-left pb-1" style="min-width:120px;"><span class="text-emerald-600 font-extrabold">🏙️ 法令</span> <span class="text-slate-300 font-normal">1.5h</span></th>
+                            <th class="text-left pb-1" style="min-width:120px;"><span class="text-violet-600 font-extrabold">💴 税＋免除</span> <span class="text-slate-300 font-normal">1h</span></th>
+                        <th class="text-left pb-1" style="min-width:130px;"><span class="text-rose-600 font-extrabold">📝 日曜</span> <span class="text-slate-300 font-normal">3h</span></th>
+                            </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W1</span>
-                                <div class="text-slate-400" style="font-size:11px;">9/1〜7</div>
+                                <div class="text-slate-400" style="font-size:11px;">8/31〜9/6</div>
                             </td>
-                            <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">模擬試験①＝<span class="text-rose-700">令和3年</span>（50問・2h）</div>
-                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">時間厳守で実施（8月から送った1本）<br>レビューは上限2h・型分類</div>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">在庫の消化を開始</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">R2から <b>109件</b>を引き継ぐ<br>日別の配分は <code>study_log/index.md</code></div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">免許制度・保証金・媒介契約 弱点反復</div>
-                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 2〜34条の2<br>（R2弱点ノートから・ひっかけを条文で確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">想起で×が続く論点</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">在庫41件が業法<br>模試①の業法20問の誤答</div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">意思表示・代理・物権変動 弱点反復</div>
-                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">民法 93〜118条・177〜179条<br>（R2弱点ノートから・条文で再確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">想起で×が続く論点</div>
+                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">在庫25件が権利<br>模試①の誤答</div>
                             </td>
                             <td class="bg-emerald-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">都市計画法・建築基準法 数字総復習</div>
-                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">都市計画法・建築基準法<br>（用途地域・許可権者・容積率の数字）</div>
+                                <div class="font-bold text-slate-700 leading-snug">②′の残り5問</div>
+                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">令和元 問15・16・18・19・20<br>（8/30から繰り越し）</div>
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">各税の特例・軽減税率 確認</div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">R2弱点ノートから<br>（要件・数字を条文で再確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">②′の残り1問</div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">令和元 問24<br>（8/30から繰り越し）</div>
                             </td>
-                        </tr>
+                        <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
+                                <div class="font-bold text-rose-700 leading-snug">模試①＝<span class="text-rose-700">令和3年</span>（9/6）</div>
+                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">50問2h・時間厳守＋採点<br>レビューは各科目枠の内数</div>
+                            </td>
+                            </tr>
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W2</span>
-                                <div class="text-slate-400" style="font-size:11px;">9/8〜14</div>
+                                <div class="text-slate-400" style="font-size:11px;">9/7〜13</div>
                             </td>
-                            <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">模擬試験②＝<span class="text-rose-700">令和6年（新品）</span>（50問・2h）</div>
-                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">時間厳守で実施<br>レビューは上限2h・型分類</div>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">在庫＋模試①の新規</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">模試の誤答は<b>代表に絞って</b>積む<br>（全件積むと回しきれない）</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">35条・37条・8種制限 ひっかけ反復</div>
-                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 35条・37条・37条の2〜41条の2<br>（条文の但し書き・例外規定に集中）</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試①②の業法の誤答</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">失点の型で分ける<br>（未収録／想起できない／当てはめ）</div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">借地借家法・区分所有法 数字最終確認</div>
-                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">借地借家法 1〜40条・区分所有法 3〜41条<br>（存続期間・決議要件の3段階）</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試①②の権利の誤答</div>
+                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">同左</div>
                             </td>
                             <td class="bg-emerald-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">農地法・国土利用計画法 完全暗記</div>
-                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">農地法 2〜5条・国土利用計画法 23〜27条<br>（許可権者・届出面積・例外を確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試①②の法令の誤答</div>
+                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">R2の実測＝<b>法令は7問中4問が戻る</b><br>条文へ1回戻すだけで終わらせない</div>
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">税・その他 チートシート確認</div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">チートシートで重要数字を<br>最終チェック<br><span class="text-rose-600">〔8/7改定でW3と入れ替え〕</span>統計は<b>地価調査（9月中旬公表）の前</b>なのでこの週には置けない</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試①②の税・免除の誤答</div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;"><b>統計はこの週に置けない</b><br>（地価調査は9月中旬公表）</div>
                             </td>
-                        </tr>
+                        <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
+                                <div class="font-bold text-rose-700 leading-snug">模試②＝<span class="text-rose-700">令和6年</span>（9/13）</div>
+                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">未使用の年度<br>時間配分を記録</div>
+                            </td>
+                            </tr>
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W3</span>
-                                <div class="text-slate-400" style="font-size:11px;">9/15〜21</div>
+                                <div class="text-slate-400" style="font-size:11px;">9/14〜20</div>
                             </td>
-                            <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
-                                <div class="font-bold text-rose-700 leading-snug">模擬試験③＝<span class="text-rose-700">令和7年（新品）</span>（50問・2h）</div>
-                                <div class="text-rose-500 mt-0.5" style="font-size:11px;">R3 最終模擬試験<br>スコアと時間配分を記録</div>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">🔴 週末に在庫を数え直す</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">容量と必要量が拮抗しているため<br>ここで残り3週へ再配分する</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">報酬計算・業務規制 弱点最終反復</div>
-                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">宅建業法 46条・31〜47条<br>（計算ミス・ひっかけパターンを潰す）</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試②③の業法の誤答</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">R2平均10.75/20＝<b>目標との差が最大</b></div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">抵当権・不動産登記法 弱点最終反復</div>
-                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">民法 369〜398条・不動産登記法 1〜16条<br>（法定地上権・仮登記の要件）</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試②③の権利の誤答</div>
+                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">同左</div>
                             </td>
                             <td class="bg-emerald-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">盛土規制法・法令制限 弱点最終反復</div>
-                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">宅地造成及び特定盛土等規制法<br>（全法令制限の間違いノートを通し確認）</div>
+                                <div class="font-bold text-slate-700 leading-snug">模試②③の法令の誤答</div>
+                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">R2平均2.75/8＝目標6</div>
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">統計 最新データ最終確認<span class="text-rose-600">〔8/7改定でW2と入れ替え〕</span></div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;"><b>5本すべての最新版が揃う唯一の週</b>（地価調査＝9/17前後に公表）。地価公示3月／建築着工 前年1月末／土地白書6月頃／法人企業統計9月初旬／<b>都道府県地価調査9月中旬</b><br>入れるのは<b>向きと連続年数＋桁</b>（数値の丸暗記はしない）</div>
+                                <div class="font-bold text-slate-700 leading-snug">統計 最新データ</div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;"><b>5本すべてが揃う唯一の週</b>（地価調査＝9/17前後）。地価公示3月／建築着工 前年1月末／土地白書6月頃／法人企業統計9月初旬<br>入れるのは<b>向きと連続年数＋桁</b></div>
                             </td>
-                        </tr>
+                        <td class="bg-rose-50 rounded-lg p-2 align-top border border-rose-200">
+                                <div class="font-bold text-rose-700 leading-snug">模試③＝<span class="text-rose-700">令和7年</span>（9/20）</div>
+                                <div class="text-rose-500 mt-0.5" style="font-size:11px;"><b>最後の実物</b>＝手元の7年度を使い切る<br>スコアと時間配分を記録</div>
+                            </td>
+                            </tr>
                         <tr>
                             <td class="align-top py-2 pr-2">
                                 <span class="font-extrabold text-slate-600">W4</span>
-                                <div class="text-slate-400" style="font-size:11px;">9/22〜30</div>
-                                <div class="text-rose-500 font-bold" style="font-size:10px;">直前準備</div>
+                                <div class="text-slate-400" style="font-size:11px;">9/21〜27</div>
                             </td>
-                            <td class="bg-slate-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">模擬試験3回分 総解析</div>
-                                <div class="text-slate-500 mt-0.5" style="font-size:11px;">スコア推移・弱点パターンを整理<br>→ 10月直前期の優先リストを作成</div>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">在庫＋模試①〜③の新規</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">卒業していない論点を優先<br>（④＝あと1回○で卒業 から出す）</div>
                             </td>
                             <td class="bg-blue-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">宅建業法 チートシート最終確認</div>
-                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">重要数字・例外規定を<br>チートシートで1日1周</div>
+                                <div class="font-bold text-slate-700 leading-snug">×が2回以上続く業法の論点</div>
+                                <div class="text-blue-500 mt-0.5" style="font-size:11px;">条文へ戻すのはこの層だけに絞る</div>
                             </td>
                             <td class="bg-orange-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">権利関係 チートシート最終確認</div>
-                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">借地借家・区分所有の数字を<br>チートシートで1日1周</div>
+                                <div class="font-bold text-slate-700 leading-snug">×が2回以上続く権利の論点</div>
+                                <div class="text-orange-500 mt-0.5" style="font-size:11px;">同左</div>
                             </td>
                             <td class="bg-emerald-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">法令制限 チートシート最終確認</div>
-                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">許可権者・届出面積・数字を<br>チートシートで1日1周</div>
+                                <div class="font-bold text-slate-700 leading-snug">×が2回以上続く法令の論点</div>
+                                <div class="text-emerald-600 mt-0.5" style="font-size:11px;">同左</div>
                             </td>
                             <td class="bg-violet-50 rounded-lg p-2 align-top">
-                                <div class="font-bold text-slate-700 leading-snug">全科目 直前期への引き継ぎ</div>
-                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">「捨てない・追加しない・反復する」<br>10月のチェックリストを作成</div>
+                                <div class="font-bold text-slate-700 leading-snug">×が2回以上続く税・免除の論点</div>
+                                <div class="text-violet-500 mt-0.5" style="font-size:11px;">統計は確認のみ・新規に入れない</div>
                             </td>
-                        </tr>
+                        <td class="bg-slate-50 rounded-lg p-2 align-top">
+                                <div class="font-bold text-slate-700 leading-snug">模試3回の総解析（9/27）</div>
+                                <div class="text-slate-500 mt-0.5" style="font-size:11px;">スコア推移・失点の型<br>→ <b>残り3週の優先順を決める</b></div>
+                            </td>
+                            </tr>
+                        <tr>
+                            <td class="align-top py-2 pr-2">
+                                <span class="font-extrabold text-slate-600">W5</span>
+                                <div class="text-slate-400" style="font-size:11px;">9/28〜10/4</div>
+                                <div class="text-rose-500 font-bold" style="font-size:10px;">10月へ</div>
+                            </td>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">週6h＝最大の枠</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">卒業件数を毎週数える</div>
+                            </td>
+                            <td class="bg-blue-50 rounded-lg p-2 align-top" colspan="4">
+                                <div class="font-bold text-slate-700 leading-snug">4科目とも「穴の補充はこの週まで」</div>
+                                <div class="text-slate-500 mt-0.5" style="font-size:11px;">未収録が見つかっても、<b>W6以降は `study_notes` に足さず想起表にも積まない</b>（回しきれなくなるため）。この週までに処理する。</div>
+                            </td>
+                        <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">想起の周回（10/4）</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;"><b>模試は9/20で終わり</b>＝日曜3hも想起へ</div>
+                            </td>
+                            </tr>
+                        <tr>
+                            <td class="align-top py-2 pr-2">
+                                <span class="font-extrabold text-slate-600">W6</span>
+                                <div class="text-slate-400" style="font-size:11px;">10/5〜11</div>
+                            </td>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">🔴 新規を積むのを止める</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">回しきる側へ振り切る</div>
+                            </td>
+                            <td class="bg-slate-50 rounded-lg p-2 align-top" colspan="4">
+                                <div class="font-bold text-slate-700 leading-snug">4科目とも「卒業していない論点だけ」</div>
+                                <div class="text-slate-500 mt-0.5" style="font-size:11px;">科目枠も想起表の×・△の行を消化する時間に充てる。新しい条文は開かない。</div>
+                            </td>
+                        <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">想起の周回（10/11）</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">睡眠・体調管理を優先</div>
+                            </td>
+                            </tr>
+                        <tr>
+                            <td class="align-top py-2 pr-2">
+                                <span class="font-extrabold text-slate-600">W7</span>
+                                <div class="text-slate-400" style="font-size:11px;">10/12〜18</div>
+                            </td>
+                            <td class="bg-amber-50 rounded-lg p-2 align-top border border-amber-200">
+                                <div class="font-bold text-slate-700 leading-snug">最終周回</div>
+                                <div class="text-amber-600 mt-0.5" style="font-size:11px;">×の行だけを回す</div>
+                            </td>
+                            <td class="bg-slate-50 rounded-lg p-2 align-top" colspan="4">
+                                <div class="font-bold text-slate-700 leading-snug">確認のみ・体調管理</div>
+                                <div class="text-slate-500 mt-0.5" style="font-size:11px;">「捨てない・追加しない・反復する」。</div>
+                            </td>
+                        <td class="bg-red-50 rounded-lg p-2 align-top border border-red-300">
+                                <div class="font-bold text-red-700 leading-snug">🎯 10/18（日）本試験</div>
+                                <div class="text-red-500 mt-0.5" style="font-size:11px;">持ち物・試験会場を確認</div>
+                            </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                ※ <b>日別の割り当て（想起の件数を含む）は `study_log/index.md` の日別計画に置く。</b>この表は枠の骨格だけで、<b>W2以降の日別は各週の頭に決める</b>——R2で1週間先まで件数を確定させたところ、8/23の配分が1日で溢れ、さらに8/25と8/28が同じ空きを二度使って8/30が19件に膨れた（実測）。<br>
+                ※ <b>1日の型</b>＝〔平日1.5h＝<b>想起0.5h → 科目1h</b>〕〔土3h＝<b>想起0.5h → 科目2.5h</b>〕〔日3h＝模試（W1〜W3）／想起の周回（W4〜W7）〕。<b>想起を先頭に固定する</b>（後ろに置くと消えるため）。<br>
+                ※ <b>容量の試算（2026-08-30）</b>＝平日35日×10件＋土7日×10件＋日（模試のない3日）×30件 ≒ <b>510件回</b>。必要＝在庫109件＋模試の新規約48件を<b>1件あたり2.9回</b>（2回連続○が要件・○率79%＝8/25〜8/30の実測33/42）で <b>≒455件回</b>。<b>差55件回＝余裕は約1割</b>なので、W3末に数え直して再配分する。<br>
+                ※ <b>⚠ 未確認</b>＝期間中の祝日（9月と10月に各1〜2日ある）を平日1.5hとして扱うか休日3hとして扱うかは未決。<b>日付そのものも未確認。</b>
+            </p>
         </div>
 
         <!-- ─── R3 毎週の学習フロー ─── -->
         <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
-            <p class="text-xs font-extrabold text-slate-600 mb-3">R3 毎週の学習フロー（模擬試験 × 弱点仕上げ）</p>
+            <p class="text-xs font-extrabold text-slate-600 mb-3">R3 の1日／1週の流れ（2026-08-30 改定＝想起を先頭に置いた）</p>
             <div class="flex flex-wrap gap-2 items-center text-xs">
+                <div class="bg-amber-50 border border-amber-300 rounded-lg px-3 py-2 text-center">
+                    <div class="font-bold text-amber-700">① 想起（毎日の冒頭）</div>
+                    <div class="text-amber-500 mt-0.5">条文非表示・4肢＋根拠</div>
+                </div>
+                <div class="text-slate-300 font-bold text-lg">→</div>
                 <div class="bg-rose-50 border border-rose-200 rounded-lg px-3 py-2 text-center">
-                    <div class="font-bold text-rose-700">① 模擬試験を解く</div>
-                    <div class="text-rose-400 mt-0.5">50問・時間厳守</div>
+                    <div class="font-bold text-rose-700">② 模試を解く（日曜）</div>
+                    <div class="text-rose-400 mt-0.5">50問2h・W1〜W3のみ</div>
                 </div>
                 <div class="text-slate-300 font-bold text-lg">→</div>
                 <div class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-center">
-                    <div class="font-bold text-slate-700">② 全問解説を読む</div>
-                    <div class="text-slate-400 mt-0.5">正解も必ず確認</div>
+                    <div class="font-bold text-slate-700">③ 誤答を型で分ける</div>
+                    <div class="text-slate-400 mt-0.5">未収録／想起できない／当てはめ</div>
                 </div>
                 <div class="text-slate-300 font-bold text-lg">→</div>
                 <div class="bg-violet-50 border border-violet-200 rounded-lg px-3 py-2 text-center">
-                    <div class="font-bold text-violet-700">③ 誤答を条文で確認</div>
-                    <div class="text-violet-500 mt-0.5">e-Gov 法令検索</div>
-                </div>
-                <div class="text-slate-300 font-bold text-lg">→</div>
-                <div class="bg-white border border-slate-200 rounded-lg px-3 py-2 text-center">
-                    <div class="font-bold text-slate-700">④ チートシート確認</div>
-                    <div class="text-slate-400 mt-0.5">重要数字・例外規定</div>
+                    <div class="font-bold text-violet-700">④ 条文へ戻す</div>
+                    <div class="text-violet-500 mt-0.5">e-Gov（<b>未収録と当てはめだけ</b>）</div>
                 </div>
                 <div class="text-slate-300 font-bold text-lg">→</div>
                 <div class="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-center">
-                    <div class="font-bold text-amber-700">⑤ 弱点ノート更新</div>
-                    <div class="text-amber-500 mt-0.5">直前期（10月）の素材</div>
+                    <div class="font-bold text-amber-700">⑤ 想起表に積む</div>
+                    <div class="text-amber-500 mt-0.5">代表に絞る・W6以降は積まない</div>
                 </div>
             </div>
-            <p class="text-xs text-slate-400 mt-3">
-                ※ 直前期（10月1〜18日）は新しいことはやらない。チートシートと弱点ノートの確認のみ。
+            <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+                ※ <b>①を先頭に固定した理由</b>＝R2では想起が科目枠の内数だったため、忙しい日に測定そのものが消えた（8/29＝0件・8/30＝2件）。<br>
+                ※ <b>④を「未収録と当てはめだけ」に絞った理由</b>＝R2の実測で、条文へ戻した24問のうち8問（33%）が1か月後に再発し、<b>法令は7問中4問</b>が戻った。「ノートにあるのに出てこない」層に効くのは条文の再読ではなく<b>①の反復</b>。<br>
+                ※ 10月（W5〜W7）も同じ流れで、②が無くなるだけ。<b>新しい範囲は追加しない。</b>
             </p>
         </div>
     </section>
@@ -1198,22 +1304,22 @@
             <div class="bg-blue-900 rounded-xl p-4 text-center">
                 <div class="text-xs text-blue-300 font-bold mb-1">宅建業法（20問）</div>
                 <div class="text-4xl font-extrabold text-blue-200">18点</div>
-                <div class="text-xs text-slate-400 mt-1">週3.5h → 2h / 全期間</div>
+                <div class="text-xs text-slate-400 mt-1">R3＝週3h ｜ R2実測 平均10.75/20</div>
             </div>
             <div class="bg-orange-900 rounded-xl p-4 text-center">
                 <div class="text-xs text-orange-300 font-bold mb-1">権利関係（14問）</div>
                 <div class="text-4xl font-extrabold text-orange-200">11点</div>
-                <div class="text-xs text-slate-400 mt-1">週2.5h → 2h / 民法は有利</div>
+                <div class="text-xs text-slate-400 mt-1">R3＝週2h ｜ R2実測 平均8.5/14</div>
             </div>
             <div class="bg-emerald-900 rounded-xl p-4 text-center">
                 <div class="text-xs text-emerald-300 font-bold mb-1">法令制限（8問）</div>
                 <div class="text-4xl font-extrabold text-emerald-200">6点</div>
-                <div class="text-xs text-slate-400 mt-1">週1.5h → 2h / 暗記中心</div>
+                <div class="text-xs text-slate-400 mt-1">R3＝週1.5h ｜ R2実測 平均2.75/8</div>
             </div>
             <div class="bg-purple-900 rounded-xl p-4 text-center">
                 <div class="text-xs text-purple-300 font-bold mb-1">税・その他（8問）</div>
                 <div class="text-4xl font-extrabold text-purple-200">7点</div>
-                <div class="text-xs text-slate-400 mt-1">週1.5h → 1h / 税理士有利</div>
+                <div class="text-xs text-slate-400 mt-1">R3＝週1.5h ｜ R2実測 平均4.5/8</div>
             </div>
         </div>
         <div class="text-center pt-3 border-t border-slate-700">
