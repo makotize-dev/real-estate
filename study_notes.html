@@ -32,6 +32,7 @@
         .tab-btn.active[data-subject="権利関係"]  { background:#ea580c; color:white; border-color:#ea580c; }
         .tab-btn.active[data-subject="法令制限"]  { background:#059669; color:white; border-color:#059669; }
         .tab-btn.active[data-subject="税・その他"]{ background:#7c3aed; color:white; border-color:#7c3aed; }
+        .tab-btn.active[data-subject="チートシート"]{ background:#be123c; color:white; border-color:#be123c; }
 
         /* Markdown レンダリング */
         #note-content h1 { font-size:1.5rem; font-weight:800; margin:1.5rem 0 0.75rem; color:#0f172a; border-bottom:2px solid #e2e8f0; padding-bottom:0.4rem; }
@@ -68,6 +69,7 @@
         <button class="tab-btn" data-subject="権利関係">⚖️ 権利関係</button>
         <button class="tab-btn" data-subject="法令制限">🏙️ 法令制限</button>
         <button class="tab-btn" data-subject="税・その他">💴 税・その他</button>
+        <button class="tab-btn" data-subject="チートシート">🔢 チートシート</button>
     </div>
 </div>
 
@@ -88,6 +90,7 @@ const SUBJECTS = {
     '権利関係':  'study_notes/権利関係.md',
     '法令制限':  'study_notes/法令制限.md',
     '税・その他':'study_notes/税・その他.md',
+    'チートシート':'study_notes/チートシート.md',
 };
 
 async function loadNote(subject) {
