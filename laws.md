@@ -132,7 +132,21 @@ https://www.courts.go.jp/app/hanrei_jp/search1?filter%5BjikenGengo%5D={元号}&f
 
 **④届かないもの**＝結果表の `./../52665/detail2/index.html`（詳細ページ）は**解決できない**。5パターン試して4つが404、1つは200だが**中身は検索ページのまま（catch-all）**。**判示事項・裁判要旨をHTMLで取る経路は見つかっていない。**
 
-**⚠ 未検証**＝**全文PDFを pypdf で抽出できるかは未確認**（2026-08-29 は通信容量の都合でダウンロードしていない）。他の日本語PDF（国交省・鑑定評価基準）は pypdf で読めているので同じと見込んでいるが、**実測していない**。
+**🔴 ⑤全文PDFの抽出＝`PyMuPDF`（`fitz`）を使う。pypdf では読めない**（2026-09-06 実測。**2026-08-29 の「他の日本語PDFと同じと見込んでいる」という予想は外れた**）。裁判所のPDFは **`90msp-RKSJ-H`** エンコーディングで、pypdf は `Advanced encoding /90msp-RKSJ-H not implemented yet` を出して**文字化けした文字列を返す**。`hanrei-pdf-52749` は cp932 を latin-1 として読んだ形だったので `encode('latin-1')→decode('cp932')` で復元できたが、**`hanrei-pdf-86354` には同じ手が効かなかった**。**PyMuPDF は両方とも一発で正しく抽出した。**
+
+```bash
+python -c "
+import fitz, io
+d = fitz.open('hanrei-pdf-86354.pdf')
+with io.open('out.txt','w',encoding='utf-8') as f:
+    for i,p in enumerate(d):
+        f.write('===== PAGE %d =====\n' % (i+1)); f.write(p.get_text()+'\n')
+"
+```
+
+- **この環境に入っている PDF ライブラリは4つ**＝`pypdf` 6.9.2／`fitz`（PyMuPDF）1.26.7／`pdfplumber` 0.11.9／`pdfminer` 20251230（2026-09-11 第2セッションに再確認）。
+- **⚠ 判示事項・裁判要旨は全文PDFに含まれていない**（PDFにあるのは主文と理由のみ）。④のとおりHTMLの詳細ページには到達できないので、**この2つは取れない**。
+- **保存先＝`laws/判例/{事件番号}.md`（1件1ファイル＝ユーザーの決定）**。取得済み＝`平成27(許)11.md`（預貯金債権の当然分割）・`昭和63(オ)115.md`（遺産分割協議の合意解除）。**PDFそのものは git に入れない。**
 
 ---
 
@@ -174,8 +188,10 @@ with io.open('out.txt','w',encoding='utf-8') as f:
 
 - **⚠ コンソールに直接 print すると文字化けする**（Git Bash の文字コード）。**必ず UTF-8 でファイルに書き出してから読む**。化けて見えても抽出自体は成功していることがあるので、`print` の結果だけで失敗と判定しない。
 - **⚠ 抽出結果は scratchpad に置き、git には入れない**（`past_exams/README.md`＝著作権物は push しない・問題文は複製しない）。
+- **🔴 例外＝裁判所（courts.go.jp）の判例PDFは pypdf では読めない。`PyMuPDF`（`fitz`）を使う**（2026-09-06 実測。`90msp-RKSJ-H` エンコーディング。詳細と実行例は上の「判例の取得手順」⑤）。**「日本語PDFは pypdf で読める」を全称で読まない**——**配布元ごとに違う**ので、**化けたら `fitz` に切り替える**。
+- **⚠ 左右2段組のPDFは `get_text()` をそのまま流すと段が混ざる**（表示規約＝左段が規約・右段が施行規則）。**`PyMuPDF` の `get_text('blocks')` でブロックの x 座標で分ける**（上の98〜100行）。
 - **未検証**：公正競争規約・国交省「解釈・運用の考え方」など**URL先のPDF**。ダウンロードが必要なので、実行の前にユーザーの許可を取る。
-- 環境の確認結果（2026-08-14）：`pdftotext` あり（ただし poppler-data なしで日本語不可）／`pdftoppm`・`pdfimages`・`tesseract`・`mutool`・`qpdf`・`gs` は**いずれも無い**／`python`＋`pypdf 6.9.2` あり。
+- 環境の確認結果（2026-08-14）：`pdftotext` あり（ただし poppler-data なしで日本語不可）／`pdftoppm`・`pdfimages`・`tesseract`・`mutool`・`qpdf`・`gs` は**いずれも無い**／`python`＋`pypdf 6.9.2` あり。**2026-09-11 第2セッションに追加確認＝`fitz`（PyMuPDF）1.26.7・`pdfplumber` 0.11.9・`pdfminer` 20251230 も入っている。**
 
 ### 〔経緯として残す〕2026-07-31 に「全滅」と判定したときの記録
 

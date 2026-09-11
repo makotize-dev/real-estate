@@ -18,6 +18,20 @@
 // → 書き直しも必ず検査する。無限ループは「同じ実ユーザーターン位置での連続ブロック
 //   回数」をサイドカーで計数し、上限（MAX_BLOCKS）超で fail-open することで防ぐ。
 //   実ユーザーが新しい発言をすれば位置が進み、カウントは自動リセットされる。
+//
+// 2026-09-11（第2セッション）の修正：**差し戻された下書きを「送信済み」に数えない**。
+//   2026-09-06 第2セッションで4回連続ブロックし上限を使い切った。経緯＝①別フック
+//   （context-length-warn）が LEVEL1 で採点メッセージをブロック（内容の問題ではない）
+//   →②書き直すと、C が「直近のユーザー解答は1回なのに判定メッセージが2個」と判定
+//   →③以後、書き直すたびに数が増えて必ずブロック。**1回目はユーザーに届いていない
+//   のに「送信済み」として数えていた**のが原因。
+//   → transcript 上、フックの差し戻しは `type:"user"` / `isMeta:true` / `origin:null`
+//   で本文が「Stop hook feedback:」で始まるメタ行として残る（2026-09-11 に全76
+//   transcript を走査して確認＝62件すべてこの形）。**この行を見つけたら、それ以前の
+//   assistant メッセージは破棄された試行なので収集をリセットする。**
+//   検出力は落ちない——差し戻しのたびにこのフック自身も走って各試行を検査しており、
+//   C が本来ねらう「ツール継続の中での複数回採点」は差し戻しを挟まないので同じ区間に残る。
+//   無限ループ防止（MAX_BLOCKS のサイドカー計数）はリセットの影響を受けない。
 
 const fs = require('fs');
 
@@ -34,6 +48,14 @@ function textOf(o) {
       .join('\n');
   }
   return '';
+}
+
+// フックによる差し戻し（Stop hook feedback）の行か。
+// これが現れたら、それ以前の assistant メッセージは「送信されなかった下書き」。
+function isStopHookFeedback(o) {
+  if (!o || o.type !== 'user') return false;
+  if (!o.isMeta) return false;
+  return textOf(o).trim().startsWith('Stop hook feedback');
 }
 
 // 実ユーザーの発言か（ツール結果や割り込みメッセージを除く）
@@ -112,10 +134,18 @@ process.stdin.on('end', () => {
     }
   }
 
-  // それ以降の assistant メッセージ（テキストを持つもの）を集める
-  const assistantTexts = [];
+  // それ以降の assistant メッセージ（テキストを持つもの）を集める。
+  // ⚠ フックの差し戻し（Stop hook feedback）を挟んだら、それ以前は破棄された試行なので
+  //    収集をリセットする（2026-09-11 追加。理由は冒頭のコメント）。
+  let assistantTexts = [];
+  let discardedAttempts = 0;
   for (let i = lastUser + 1; i < objs.length; i++) {
     const o = objs[i];
+    if (isStopHookFeedback(o)) {
+      if (assistantTexts.length) discardedAttempts++;
+      assistantTexts = [];
+      continue;
+    }
     if (o.type === 'assistant') {
       const t = textOf(o);
       if (t.trim()) assistantTexts.push(t);
@@ -173,12 +203,15 @@ process.stdin.on('end', () => {
     }
   }
 
-  // C: 実ユーザーターン以降に判定メッセージが2つ以上
+  // C: 実ユーザーターン以降（最後の差し戻し以降）に判定メッセージが2つ以上
   if (judgeMsgCount >= 2) {
     problems.push(
       'C: 直近のユーザー解答は1回だけなのに、正誤判定を含むメッセージが' +
         judgeMsgCount +
-        '個あります。存在しない解答を採点した形です（ツール継続での捏造反復）。'
+        '個あります。存在しない解答を採点した形です（ツール継続での捏造反復）。' +
+        (discardedAttempts
+          ? '（差し戻された下書き' + discardedAttempts + '回分は数えていません）'
+          : '')
     );
   }
 
