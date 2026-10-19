@@ -2,8 +2,10 @@
 
 税理士として**宅地建物取引士（宅建士）** 資格を取得し、相続・不動産コンサルティング業務への展開を図るための学習プロジェクト。
 
-- **受験予定**：2026年10月18日（日）
+- **受験**：2026年10月18日（日）受験済み（合格発表 2026年11月25日）
 - **目標スコア**：38点以上（例年合格ライン37点前後）
+
+> **2026-10-19 から凍結。** 学習の記録として残し、更新しない。受験時点の状態はタグ `exam-2026`。実務用の資料は別に管理している。
 
 ---
 
@@ -11,9 +13,9 @@
 
 | ページ | URL | 内容 |
 |--------|-----|------|
-| 📚 想起トレーナー | [exam_v6.html](https://makotize-dev.github.io/real-estate/exam_v6.html) | 全4科目の一問一答（137問）・誤答一覧の表示と `.md` 書き出し |
+| 📚 想起トレーナー | [exam_v6.html](https://makotize-dev.github.io/real-estate/exam_v6.html) | 全4科目・234問（○×137・4肢97）・今日の想起・間違えた問の `.md` 書き出し |
 | 🗺️ ロードマップ | [roadmap.html](https://makotize-dev.github.io/real-estate/roadmap.html) | 螺旋型学習プラン・週配分ヒートマップ |
-| 📝 学習ノート | [study_notes.html](https://makotize-dev.github.io/real-estate/study_notes.html) | 科目別の個人用リファレンス（Markdownビューワー） |
+| 📝 学習ノート | [study_notes.html](https://makotize-dev.github.io/real-estate/study_notes.html) | 科目別の個人用リファレンスとチートシート（Markdownビューワー） |
 | 📅 学習ログ | [study_log.html](https://makotize-dev.github.io/real-estate/study_log.html) | 日次ログ・進捗サマリーのビューワー |
 
 スマホのブラウザで開き「ホーム画面に追加」するとアプリとして使えます（PWA対応・オフライン動作）。
@@ -24,25 +26,30 @@
 
 ```
 real-estate/
-├── CLAUDE.md                 # Claude Code 用のプロジェクト指示（鉄則・セッション手順）
-├── exam_v6.html              # 想起トレーナー（全4科目・137問）
+├── CLAUDE.md                 # Claude Code 用のプロジェクト指示（鉄則・セッション手順）※凍結中
+├── exam_v6.html              # 想起トレーナー（全4科目・234問）
 ├── roadmap.html              # 学習ロードマップ（螺旋型3ラウンド）
 ├── study_notes.html          # 学習ノートビューワー（study_notes/*.md を表示）
-├── study_notes/              # 科目別個人用リファレンス（Git管理・Claude が追記）
-│   └── {宅建業法|権利関係|法令制限|税・その他}.md
+├── study_notes/              # 科目別個人用リファレンス
+│   ├── {宅建業法|権利関係|法令制限|税・その他}.md
+│   └── チートシート.md        #   数字と宛先の横断一覧
 ├── study_log.html            # 学習ログビューワー（study_log/*.md を表示）
 ├── study_log/                # 学習ログ
-│   ├── index.md              #   進捗サマリー（毎セッション更新）
-│   ├── 宿題.md                #   恒久的な宿題・未確認リスト（セッション開始時に読む）
+│   ├── index.md              #   進捗の索引
+│   ├── 宿題.md                #   やること・未確認リスト
+│   ├── 宿題_消化済み.md       #   消化した宿題の記録
+│   ├── 想起.md                #   想起の待ち行列（1日後・4日後・11日後／2回連続○で卒業）
+│   ├── 想起_4肢.md            #   想起で出す4肢（事前作成）
+│   ├── 未収録一覧.md          #   ノートに未収録の論点の残量マップ
 │   ├── _template.md          #   日次ログの雛形
-│   └── YYYY-MM-DD.md         #   日次ログ
+│   └── YYYY-MM-DD.md         #   日次ログ（2026-04-29〜10-19・173本）
 ├── past_exams/               # 実物の年度別過去問（PDFはgitignore・.mdのみ追跡）
 │   ├── README.md             #   運用ルール
-│   └── 過去問演習記録.md       #   結果・推移・誤答論点の恒久記録
-├── laws.md                   # e-Gov API の URL テンプレート集
-├── manifest.json             # PWAマニフェスト
-├── sw.js                     # Service Worker（オフラインキャッシュ）
-├── icon.svg                  # アプリアイコン
+│   └── 過去問演習記録.md       #   結果・推移・誤答論点の恒久記録（8回）
+├── laws/                     # 一次資料の逐語キャッシュ（法令・告示・通達など63／判例22）
+├── laws.md                   # 一次資料の取得手順とURLテンプレート
+├── .claude/                  # settings.json と hooks/（Stop フック2本）
+├── manifest.json / sw.js / icon.svg   # PWA
 └── guide-to-be-certified/    # 詳細ガイド（全6章＋アウトライン）
     ├── takken_guide_outline.md       # 全4科目アウトライン
     ├── takken_chapter1_detailed.md   # 宅建士制度の概要
@@ -80,10 +87,10 @@ real-estate/
 ## 各ツールの機能
 
 ### 📚 想起トレーナー（exam_v6.html）
-- 全4科目の一問一答（**137問**）。実物過去問の失点から作った事例型が中心
-- 誤答一覧の表示と `.md` 書き出し（ブラウザに閉じ込めず、記録として取り出せる）
-- 混同しやすい項目の比較表（35条 vs 37条、媒介契約3類型など）・報酬計算の計算例
-- ※ 誤答の母集団は localStorage にあり閲覧データ削除で消えるため、**恒久的な想起の対象は `study_log/宿題.md` に一本化**している
+- 全4科目・**234問**（○×137・4肢97）。うち87問は卒業バンク＝`study_log/想起.md` で2回連続○になった論点の置き場で、次回出題日を散らして「今日の想起」に少しずつ出す
+- モード＝科目別・全科目・今日の想起（次回出題日が今日以前の問）・間違いだけ再テスト
+- 間違えた問の `.md` 書き出し（ブラウザに閉じ込めず、記録として取り出せる）
+- ※ 誤答の母集団は localStorage にあり閲覧データ削除で消えるため、**恒久的な想起の対象は `study_log/想起.md`** に置いている
 
 ### 🗺️ ロードマップ（roadmap.html）
 - 試験日までのカウントダウン
@@ -93,7 +100,7 @@ real-estate/
 ### 📝 学習ノート（study_notes.html）
 - `study_notes/*.md` を科目別タブで表示するMarkdownビューワー
 - セッション末に Claude が内容を追記・Git管理（データが消えない）
-- 宅建業法・権利関係・法令制限・税その他の4科目タブ
+- 4科目とチートシートの5タブ
 
 ### 📅 学習ログ（study_log.html）
 - `study_log/index.md`（進捗サマリー）と日次ログを表示
